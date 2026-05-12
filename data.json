@@ -1,0 +1,71 @@
+{
+  "site_info": {
+    "name": "SPORTCITY",
+    "description": "Sport Anjomlar Do'koni",
+    "contact": {
+      "phone": "+998 90 123 45 67",
+      "address": "Toshkent sh., Yunusobod tumani"
+    }
+  },
+  "categories": [
+    {
+      "id": 1,
+      "name": "Gantellar",
+      "img": "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400"
+    },
+    {
+      "id": 2,
+      "name": "Trenajyorlar",
+      "img": "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=400"
+    },
+    {
+      "id": 3,
+      "name": "Sport kiyimlari",
+      "img": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400"
+    },
+    {
+      "id": 4,
+      "name": "Oyoq kiyimlar",
+      "img": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Dumbbells Set 20kg",
+      "price": "450,000",
+      "category": "Gantellar",
+      "image": "https://images.unsplash.com/photo-1638536532686-d610adfc8e5c?w=400",
+      "is_new": true,
+      "stock": 15
+    },
+    {
+      "id": 2,
+      "name": "Professional Treadmill X10",
+      "price": "12,500,000",
+      "category": "Trenajyorlar",
+      "image": "https://images.unsplash.com/photo-1597452485669-2c7bb5fef90d?w=400",
+      "is_new": false,
+      "stock": 5
+    },
+    {
+      "id": 3,
+      "name": "Nike Sport T-shirt",
+      "price": "180,000",
+      "category": "Sport kiyimlari",
+      "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400",
+      "is_new": true,
+      "stock": 40
+    }
+  ],
+  "services": [
+    {
+      "title": "Yetkazib berish",
+      "desc": "Shahar ichida 2 soatda yetkazamiz"
+    },
+    {
+      "title": "Kafolat",
+      "desc": "Barcha mahsulotlarga 1 yillik kafolat"
+    }
+  ]
+}

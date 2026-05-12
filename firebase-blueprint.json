@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "Category": {
+      "title": "Category",
+      "description": "Sport category",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "img": { "type": "string" }
+      },
+      "required": ["name", "img"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Sport product",
+      "type": "object",
+      "properties": {
+        "brand": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "old_price": { "type": "number" },
+        "cat": { "type": "string" },
+        "img": { "type": "string" },
+        "badge": { "type": "string" },
+        "badge_text": { "type": "string" },
+        "sizes": { "type": "array", "items": { "type": "string" } },
+        "description": { "type": "string" },
+        "rating": { "type": "number" },
+        "reviews": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "price", "cat", "img"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "userPhone": { "type": "string" },
+        "comment": { "type": "string" },
+        "items": { "type": "string" },
+        "total": { "type": "number" },
+        "status": { "type": "string" },
+        "order_code": { "type": "string" },
+        "coins_earned": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "items", "total", "userPhone"]
+    },
+    "ChatMessage": {
+      "title": "Chat Message",
+      "description": "Support chat message",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "text": { "type": "string" },
+        "sender": { "type": "string", "enum": ["user", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "categories": { "schema": "Category", "description": "Product categories" },
+    "products": { "schema": "Product", "description": "Store products" },
+    "banners": { "schema": "object", "description": "Home banners" },
+    "orders": { "schema": "Order", "description": "Order records" },
+    "users": { "schema": "object", "description": "User profiles" },
+    "support_chats/{chatId}": { "schema": "ChatMessage", "description": "Chat messages" },
+    "site_info/main": { "schema": "object", "description": "Site global config" }
+  }
+}

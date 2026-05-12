@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>SPORTCITY — Sport Anjomlar Do'koni</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0d13;
+  --bg2: #0e1219;
+  --card: #131921;
+  --card2: #1a2233;
+  --blue: #1a6cff;
+  --blue2: #4d8fff;
+  --white: #ffffff;
+  --gray: rgba(255,255,255,0.55);
+  --border: rgba(255,255,255,0.08);
+  --red: #ff3b3b;
+  --gold: #ffc107;
+  --green: #00e676;
+  --radius: 16px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; min-height: 100vh; }
+a { text-decoration: none; color: inherit; }
+img { display: block; }
+button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
+
+/* ─── TOP BAR ─── */
+.topbar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 100%; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: rgba(10,13,19,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.tb-menu { width: 36px; height: 36px; background: none; border: none; display: flex; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; padding: 4px; }
+.tb-menu span { display: block; height: 2px; border-radius: 2px; background: white; transition: all 0.3s; }
+.tb-menu span:nth-child(1) { width: 22px; }
+.tb-menu span:nth-child(2) { width: 16px; }
+.tb-menu span:nth-child(3) { width: 22px; }
+.tb-logo { display: flex; flex-direction: column; align-items: center; }
+.tb-logo-row { display: flex; align-items: center; gap: 7px; }
+.tb-logo-icon { width: 28px; height: 28px; background: var(--blue); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+.tb-logo-icon svg { width: 16px; height: 16px; fill: white; }
+.tb-logo-name { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: 2px; color: white; line-height: 1; }
+.tb-logo-sub { font-size: 7.5px; color: rgba(255,255,255,0.4); letter-spacing: 3px; text-transform: uppercase; margin-top: 1px; font-family: 'Montserrat', sans-serif; font-weight: 600; }
+.tb-bell { position: relative; width: 36px; height: 36px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.tb-bell svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.8); fill: none; stroke-width: 2; }
+.bell-badge { position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; background: var(--blue); color: white; font-size: 9px; font-weight: 800; border-radius: 9px; padding: 0 4px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg); font-family: 'Montserrat', sans-serif; }
+
+/* ─── HERO ─── */
+.hero { margin-top: 65px; position: relative; height: 420px; overflow: hidden; background: #0d1117; }
+.hero-slides { position: absolute; inset: 0; }
+.hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; }
+.hero-slide.active { opacity: 1; }
+.hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(110deg, rgba(8,11,18,0.78) 0%, rgba(8,11,18,0.45) 45%, rgba(8,11,18,0.1) 100%); z-index: 1; }
+.hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 22px; z-index: 2; }
+.hero-title { font-family: 'Bebas Neue', cursive; font-size: 44px; line-height: 1.0; letter-spacing: 1.5px; color: white; margin-bottom: 10px; text-shadow: 0 2px 20px rgba(0,0,0,0.5); animation: heroFadeUp 0.7s ease both; }
+.hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.75); font-weight: 500; margin-bottom: 22px; line-height: 1.5; animation: heroFadeUp 0.7s ease 0.1s both; }
+@keyframes heroFadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.hero-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--blue); color: white; font-weight: 800; font-size: 12.5px; letter-spacing: 1.5px; text-transform: uppercase; padding: 13px 26px; border-radius: 10px; border: none; box-shadow: 0 6px 28px rgba(26,108,255,0.45); animation: heroFadeUp 0.7s ease 0.2s both; transition: all 0.2s; }
+.hero-btn:hover { background: var(--blue2); transform: translateY(-2px); }
+.hero-btn svg { width: 15px; height: 15px; stroke: white; fill: none; stroke-width: 2.5; }
+.hero-dots { position: absolute; bottom: 14px; right: 22px; display: flex; gap: 6px; z-index: 3; }
+.hero-dot { width: 6px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
+.hero-dot.active { width: 20px; background: white; }
+
+/* ─── FEATURES BAR ─── */
+.features { display: flex; background: var(--card); border-bottom: 1px solid var(--border); }
+.feat { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 16px 8px; border-right: 1px solid var(--border); text-align: center; }
+.feat:last-child { border-right: none; }
+.feat-icon-wrap { width: 34px; height: 34px; border-radius: 9px; background: rgba(26,108,255,0.12); display: flex; align-items: center; justify-content: center; }
+.feat-icon-wrap svg { width: 17px; height: 17px; stroke: var(--blue); fill: none; stroke-width: 2; }
+.feat-name { font-size: 10.5px; font-weight: 800; color: white; line-height: 1.3; }
+.feat-sub2 { font-size: 9px; color: rgba(255,255,255,0.45); font-weight: 500; }
+
+/* ─── SECTION HEADER ─── */
+.sec-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 20px 14px; }
+.sec-title2 { font-family: 'Bebas Neue', cursive; font-size: 26px; letter-spacing: 1.5px; color: white; }
+.sec-all2 { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px; }
+.sec-all2 svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 3; }
+.sec-divider { height: 8px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+/* ─── PRODUCTS SCROLL ─── */
+.products-scroll { display: flex; gap: 14px; padding: 0 20px 22px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.products-scroll::-webkit-scrollbar { display: none; }
+.prod-card { flex-shrink: 0; width: 155px; background: var(--card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); cursor: pointer; position: relative; transition: transform 0.3s, border-color 0.3s; }
+.prod-card:active { transform: scale(0.97); }
+.prod-img-wrap { width: 100%; height: 130px; background: #0f141e; overflow: hidden; position: relative; }
+.prod-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.prod-card:hover .prod-img { transform: scale(1.06); }
+.prod-badge { position: absolute; top: 8px; left: 8px; font-size: 9px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; padding: 3px 8px; border-radius: 5px; z-index: 2; }
+.badge-sale { background: var(--red); color: white; }
+.badge-new { background: var(--blue); color: white; }
+.badge-hit { background: var(--gold); color: #111; }
+.prod-info { padding: 12px; }
+.prod-name2 { font-size: 12.5px; font-weight: 700; color: white; margin-bottom: 6px; line-height: 1.3; }
+.prod-price2 { font-size: 14px; font-weight: 900; color: white; }
+.prod-price2 span { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 600; }
+
+/* ─── BOTTOM NAV ─── */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background: rgba(13,17,25,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; z-index: 100; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 10px 8px; background: none; border: none; cursor: pointer; transition: all 0.2s; color: rgba(255,255,255,0.4); position: relative; }
+.nav-item.active { color: var(--blue); }
+.nav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; transition: all 0.2s; }
+.nav-item.active svg { stroke-width: 2.2; }
+.nav-label { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; }
+.nav-active-dot { position: absolute; bottom: 5px; width: 4px; height: 4px; border-radius: 50%; background: var(--blue); display: none; }
+.nav-item.active .nav-active-dot { display: block; }
+.nav-cart-badge { position: absolute; top: 6px; right: calc(50% - 18px); min-width: 16px; height: 16px; background: var(--red); color: white; font-size: 9px; font-weight: 800; border-radius: 8px; padding: 0 3px; display: none; align-items: center; justify-content: center; border: 1.5px solid var(--bg); font-family: 'Montserrat', sans-serif; }
+.main-scroll { padding-bottom: 80px; }
+
+/* ─── PROMO STRIP ─── */
+.promo-strip { margin: 8px 20px 4px; background: linear-gradient(135deg, #0d1a4a 0%, #1a1a2e 100%); border-radius: 14px; overflow: hidden; position: relative; height: 90px; display: flex; align-items: center; padding: 0 20px; cursor: pointer; border: 1px solid rgba(26,108,255,0.2); }
+.promo-strip-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(13,26,74,0.98) 40%, transparent 100%); }
+.promo-strip-content { position: relative; z-index: 2; }
+.promo-tag2 { font-size: 9px; font-weight: 800; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+.promo-title2 { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: 1.5px; color: white; line-height: 1; }
+.promo-sub2 { font-size: 10.5px; color: rgba(255,255,255,0.6); margin-top: 3px; }
+
+/* ─── BRANDS SCROLL ─── */
+.brands-scroll { display: flex; gap: 10px; padding: 4px 20px 20px; overflow-x: auto; scrollbar-width: none; }
+.brands-scroll::-webkit-scrollbar { display: none; }
+.brand-chip { flex-shrink: 0; background: var(--card); border: 1px solid var(--border); border-radius: 9px; padding: 9px 18px; font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.brand-chip.active, .brand-chip:hover { background: var(--blue); border-color: var(--blue); color: white; box-shadow: 0 4px 20px rgba(26,108,255,0.35); }
+
+/* ─── CATEGORIES GRID ─── */
+.cats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px 8px; }
+.cat-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; position: relative; height: 88px; }
+.cat-img { width: 100%; height: 100%; object-fit: cover; }
+.cat-overlay2 { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 20%, rgba(8,11,18,0.9) 100%); }
+.cat-name2 { position: absolute; bottom: 7px; left: 8px; right: 8px; font-size: 9.5px; font-weight: 800; color: white; text-align: center; line-height: 1.2; }
+
+/* ─── TOAST ─── */
+.toast-wrap { position: fixed; bottom: 90px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 300; pointer-events: none; }
+.toast-item { background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; max-width: 280px; box-shadow: 0 8px 30px rgba(0,0,0,0.5); animation: toastIn 0.3s ease; }
+@keyframes toastIn { from { opacity:0; transform: translateX(30px); } to { opacity:1; transform: translateX(0); } }
+.toast-item.out { animation: toastOut 0.3s ease forwards; }
+@keyframes toastOut { to { opacity:0; transform: translateX(30px); } }
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.toast-dot.s { background: var(--green); }
+.toast-dot.i { background: var(--blue); }
+.toast-dot.e { background: var(--red); }
+.toast-txt { font-size: 12px; font-weight: 700; line-height: 1.3; }
+.toast-sub-txt { font-size: 10px; color: var(--gray); margin-top: 2px; }
+
+/* ─── CART OVERLAY ─── */
+.cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(6px); }
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+.cart-sheet { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%); width: 90%; max-width: 600px; background: var(--bg2); border-radius: 24px 24px 0 0; border-top: 1px solid var(--border); z-index: 201; transition: transform 0.38s cubic-bezier(.4,0,.2,1); max-height: 80vh; display: flex; flex-direction: column; }
+.cart-sheet.open { transform: translateX(-50%) translateY(0); }
+.sheet-handle { width: 38px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin: 12px auto 0; }
+.cart-head2 { display: flex; align-items: center; justify-content: space-between; padding: 16px 22px; border-bottom: 1px solid var(--border); }
+.cart-title { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: 2px; }
+.cart-close2 { width: 32px; height: 32px; background: var(--card); border-radius: 8px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--gray); }
+.cart-close2 svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+.cart-items2 { flex: 1; overflow-y: auto; padding: 14px 20px; }
+.cart-empty2 { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; gap: 12px; color: var(--gray); }
+.cart-empty2 svg { width: 48px; height: 48px; stroke: rgba(255,255,255,0.15); fill: none; stroke-width: 1.5; }
+.cart-empty2 p { font-size: 13px; font-weight: 600; }
+.cart-item2 { display: flex; gap: 12px; padding: 12px; background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 10px; }
+.cart-item-img2 { width: 64px; height: 64px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #0f141e; }
+.cart-item-info2 { flex: 1; min-width: 0; }
+.ci-brand { font-size: 9px; font-weight: 800; color: var(--blue); letter-spacing: 1px; text-transform: uppercase; }
+.ci-name { font-size: 12px; font-weight: 700; margin: 3px 0 8px; line-height: 1.3; }
+.ci-bottom { display: flex; align-items: center; justify-content: space-between; }
+.ci-price { font-size: 13px; font-weight: 900; }
+.qty-row { display: flex; align-items: center; gap: 8px; background: var(--bg); border-radius: 8px; padding: 3px 8px; }
+.qty-b { background: none; border: none; color: white; font-size: 16px; font-weight: 700; line-height: 1; padding: 0; }
+.qty-v { font-size: 12px; font-weight: 800; min-width: 18px; text-align: center; }
+.ci-del { background: none; border: none; color: rgba(255,255,255,0.3); padding: 4px; }
+.ci-del svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+.cart-foot { padding: 14px 20px calc(14px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--border); }
+.cart-total2 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.ct-label { font-size: 12px; color: var(--gray); font-weight: 600; }
+.ct-val { font-family: 'Bebas Neue', cursive; font-size: 24px; letter-spacing: 1px; }
+.checkout-btn { width: 100%; background: var(--blue); color: white; font-weight: 900; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding: 15px; border-radius: 12px; border: none; box-shadow: 0 6px 24px rgba(26,108,255,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; }
+.checkout-btn svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2.5; }
+
+/* ─── PRODUCT MODAL ─── */
+.prod-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(8px); display: flex; align-items: flex-end; }
+.prod-modal-overlay.open { opacity: 1; pointer-events: all; }
+.prod-modal2 { width: 90%; max-width: 600px; margin: 0 auto; background: var(--bg2); border-radius: 24px 24px 0 0; border-top: 1px solid var(--border); transform: translateY(100%); transition: transform 0.38s cubic-bezier(.4,0,.2,1); max-height: 88vh; overflow-y: auto; }
+.prod-modal-overlay.open .prod-modal2 { transform: translateY(0); }
+.pm-img { width: 100%; height: 240px; object-fit: cover; border-radius: 24px 24px 0 0; }
+.pm-info { padding: 22px 22px 30px; }
+.pm-brand { font-size: 10px; font-weight: 800; color: var(--blue); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+.pm-name { font-size: 20px; font-weight: 900; line-height: 1.2; margin-bottom: 10px; }
+.pm-desc { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 18px; }
+.pm-sizes { margin-bottom: 18px; }
+.pm-size-label { font-size: 10px; font-weight: 800; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.pm-sizes-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.pm-size-btn { min-width: 42px; height: 38px; border-radius: 8px; background: var(--card); border: 1.5px solid var(--border); color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 700; padding: 0 10px; transition: all 0.15s; }
+.pm-size-btn.active, .pm-size-btn:hover { background: rgba(26,108,255,0.15); border-color: var(--blue); color: white; }
+.pm-price-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.pm-price-old { font-size: 13px; color: rgba(255,255,255,0.3); text-decoration: line-through; margin-bottom: 3px; }
+.pm-price-new { font-family: 'Bebas Neue', cursive; font-size: 32px; letter-spacing: 1px; }
+.pm-discount { background: rgba(255,59,59,0.15); color: var(--red); padding: 7px 12px; border-radius: 8px; font-weight: 900; font-size: 13px; }
+.pm-actions { display: flex; gap: 10px; }
+.pm-add-btn { flex: 1; background: var(--blue); color: white; font-weight: 900; font-size: 12.5px; letter-spacing: 1px; text-transform: uppercase; padding: 14px; border-radius: 12px; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 24px rgba(26,108,255,0.4); }
+.pm-add-btn svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2.5; }
+.pm-fav-btn { width: 48px; height: 48px; border-radius: 12px; background: var(--card); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; }
+.pm-fav-btn svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.6); fill: none; stroke-width: 2; }
+.pm-fav-btn.active { background: rgba(255,59,59,0.12); border-color: var(--red); }
+.pm-fav-btn.active svg { stroke: var(--red); fill: var(--red); }
+.pm-close { position: sticky; top: 12px; float: right; margin: 12px 14px 0 0; width: 32px; height: 32px; background: rgba(13,17,23,0.8); border-radius: 8px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: white; z-index: 10; clear: both; }
+.pm-close svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+
+/* ─── PROFILE OVERLAY ─── */
+.profile-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(10px); display: flex; align-items: flex-end; }
+.profile-overlay.open { opacity: 1; pointer-events: all; }
+.profile-sheet { width: 90%; max-width: 600px; margin: 0 auto; background: var(--bg2); border-radius: 24px 24px 0 0; border-top: 1px solid var(--border); transform: translateY(100%); transition: transform 0.38s cubic-bezier(.4,0,.2,1); padding: 0 0 calc(20px + env(safe-area-inset-bottom, 0px)); max-height: 85vh; overflow-y: auto; }
+.profile-overlay.open .profile-sheet { transform: translateY(0); }
+.auth-box2 { padding: 28px 24px; }
+.auth-logo2 { display: flex; justify-content: center; margin-bottom: 22px; }
+.auth-logo-mark2 { width: 54px; height: 54px; background: var(--blue); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 28px rgba(26,108,255,0.5); }
+.auth-logo-mark2 svg { width: 26px; height: 26px; fill: white; }
+.auth-title2 { font-family: 'Bebas Neue', cursive; font-size: 26px; letter-spacing: 2px; text-align: center; margin-bottom: 6px; }
+.auth-sub2 { font-size: 12.5px; color: var(--gray); text-align: center; margin-bottom: 26px; }
+.inp-group2 { margin-bottom: 16px; }
+.inp-label2 { font-size: 10px; font-weight: 800; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+.phone-wrap { display: flex; align-items: center; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color 0.2s; }
+.phone-wrap:focus-within { border-color: var(--blue); }
+.phone-code2 { padding: 13px 12px; font-size: 14px; font-weight: 700; color: white; border-right: 1px solid var(--border); background: rgba(26,108,255,0.08); white-space: nowrap; }
+.phone-inp2 { flex: 1; background: none; border: none; color: white; font-family: 'Barlow', sans-serif; font-size: 15px; padding: 13px 14px; outline: none; }
+.phone-inp2::placeholder { color: rgba(255,255,255,0.3); }
+.auth-btn2 { width: 100%; background: var(--blue); color: white; font-weight: 800; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding: 14px; border-radius: 12px; border: none; box-shadow: 0 6px 24px rgba(26,108,255,0.4); margin-top: 8px; transition: all 0.2s; }
+.auth-btn2:hover { background: var(--blue2); }
+.auth-step2 { display: none; }
+.auth-step2.active { display: block; }
+.p-avatar { width: 72px; height: 72px; background: linear-gradient(135deg, var(--blue), var(--blue2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; margin: 0 auto 6px; border: 3px solid rgba(26,108,255,0.4); }
+.p-name { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 2px; text-align: center; }
+.p-phone { font-size: 12px; color: var(--gray); text-align: center; margin-top: 2px; }
+.p-coins { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.25); border-radius: 10px; padding: 8px 20px; font-size: 14px; font-weight: 800; color: var(--gold); }
+.p-orders-section { margin-top: 16px; }
+.p-orders-title { font-size: 11px; font-weight: 800; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.p-order-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+.poi-head { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.poi-id { font-size: 11px; font-weight: 800; color: var(--blue); }
+.poi-date { font-size: 10px; color: var(--gray); }
+.poi-items { font-size: 12px; color: white; font-weight: 600; margin-bottom: 4px; }
+.poi-total { font-size: 12px; font-weight: 900; }
+.poi-coin { font-size: 10px; color: var(--gold); font-weight: 700; margin-top: 3px; }
+.logout-btn2 { width: 100%; background: rgba(255,59,59,0.1); color: var(--red); border: 1px solid rgba(255,59,59,0.25); border-radius: 10px; padding: 12px; font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-top: 16px; }
+.otp-row2 { display: flex; gap: 10px; justify-content: center; margin: 6px 0; }
+.otp-inp2 { width: 52px; height: 54px; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; color: white; font-size: 22px; font-weight: 800; text-align: center; outline: none; transition: border-color 0.2s; }
+.otp-inp2:focus { border-color: var(--blue); }
+.otp-timer2 { text-align: center; font-size: 12px; color: var(--gray); margin-top: 8px; }
+.auth-hint2 { font-size: 12px; color: var(--gray); text-align: center; margin-top: 12px; }
+.auth-hint2 span { color: var(--blue); cursor: pointer; font-weight: 700; }
+
+/* ─── STAR RATINGS ─── */
+.stars2 { display: flex; gap: 2px; }
+.star2 { width: 11px; height: 11px; fill: var(--gold); }
+.star2.e { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 1.5; }
+.rating-row { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+.rating-count2 { font-size: 10px; color: var(--gray); font-weight: 600; }
+
+/* ─── PRODUCT GRID (SECTION) ─── */
+.prod-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 20px 10px; }
+.prod-grid-card { background: var(--card); border-radius: 14px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; position: relative; }
+.pgc-img-wrap { width: 100%; height: 160px; background: #0f141e; overflow: hidden; }
+.pgc-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.prod-grid-card:hover .pgc-img { transform: scale(1.06); }
+.pgc-info { padding: 12px; }
+.pgc-brand { font-size: 9px; font-weight: 800; color: var(--blue); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.pgc-name { font-size: 13px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
+.pgc-old { font-size: 10px; color: rgba(255,255,255,0.3); text-decoration: line-through; }
+.pgc-price { font-size: 15px; font-weight: 900; }
+.pgc-price2 span { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 600; }
+.pgc-price-row { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 6px; }
+.pgc-add { width: 36px; height: 36px; background: var(--blue); border-radius: 9px; border: none; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; box-shadow: 0 4px 12px rgba(26,108,255,0.4); }
+.pgc-add svg { width: 15px; height: 15px; stroke: white; fill: none; stroke-width: 2.5; }
+.pgc-add.added { background: var(--green); }
+.pgc-fav { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border-radius: 8px; background: rgba(10,13,19,0.75); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; z-index: 2; transition: all 0.2s; }
+.pgc-fav svg { width: 13px; height: 13px; stroke: rgba(255,255,255,0.5); fill: none; stroke-width: 2; }
+.pgc-fav.active { background: rgba(255,59,59,0.15); border-color: rgba(255,59,59,0.4); }
+.pgc-fav.active svg { stroke: var(--red); fill: rgba(255,59,59,0.3); }
+
+/* ─── CATALOG DRAWER ─── */
+.catalog-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
+.catalog-overlay.open { opacity: 1; pointer-events: all; }
+.catalog-drawer { position: fixed; top: 0; left: 0; bottom: 0; width: 82%; max-width: 320px; background: var(--bg2); z-index: 501; transform: translateX(-100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; }
+.catalog-overlay.open .catalog-drawer { transform: translateX(0); }
+.catalog-head { padding: 18px 20px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.catalog-logo { display: flex; align-items: center; gap: 9px; }
+.catalog-logo-icon { width: 32px; height: 32px; background: var(--blue); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+.catalog-logo-icon svg { width: 17px; height: 17px; fill: white; }
+.catalog-logo-name { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 2px; }
+.catalog-close { width: 34px; height: 34px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 9px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.catalog-close svg { width: 15px; height: 15px; stroke: white; fill: none; stroke-width: 2.5; }
+.catalog-search { margin: 14px 16px; position: relative; }
+.catalog-search-inp { width: 100%; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; color: white; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 10px 14px 10px 38px; outline: none; }
+.catalog-search-inp:focus { border-color: var(--blue); }
+.catalog-search-inp::placeholder { color: rgba(255,255,255,0.3); }
+.catalog-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; stroke: rgba(255,255,255,0.35); fill: none; stroke-width: 2; }
+.catalog-sec-label { font-size: 9px; font-weight: 800; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase; padding: 0 16px 8px; }
+.catalog-list { flex: 1; overflow-y: auto; padding: 0 0 16px; scrollbar-width: none; }
+.catalog-list::-webkit-scrollbar { display: none; }
+.catalog-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer; transition: background 0.15s; position: relative; }
+.catalog-item:hover, .catalog-item.active { background: rgba(26,108,255,0.08); }
+.catalog-item.active::before { content:''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--blue); border-radius: 0 3px 3px 0; }
+.catalog-item-img { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: var(--card); }
+.catalog-item-info { flex: 1; min-width: 0; }
+.catalog-item-name { font-size: 13px; font-weight: 800; color: white; }
+.catalog-item-count { font-size: 10px; color: var(--gray); margin-top: 2px; }
+.catalog-item-arrow { width: 16px; height: 16px; stroke: rgba(255,255,255,0.2); fill: none; stroke-width: 2.5; flex-shrink: 0; }
+.catalog-all-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.catalog-all-icon { width: 46px; height: 46px; border-radius: 10px; background: rgba(26,108,255,0.12); border: 1px solid rgba(26,108,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.catalog-all-icon svg { width: 20px; height: 20px; stroke: var(--blue); fill: none; stroke-width: 2; }
+.catalog-all-name { font-size: 13px; font-weight: 800; color: var(--blue); }
+.catalog-footer { padding: 14px 16px; border-top: 1px solid var(--border); }
+.catalog-footer-btn { width: 100%; background: linear-gradient(135deg, var(--blue), var(--blue2)); color: white; font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 13px; border-radius: 10px; border: none; }
+
+/* ─── PROFILE PIN AUTH ─── */
+.pin-step { display: none; }
+.pin-step.active { display: block; }
+.pin-display { display: flex; justify-content: center; gap: 12px; margin: 20px 0; }
+.pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.25); transition: all 0.2s; }
+.pin-dot.filled { background: var(--blue); border-color: var(--blue); transform: scale(1.1); }
+.pin-dot.error { background: var(--red); border-color: var(--red); }
+.pin-pad { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; max-width: 280px; margin: 0 auto; }
+.pin-key { height: 58px; border-radius: 14px; background: var(--card); border: 1.5px solid var(--border); color: white; font-size: 20px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; transition: all 0.15s; user-select: none; }
+.pin-key:active { background: rgba(26,108,255,0.2); border-color: var(--blue); transform: scale(0.96); }
+.pin-key .pin-sub { font-size: 7px; color: rgba(255,255,255,0.35); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+.pin-key.del { font-size: 16px; }
+.pin-key.zero { grid-column: 2; }
+.pin-err-msg { text-align: center; font-size: 11px; color: var(--red); font-weight: 700; margin-top: 8px; min-height: 16px; }
+.pin-hint { text-align: center; font-size: 11px; color: var(--gray); margin-top: 6px; }
+.pin-hint span { color: var(--blue); cursor: pointer; }
+
+/* ─── ADMIN PASSWORD MODAL ─── */
+.admin-lock-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(12px); }
+.admin-lock-overlay.open { display: flex; }
+.admin-lock-box { background: var(--bg2); border: 1px solid rgba(26,108,255,0.25); border-radius: 20px; padding: 32px 28px; width: 90%; max-width: 340px; text-align: center; }
+.admin-lock-icon { width: 64px; height: 64px; background: linear-gradient(135deg, rgba(26,108,255,0.2), rgba(26,108,255,0.05)); border: 1px solid rgba(26,108,255,0.3); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.admin-lock-icon svg { width: 28px; height: 28px; stroke: var(--blue); fill: none; stroke-width: 2; }
+.admin-lock-title { font-family: 'Bebas Neue', cursive; font-size: 26px; letter-spacing: 3px; color: white; margin-bottom: 6px; }
+.admin-lock-sub { font-size: 12px; color: var(--gray); margin-bottom: 22px; }
+.admin-lock-input { width: 100%; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; color: white; font-family: 'Barlow', sans-serif; font-size: 16px; padding: 13px 14px; outline: none; text-align: center; letter-spacing: 3px; transition: border-color 0.2s; margin-bottom: 12px; }
+.admin-lock-input:focus { border-color: var(--blue); }
+.admin-lock-input.error { border-color: var(--red); animation: shake 0.3s ease; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+.admin-lock-btn { width: 100%; background: var(--blue); color: white; font-weight: 800; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding: 14px; border-radius: 10px; border: none; box-shadow: 0 6px 24px rgba(26,108,255,0.4); margin-bottom: 10px; }
+.admin-lock-cancel { width: 100%; background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 10px; padding: 11px; font-weight: 700; font-size: 12px; }
+.admin-lock-err { font-size: 11px; color: var(--red); font-weight: 700; margin-top: -4px; margin-bottom: 10px; display: none; }
+
+/* ─── ADMIN PANEL ─── */
+.admin-overlay { position: fixed; inset: 0; background: #060810; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+.admin-overlay.open { opacity: 1; pointer-events: all; }
+.admin-topbar { position: sticky; top: 0; background: rgba(6,8,16,0.96); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(26,108,255,0.2); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
+.admin-logo { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 3px; color: var(--blue); }
+.admin-close-btn { width: 36px; height: 36px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; }
+.admin-close-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+.admin-tabs { display: flex; border-bottom: 1px solid var(--border); background: #070a12; overflow-x: auto; scrollbar-width: none; }
+.admin-tabs::-webkit-scrollbar { display: none; }
+.admin-tab { flex-shrink: 0; padding: 12px 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.admin-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+.admin-content { padding: 20px; }
+.admin-section { display: none; }
+.admin-section.active { display: block; }
+.a-sec-title { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: 2px; margin-bottom: 16px; color: white; }
+.a-stat-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-bottom: 20px; }
+.a-stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+.a-stat-val { font-family: 'Bebas Neue', cursive; font-size: 28px; letter-spacing: 1px; }
+.a-stat-val.blue { color: var(--blue); }
+.a-stat-val.gold { color: var(--gold); }
+.a-stat-val.green { color: var(--green); }
+.a-stat-val.red { color: var(--red); }
+.a-stat-label { font-size: 10px; color: var(--gray); font-weight: 700; letter-spacing: 0.5px; margin-top: 2px; }
+
+/* Admin form */
+.a-form-group { margin-bottom: 14px; }
+.a-label { font-size: 10px; font-weight: 800; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 7px; display: block; }
+.a-input { width: 100%; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; color: white; font-family: 'Barlow', sans-serif; font-size: 14px; padding: 12px 14px; outline: none; transition: border-color 0.2s; }
+.a-input:focus { border-color: var(--blue); }
+.a-input::placeholder { color: rgba(255,255,255,0.25); }
+.a-select { width: 100%; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; color: white; font-family: 'Barlow', sans-serif; font-size: 14px; padding: 12px 14px; outline: none; }
+.a-select option { background: #131921; }
+.a-btn { background: var(--blue); color: white; font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 13px 24px; border-radius: 10px; border: none; box-shadow: 0 4px 18px rgba(26,108,255,0.4); transition: all 0.2s; }
+.a-btn:hover { background: var(--blue2); }
+.a-btn-danger { background: rgba(255,59,59,0.15); color: var(--red); border: 1px solid rgba(255,59,59,0.3); font-weight: 800; font-size: 11px; padding: 7px 14px; border-radius: 8px; }
+.a-btn-sm { background: rgba(26,108,255,0.12); color: var(--blue2); border: 1px solid rgba(26,108,255,0.25); font-weight: 800; font-size: 11px; padding: 7px 14px; border-radius: 8px; }
+.a-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* Admin product cards */
+.a-prod-list { display: flex; flex-direction: column; gap: 10px; }
+.a-prod-row { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: center; }
+.a-prod-img { width: 58px; height: 58px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+.a-prod-info { flex: 1; min-width: 0; }
+.a-prod-name { font-size: 13px; font-weight: 800; line-height: 1.3; }
+.a-prod-brand { font-size: 9px; color: var(--blue); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.a-prod-price { font-size: 13px; font-weight: 900; margin-top: 2px; }
+.a-prod-actions { display: flex; gap: 6px; flex-shrink: 0; flex-direction: column; }
+
+/* Admin orders */
+.a-order-row { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.a-order-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.a-order-id { font-size: 12px; font-weight: 800; color: var(--blue); }
+.a-order-time { font-size: 10px; color: var(--gray); }
+.a-order-phone { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+.a-order-items { font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+.a-order-total { font-size: 13px; font-weight: 900; }
+.a-order-coin { font-size: 10px; color: var(--gold); font-weight: 700; margin-top: 2px; }
+.a-status { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 9px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+.a-status.new { background: rgba(26,108,255,0.2); color: var(--blue2); }
+.a-status.done { background: rgba(0,230,118,0.15); color: var(--green); }
+.a-status.cancelled { background: rgba(255,59,59,0.15); color: var(--red); }
+.a-order-actions { display: flex; gap: 6px; margin-top: 10px; }
+
+/* Hero image upload */
+.hero-upload-preview { width: 100%; height: 140px; border-radius: 12px; overflow: hidden; margin-bottom: 10px; border: 1px solid var(--border); position: relative; }
+.hero-upload-preview img { width: 100%; height: 100%; object-fit: cover; }
+.img-url-input { display: flex; gap: 8px; }
+.img-url-input .a-input { flex: 1; }
+
+/* Coins section */
+.a-users-list { display: flex; flex-direction: column; gap: 10px; }
+.a-user-row { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; }
+.a-user-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--blue2)); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; flex-shrink: 0; }
+.a-user-info { flex: 1; }
+.a-user-phone { font-size: 13px; font-weight: 800; }
+.a-user-orders { font-size: 10px; color: var(--gray); }
+.a-user-coin { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 900; color: var(--gold); }
+
+/* Medal coin icon */
+.coin-icon { font-size: 14px; }
+
+/* ─── COIN INFO BOX (user side) ─── */
+.coin-info-card { background: linear-gradient(135deg, rgba(255,193,7,0.08), rgba(255,193,7,0.03)); border: 1px solid rgba(255,193,7,0.2); border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; }
+.coin-info-title { font-size: 11px; font-weight: 800; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+.coin-info-row { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.65); font-weight: 600; margin-bottom: 5px; line-height: 1.4; }
+.coin-info-row:last-child { margin-bottom: 0; }
+.coin-info-row b { color: var(--gold); font-weight: 900; }
+
+/* ─── CATEGORY ADMIN ─── */
+.cat-admin-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.cat-admin-row { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cat-admin-info { flex: 1; }
+.cat-admin-name { font-size: 13px; font-weight: 800; }
+.cat-admin-img-prev { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--bg2); }
+/* ─── DESKTOP & TABLET RESPONSIVENESS ─── */
+@media (min-width: 768px) {
+  .hero { height: 520px; }
+  .hero-title { font-size: 72px; }
+  .hero-sub { font-size: 18px; }
+  
+  .cats-grid { grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .cat-card { height: 120px; }
+  .cat-name2 { font-size: 13px; }
+
+  .prod-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .prod-grid-card { border-radius: 18px; }
+  .pgc-img-wrap { height: 200px; }
+  
+  .a-stat-grid { grid-template-columns: repeat(4, 1fr); }
+  .cart-sheet.open, .profile-sheet.open, .prod-modal2.open { transform: scale(1) !important; opacity: 1; }
+  .cart-overlay, .profile-overlay, .prod-modal-overlay { display: flex; align-items: center; justify-content: center; padding: 20px; }
+  
+  .admin-content { max-width: 1000px; margin: 0 auto; }
+  .admin-topbar { max-width: 1000px; left: 50%; transform: translateX(-50%); border-radius: 0 0 16px 16px; margin-top: 0; }
+  .admin-tabs { max-width: 1000px; margin: 0 auto; border-radius: 8px; margin-top: 10px; }
+  
+  .bottom-nav { width: 400px; left: 50%; transform: translateX(-50%); border-radius: 20px 20px 0 0; border: 1px solid var(--border); border-bottom: none; }
+}
+
+@media (min-width: 1024px) {
+  .prod-grid { grid-template-columns: repeat(4, 1fr); }
+  .hero { height: 600px; }
+  .main-scroll { max-width: 1200px; margin: 0 auto; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+  .topbar { max-width: 1200px; }
+}
+
+@media (min-width: 1440px) {
+  .prod-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <button class="tb-menu" onclick="openCatalog()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="tb-logo">
+    <div class="tb-logo-row">
+      <div class="tb-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="tb-logo-name">SPORTCITY</span>
+    </div>
+    <span class="tb-logo-sub">Sport Anjomlar Do'koni</span>
+  </div>
+  <button class="tb-bell">
+    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+    <span class="bell-badge">3</span>
+  </button>
+</header>
+
+<div class="main-scroll">
+  <!-- HERO -->
+  <section class="hero" id="heroSection">
+    <div class="hero-slides" id="heroSlides">
+      <div class="hero-slide active">
+        <img class="hero-img" id="heroImg0" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80" alt="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-title">Sport bilan<br>hayotingni<br>yaxshila!</div>
+          <div class="hero-sub">Minglab mahsulotlar<br>va eng yaxshi narxlar</div>
+          <button class="hero-btn" onclick="scrollToProds()">Hozir Ko'rish <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img class="hero-img" id="heroImg1" src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80" alt="hero2">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-title">Yangi<br>Koleksiya<br>2025!</div>
+          <div class="hero-sub">Eng yangi sport<br>kiyim va jihozlar</div>
+          <button class="hero-btn" onclick="scrollToProds()">Ko'rish <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="hero-dots">
+      <span class="hero-dot active" onclick="goSlide(0)"></span>
+      <span class="hero-dot" onclick="goSlide(1)"></span>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <div class="features">
+    <div class="feat">
+      <div class="feat-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="feat-name">Sifatli<br>mahsulotlar</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon-wrap"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+      <div class="feat-name">Tez yetkazib<br>berish</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon-wrap"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <div class="feat-name">Ishonchli<br>to'lov</div>
+    </div>
+  </div>
+
+  <!-- POPULAR PRODUCTS -->
+  <div class="sec-divider"></div>
+  <div id="popularSection">
+    <div class="sec-head">
+      <div class="sec-title2">Mashhur mahsulotlar</div>
+      <a href="#" class="sec-all2" onclick="scrollToProds();return false">Barchasini ko'rish <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+    <div class="products-scroll" id="popularScroll"></div>
+  </div>
+
+  <!-- PROMO STRIP -->
+  <div class="sec-divider"></div>
+  <div class="promo-strip" onclick="showToast('Aksiya!','Futbol anjomlaridan 20% chegirma','s')">
+    <div class="promo-strip-overlay"></div>
+    <div class="promo-strip-content">
+      <div class="promo-tag2">⚽ Maxsus Taklif</div>
+      <div class="promo-title2">FUTBOL ANJOMLAR</div>
+      <div class="promo-sub2">Barcha to'p va kiyimlardan 20% chegirma</div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="sec-divider"></div>
+  <div class="sec-head" style="padding-bottom:10px">
+    <div class="sec-title2">Kategoriyalar</div>
+  </div>
+  <div class="cats-grid" id="catsGrid"></div>
+
+  <!-- BRANDS -->
+  <div class="sec-divider" style="margin-top:8px"></div>
+  <div class="sec-head" style="padding-bottom:8px">
+    <div class="sec-title2">Brendlar</div>
+  </div>
+  <div class="brands-scroll" id="brandsRow"></div>
+
+  <!-- ALL PRODUCTS GRID -->
+  <div class="sec-divider"></div>
+  <div id="prodSection">
+    <div class="sec-head">
+      <div class="sec-title2">Mahsulotlar</div>
+      <a href="#" class="sec-all2" onclick="resetFilter();return false">Barchasi <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+    <div class="prod-grid" id="prodGrid"></div>
+  </div>
+  <div style="height:16px"></div>
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="navHome" onclick="setNavActive('navHome')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span class="nav-label">Bosh sahifa</span>
+    <div class="nav-active-dot"></div>
+  </button>
+  <button class="nav-item" id="navFav" onclick="setNavActive('navFav');showToast('Sevimlilar', favs.size + ' ta mahsulot', 'i')">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    <span class="nav-label">Sevimlilar</span>
+    <div class="nav-active-dot"></div>
+  </button>
+  <button class="nav-item" id="navCart" onclick="openCart()">
+    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+    <span class="nav-label">Savat</span>
+    <div class="nav-active-dot"></div>
+    <div class="nav-cart-badge" id="cartBadge">0</div>
+  </button>
+  <button class="nav-item" id="navProfile" onclick="openProfile()">
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span class="nav-label">Profil</span>
+    <div class="nav-active-dot"></div>
+  </button>
+</nav>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sheet" id="cartSheet">
+  <div class="sheet-handle"></div>
+  <div class="cart-head2">
+    <div class="cart-title">SAVAT <span id="cartCount" style="color:var(--blue)">0</span></div>
+    <button class="cart-close2" onclick="closeCart()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="cart-items2" id="cartItems"></div>
+  <div class="cart-foot" id="cartFoot" style="display:none">
+    <div style="margin-bottom:14px;background:var(--card);padding:14px;border-radius:14px;border:1px solid var(--border)">
+      <div class="a-form-group">
+        <label class="a-label">Sotib olish turi *</label>
+        <div style="display:flex;gap:10px">
+          <button class="a-btn" id="payCash" onclick="setPayment('cash')" style="flex:1;background:var(--blue);border:1px solid var(--blue)">💵 Naqd</button>
+          <button class="a-btn" id="payCard" onclick="setPayment('card')" style="flex:1;background:var(--bg);border:1px solid var(--border)">💳 Karta (QulayPay)</button>
+        </div>
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Telefon raqamingiz *</label>
+        <div class="phone-wrap" style="background:var(--bg)">
+          <div class="phone-code2">🇺🇿 +998</div>
+          <input class="phone-inp2" id="checkoutPhone" type="tel" placeholder="90 123 45 67" maxlength="12">
+        </div>
+      </div>
+      <div class="a-form-group" style="margin-bottom:0">
+        <label class="a-label">Izoh (ixtiyoriy)</label>
+        <input class="a-input" id="checkoutComment" placeholder="Manzil yoki qo'shimcha ma'lumot..." style="background:var(--bg)">
+      </div>
+    </div>
+    <div class="cart-total2">
+      <span class="ct-label">Jami:</span>
+      <span class="ct-val" id="cartTotal">0 so'm</span>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">
+      <svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/></svg>
+      Buyurtma Berish
+    </button>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="prod-modal-overlay" id="prodModalOverlay" onclick="closeProdModal(event)">
+  <div class="prod-modal2" id="prodModal2">
+    <div id="prodModalContent"></div>
+  </div>
+</div>
+
+<!-- CATALOG DRAWER -->
+<div class="catalog-overlay" id="catalogOverlay" onclick="closeCatalogCheck(event)">
+  <div class="catalog-drawer">
+    <div class="catalog-head">
+      <div class="catalog-logo">
+        <div class="catalog-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="catalog-logo-name">SPORTCITY</span>
+      </div>
+      <div class="catalog-close" onclick="closeCatalog()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+    </div>
+    <div class="catalog-search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="catalog-search-inp" id="catalogSearch" placeholder="Kategoriya qidirish..." oninput="filterCatalogList(this.value)">
+    </div>
+    <div class="catalog-list" id="catalogList"></div>
+    <div class="catalog-footer">
+      <button class="catalog-footer-btn" onclick="closeCatalog();resetFilter();scrollToProds()">
+        🛍 Barcha mahsulotlar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE OVERLAY -->
+<div class="profile-overlay" id="profileOverlay" onclick="closeProfileCheck(event)">
+  <div class="profile-sheet" id="profileSheet">
+    <div class="sheet-handle"></div>
+    <div class="auth-box2">
+      <!-- Step 1: Login Method Selection -->
+      <div class="auth-step2 active" id="step0">
+        <div class="auth-logo2"><div class="auth-logo-mark2"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div></div>
+        <div class="auth-title2">XUSH KELIBSIZ</div>
+        <div class="auth-sub2">Kirish usulini tanlang</div>
+        
+        <button class="auth-btn2" onclick="loginWithGoogle()" style="background:#fff;color:#000;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Google orqali kirish
+        </button>
+
+        <button class="auth-btn2" onclick="goAuthStep(4)" style="background:var(--card);border:1px solid var(--border);margin-bottom:12px">
+          📧 Email orqali kirish
+        </button>
+
+        <button class="auth-btn2" onclick="goAuthStep(1)" style="background:none;border:1px solid var(--border);color:white;box-shadow:none">
+          📱 Telefon orqali kirish
+        </button>
+      </div>
+
+      <!-- Step 1: Phone -->
+      <div class="auth-step2" id="step1">
+        <div class="auth-logo2"><div class="auth-logo-mark2"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.906.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg></div></div>
+        <div class="auth-title2">TELEFON</div>
+        <div class="auth-sub2">Telefon raqamingizni kiriting</div>
+        ... (qolgan qismlar scriptda davom etadi)
+        <div class="inp-group2">
+          <label class="inp-label2">Telefon raqam *</label>
+          <div class="phone-wrap">
+            <div class="phone-code2">🇺🇿 +998</div>
+            <input class="phone-inp2" id="phoneInput" type="tel" placeholder="90 123 45 67" maxlength="12"
+              oninput="formatPhoneInput(this)"
+              onkeydown="if(event.key==='Enter')loginByPhone()">
+          </div>
+        </div>
+        <button class="auth-btn2" onclick="loginByPhone()">Kirish →</button>
+      </div>
+
+      <!-- Step 2: PIN -->
+      <div class="auth-step2" id="step2">
+        <div class="auth-logo2"><div class="auth-logo-mark2"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div></div>
+        <div class="auth-title2">PIN KOD</div>
+        <div class="auth-sub2" id="pinSubText">4 xonali PIN kodingizni kiriting</div>
+        <div class="pin-display">
+          <div class="pin-dot" id="pd0"></div>
+          <div class="pin-dot" id="pd1"></div>
+          <div class="pin-dot" id="pd2"></div>
+          <div class="pin-dot" id="pd3"></div>
+        </div>
+        <div class="pin-err-msg" id="pinErrMsg"></div>
+        <div class="pin-pad">
+          <button class="pin-key" onclick="pinPress('1')">1<span class="pin-sub"></span></button>
+          <button class="pin-key" onclick="pinPress('2')">2<span class="pin-sub">ABC</span></button>
+          <button class="pin-key" onclick="pinPress('3')">3<span class="pin-sub">DEF</span></button>
+          <button class="pin-key" onclick="pinPress('4')">4<span class="pin-sub">GHI</span></button>
+          <button class="pin-key" onclick="pinPress('5')">5<span class="pin-sub">JKL</span></button>
+          <button class="pin-key" onclick="pinPress('6')">6<span class="pin-sub">MNO</span></button>
+          <button class="pin-key" onclick="pinPress('7')">7<span class="pin-sub">PQRS</span></button>
+          <button class="pin-key" onclick="pinPress('8')">8<span class="pin-sub">TUV</span></button>
+          <button class="pin-key" onclick="pinPress('9')">9<span class="pin-sub">WXYZ</span></button>
+          <button class="pin-key del" onclick="goAuthStep(1)">←</button>
+          <button class="pin-key zero" onclick="pinPress('0')">0</button>
+          <button class="pin-key del" onclick="pinBack()">⌫</button>
+        </div>
+        <div class="pin-hint" id="pinHintTxt"></div>
+      </div>
+
+      <!-- Step 4: Email Auth -->
+      <div class="auth-step2" id="step4">
+        <div class="auth-logo2"><div class="auth-logo-mark2"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div></div>
+        <div class="auth-title2">E-MAIL</div>
+        <div class="auth-sub2">Email va parolingizni kiriting</div>
+        
+        <div class="inp-group2">
+          <label class="inp-label2">Email *</label>
+          <div class="phone-wrap" style="padding:0">
+            <input class="phone-inp2" id="emailInput" type="email" placeholder="example@mail.com" style="padding:13px 14px">
+          </div>
+        </div>
+        
+        <div class="inp-group2">
+          <label class="inp-label2">Parol *</label>
+          <div class="phone-wrap" style="padding:0">
+            <input class="phone-inp2" id="passInput" type="password" placeholder="••••••••" style="padding:13px 14px">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px">
+          <button class="auth-btn2" onclick="loginWithEmail()" style="flex:1">Kirish</button>
+          <button class="auth-btn2" onclick="registerWithEmail()" style="flex:1;background:var(--card);border:1px solid var(--border)">Ro'yxatdan o'tish</button>
+        </div>
+        <button class="auth-btn2" onclick="goAuthStep(0)" style="background:none;border:none;margin-top:14px;color:var(--gray);text-transform:none;box-shadow:none">← Orqaga</button>
+      </div>
+
+      <!-- Step 3: Profile -->
+      <div class="auth-step2" id="step3">
+        <div style="text-align:center;margin-bottom:16px">
+          <div class="p-avatar">👤</div>
+          <div class="p-name" id="pName">Foydalanuvchi</div>
+          <div class="p-phone" id="pPhone">+998 --</div>
+          <div class="p-coins">🪙 <span id="pCoins">0</span> coin</div>
+        </div>
+        <!-- Coin info -->
+        <div class="coin-info-card">
+          <div class="coin-info-title">🪙 Coin Tizimi</div>
+          <div class="coin-info-row">🛒 Har 1 ta zakaz = <b>&nbsp;10 coin</b></div>
+          <div class="coin-info-row">💰 100 coin = <b>&nbsp;10,000 so'm</b> chegirma</div>
+          <div class="coin-info-row">🎁 Coinlar keyingi xaridingizda <b>&nbsp;avtomatik</b> qo'llaniladi</div>
+          <div class="coin-info-row">♾️ Coinlar <b>&nbsp;muddatsiz</b> amal qiladi</div>
+        </div>
+        <div class="p-orders-section">
+          <div class="p-orders-title">Mening zakazlarim</div>
+          <div id="pOrdersList"></div>
+        </div>
+        <button class="logout-btn2" onclick="logout()">🚪 Chiqish</button>
+        <button id="adminEntryBtn" onclick="closeProfile();openAdmin()" style="display:none;width:100%;margin-top:10px;background:linear-gradient(135deg,rgba(26,108,255,0.18),rgba(26,108,255,0.08));color:var(--blue2);border:1px solid rgba(26,108,255,0.4);border-radius:12px;padding:14px;font-weight:900;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 4px 18px rgba(26,108,255,0.2)">⚙️ Admin Panelga Kirish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ═══════════ ADMIN PANEL ═══════════ -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-topbar">
+    <div class="admin-logo">⚙️ ADMIN PANEL</div>
+    <button class="admin-close-btn" onclick="closeAdmin()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="admin-tabs">
+    <div class="admin-tab active" onclick="switchAdminTab('dashboard')">📊 Dashboard</div>
+    <div class="admin-tab" onclick="switchAdminTab('hero')">🖼 Hero Rasm</div>
+    <div class="admin-tab" onclick="switchAdminTab('products')">📦 Tovarlar</div>
+    <div class="admin-tab" onclick="switchAdminTab('orders')">🛍 Zakazlar</div>
+    <div class="admin-tab" onclick="switchAdminTab('coins')">🪙 Foydalanuvchilar</div>
+    <div class="admin-tab" onclick="switchAdminTab('categories')">🗂 Kategoriyalar</div>
+    <div class="admin-tab" onclick="switchAdminTab('chat')">💬 Support Chat</div>
+    <div class="admin-tab" onclick="switchAdminTab('contacts')">📞 Kontaktlar</div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="admin-content">
+    <div class="admin-section active" id="tab-dashboard">
+      <div class="a-sec-title">Umumiy Ko'rsatkichlar</div>
+      <div class="a-stat-grid">
+        <div class="a-stat"><div class="a-stat-val blue" id="statProducts">8</div><div class="a-stat-label">Mahsulotlar</div></div>
+        <div class="a-stat"><div class="a-stat-val gold" id="statOrders">0</div><div class="a-stat-label">Zakazlar</div></div>
+        <div class="a-stat"><div class="a-stat-val green" id="statRevenue">0</div><div class="a-stat-label">Daromad (so'm)</div></div>
+        <div class="a-stat"><div class="a-stat-val red" id="statUsers">0</div><div class="a-stat-label">Foydalanuvchilar</div></div>
+      </div>
+      <div class="a-sec-title" style="font-size:16px">So'ngi Zakazlar</div>
+      <div id="dashRecentOrders"><div style="color:var(--gray);font-size:13px;padding:16px 0">Hozircha zakaz yo'q</div></div>
+    </div>
+
+    <!-- HERO IMAGE SECTION -->
+    <div class="admin-section" id="tab-hero">
+      <div class="a-sec-title">Bosh Menu Rasmi</div>
+      <div style="margin-bottom:16px">
+        <div class="a-label">Slide 1 rasmi</div>
+        <div class="hero-upload-preview"><img id="adminHeroPreview0" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80"></div>
+        <div class="img-url-input">
+          <input type="file" id="heroFile0" style="display:none" onchange="uploadHero(0, this)">
+          <button class="a-btn" onclick="document.getElementById('heroFile0').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto;margin-right:8px">📁</button>
+          <input class="a-input" id="heroUrlInput0" placeholder="Rasm URL..." value="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80">
+          <button class="a-btn" onclick="updateHeroImage(0)">Saqlash</button>
+        </div>
+      </div>
+      <div>
+        <div class="a-label">Slide 2 rasmi</div>
+        <div class="hero-upload-preview"><img id="adminHeroPreview1" src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80"></div>
+        <div class="img-url-input">
+          <input type="file" id="heroFile1" style="display:none" onchange="uploadHero(1, this)">
+          <button class="a-btn" onclick="document.getElementById('heroFile1').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto;margin-right:8px">📁</button>
+          <input class="a-input" id="heroUrlInput1" placeholder="Rasm URL..." value="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80">
+          <button class="a-btn" onclick="updateHeroImage(1)">Saqlash</button>
+        </div>
+      </div>
+      <div style="margin-top:20px;padding:14px;background:var(--card);border-radius:12px;border:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--gray);font-weight:700">💡 Maslahat</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;line-height:1.6">Unsplash, Imgur yoki boshqa ochiq rasm saytlaridan URL manzilini nusxalash orqali rasm qo'shishingiz mumkin.</div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS SECTION -->
+    <div class="admin-section" id="tab-products">
+      <div class="a-sec-title">Yangi Tovar Qo'shish</div>
+      <div class="a-grid-2">
+        <div class="a-form-group">
+          <label class="a-label">Brend nomi</label>
+          <input class="a-input" id="ap-brand" placeholder="Nike, Adidas...">
+        </div>
+        <div class="a-form-group">
+          <label class="a-label">Mahsulot nomi</label>
+          <input class="a-input" id="ap-name" placeholder="Mahsulot nomi">
+        </div>
+      </div>
+      <div class="a-grid-2">
+        <div class="a-form-group">
+          <label class="a-label">Narx (so'm)</label>
+          <input class="a-input" id="ap-price" type="number" placeholder="990000">
+        </div>
+        <div class="a-form-group">
+          <label class="a-label">Eski narx (ixtiyoriy)</label>
+          <input class="a-input" id="ap-oldprice" type="number" placeholder="1200000">
+        </div>
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Rasm yuklash / URL</label>
+        <div style="display:flex;gap:10px">
+          <input type="file" id="ap-file" style="display:none" onchange="uploadFile('ap-file','ap-img')">
+          <button class="a-btn" onclick="document.getElementById('ap-file').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto">📁</button>
+          <input class="a-input" id="ap-img" placeholder="https://...">
+        </div>
+      </div>
+      <div class="a-grid-2">
+        <div class="a-form-group">
+          <label class="a-label">Kategoriya</label>
+          <select class="a-select" id="ap-cat">
+            <option>Futbol</option><option>Basketbol</option><option>Fitnes</option>
+            <option>Tennis</option><option>Suzish</option><option>Yugurish</option>
+            <option>Velosiped</option><option>Boks</option>
+          </select>
+        </div>
+        <div class="a-form-group">
+          <label class="a-label">Badge</label>
+          <select class="a-select" id="ap-badge">
+            <option value="">Yo'q</option>
+            <option value="new">NEW</option>
+            <option value="sale">SALE</option>
+            <option value="hit">HIT</option>
+          </select>
+        </div>
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">O'lchamlar (vergul bilan)</label>
+        <input class="a-input" id="ap-sizes" placeholder="38, 39, 40, 41, 42">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Tavsif</label>
+        <input class="a-input" id="ap-desc" placeholder="Mahsulot haqida qisqacha...">
+      </div>
+      <button class="a-btn" onclick="addProduct()" style="width:100%;margin-top:4px">✚ Tovar Qo'shish</button>
+
+      <div style="height:24px"></div>
+      <div class="a-sec-title">Mavjud Tovarlar</div>
+      <div class="a-prod-list" id="adminProdList"></div>
+    </div>
+
+    <!-- ORDERS SECTION -->
+    <div class="admin-section" id="tab-orders">
+      <div class="a-sec-title">Barcha Zakazlar</div>
+      <div id="adminOrdersList"><div style="color:var(--gray);font-size:13px;padding:16px 0">Hozircha zakaz yo'q</div></div>
+    </div>
+
+    <!-- COINS SECTION -->
+    <div class="admin-section" id="tab-coins">
+      <div class="a-sec-title">Coin Tizimi</div>
+      <div style="background:var(--card);border:1px solid rgba(255,193,7,0.25);border-radius:14px;padding:16px;margin-bottom:20px">
+        <div style="font-size:11px;color:var(--gold);font-weight:800;margin-bottom:8px">🪙 COIN QOIDALARI</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8">
+          • Har 1 ta zakaz = <strong style="color:var(--gold)">10 coin</strong><br>
+          • 100 coin = <strong style="color:var(--gold)">10,000 so'm</strong> chegirma<br>
+          • Coinlar dokon xaridlarida ishlatiladi
+        </div>
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Foydalanuvchiga coin qo'shish</label>
+        <input class="a-input" id="coinPhone" placeholder="998901234567">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Coin miqdori</label>
+        <input class="a-input" id="coinAmount" type="number" placeholder="10">
+      </div>
+      <button class="a-btn" onclick="addCoinsToUser()" style="width:100%;margin-bottom:20px">🪙 Coin Qo'shish</button>
+      <div class="a-sec-title">Foydalanuvchilar</div>
+      <div class="a-users-list" id="adminUsersList"><div style="color:var(--gray);font-size:13px;padding:16px 0">Hozircha foydalanuvchi yo'q</div></div>
+    </div>
+
+    <!-- CATEGORIES SECTION -->
+    <div class="admin-section" id="tab-categories">
+      <div class="a-sec-title">Yangi Kategoriya Qo'shish</div>
+      <div class="a-form-group">
+        <label class="a-label">Kategoriya nomi</label>
+        <input class="a-input" id="cat-name" placeholder="Futbol, Basketbol...">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Tavsif (ixtiyoriy)</label>
+        <input class="a-input" id="cat-desc" placeholder="Kategoriya haqida...">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Rasm yuklash / URL</label>
+        <div style="display:flex;gap:10px">
+          <input type="file" id="cat-file" style="display:none" onchange="uploadFile('cat-file','cat-img')">
+          <button class="a-btn" onclick="document.getElementById('cat-file').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto">📁</button>
+          <input class="a-input" id="cat-img" placeholder="https://images.unsplash.com/...">
+        </div>
+      </div>
+      <button class="a-btn" onclick="addCategory()" style="width:100%;margin-bottom:24px">✚ Kategoriya Qo'shish</button>
+      <div class="a-sec-title">Mavjud Kategoriyalar</div>
+      <div class="cat-admin-list" id="catAdminList"></div>
+    </div>
+
+    <!-- SUPPORT CHAT SECTION -->
+    <div class="admin-section" id="tab-chat">
+      <div class="a-sec-title">Support Chat</div>
+      <div style="display:flex;height:500px;background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden">
+        <div id="chatUserList" style="width:150px;border-right:1px solid var(--border);overflow-y:auto;background:rgba(255,255,255,0.02)">
+          <!-- User list -->
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column">
+          <div id="adminChatMessages" style="flex:1;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px">
+            <div style="text-align:center;color:var(--gray);font-size:12px;margin-top:100px">Foydalanuvchi tanlang</div>
+          </div>
+          <div id="adminChatInputRow" style="padding:12px;border-top:1px solid var(--border);display:none;gap:8px">
+            <input class="a-input" id="adminChatMessageInp" placeholder="Xabar yozing..." onkeydown="if(event.key==='Enter')sendAdminChat()">
+            <button class="a-btn" onclick="sendAdminChat()">Yuborish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACTS SECTION -->
+    <div class="admin-section" id="tab-contacts">
+      <div class="a-sec-title">Sayt Kontaktlari</div>
+      <div class="a-form-group">
+        <label class="a-label">Telefon raqam</label>
+        <input class="a-input" id="site-phone" placeholder="+998 90 123 45 67">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Manzil</label>
+        <input class="a-input" id="site-address" placeholder="Toshkent sh., ...">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Telegram link</label>
+        <input class="a-input" id="site-tg" placeholder="https://t.me/...">
+      </div>
+      <button class="a-btn" onclick="updateSiteInfo()" style="width:100%">💾 Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRICE EDIT MODAL -->
+<div id="priceEditModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1100;align-items:center;justify-content:center;backdrop-filter:blur(8px)">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:24px;width:90%;max-width:360px">
+    <div style="font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:2px;margin-bottom:16px">NARX TAHRIRLASH</div>
+    <input type="hidden" id="editProdId">
+    <div class="a-form-group">
+      <label class="a-label">Yangi narx (so'm)</label>
+      <input class="a-input" id="editPrice" type="number" placeholder="990000">
+    </div>
+    <div class="a-form-group">
+      <label class="a-label">Eski narx (ixtiyoriy)</label>
+      <input class="a-input" id="editOldPrice" type="number" placeholder="1200000">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="a-btn" onclick="savePrice()" style="flex:1">Saqlash</button>
+      <button onclick="document.getElementById('priceEditModal').style.display='none'" style="flex:1;background:rgba(255,255,255,0.06);color:white;border:1px solid var(--border);border-radius:10px;padding:13px;font-weight:800;font-size:12px;text-transform:uppercase">Bekor</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="/src/app.ts"></script>
+
+<!-- PRODUCT IMAGE EDIT MODAL -->
+<div id="imgEditModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1100;align-items:center;justify-content:center;backdrop-filter:blur(8px)">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:24px;width:90%;max-width:380px">
+    <div style="font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:2px;margin-bottom:6px">RASM ALMASHTIRISH</div>
+    <div id="imgEditProdName" style="font-size:12px;color:var(--gray);margin-bottom:14px"></div>
+    <input type="hidden" id="imgEditProdId">
+    <div style="width:100%;height:150px;border-radius:12px;overflow:hidden;margin-bottom:12px;border:1px solid var(--border);background:var(--card)">
+      <img id="imgEditPreview" style="width:100%;height:100%;object-fit:cover" src="">
+    </div>
+    <div class="a-form-group">
+      <label class="a-label">Yangi rasm yuklash / URL</label>
+      <div style="display:flex;gap:10px">
+        <input type="file" id="img-edit-file" style="display:none" onchange="uploadFile('img-edit-file','imgEditUrl', (url)=>{document.getElementById('imgEditPreview').src=url})">
+        <button class="a-btn" onclick="document.getElementById('img-edit-file').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto">📁</button>
+        <input class="a-input" id="imgEditUrl" placeholder="https://images.unsplash.com/..." oninput="document.getElementById('imgEditPreview').src=this.value">
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="a-btn" onclick="saveProductImg()" style="flex:1">💾 Saqlash</button>
+      <button onclick="document.getElementById('imgEditModal').style.display='none'" style="flex:1;background:rgba(255,255,255,0.06);color:white;border:1px solid var(--border);border-radius:10px;padding:13px;font-weight:800;font-size:12px;text-transform:uppercase">Bekor</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY IMAGE EDIT MODAL -->
+<div id="catImgEditModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1100;align-items:center;justify-content:center;backdrop-filter:blur(8px)">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:24px;width:90%;max-width:380px">
+    <div style="font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:2px;margin-bottom:6px">KATEGORIYA RASMI</div>
+    <div id="catImgEditName" style="font-size:12px;color:var(--gray);margin-bottom:14px"></div>
+    <input type="hidden" id="catImgEditIdx">
+    <div style="width:100%;height:150px;border-radius:12px;overflow:hidden;margin-bottom:12px;border:1px solid var(--border);background:var(--card)">
+      <img id="catImgEditPreview" style="width:100%;height:100%;object-fit:cover" src="">
+    </div>
+    <div class="a-form-group">
+      <label class="a-label">Yangi rasm yuklash / URL</label>
+      <div style="display:flex;gap:10px">
+        <input type="file" id="cat-edit-file" style="display:none" onchange="uploadFile('cat-edit-file','catImgEditUrl',(url)=>{document.getElementById('catImgEditPreview').src=url})">
+        <button class="a-btn" onclick="document.getElementById('cat-edit-file').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto">📁</button>
+        <input class="a-input" id="catImgEditUrl" placeholder="https://images.unsplash.com/..." oninput="document.getElementById('catImgEditPreview').src=this.value">
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="a-btn" onclick="saveCatImg()" style="flex:1">💾 Saqlash</button>
+      <button onclick="document.getElementById('catImgEditModal').style.display='none'" style="flex:1;background:rgba(255,255,255,0.06);color:white;border:1px solid var(--border);border-radius:10px;padding:13px;font-weight:800;font-size:12px;text-transform:uppercase">Bekor</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT BUBBLE -->
+<div id="chatBubble" onclick="toggleChatWindow()" style="position:fixed;bottom:90px;left:20px;width:56px;height:56px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(26,108,255,0.45);z-index:150;cursor:pointer;transition:transform 0.3s">
+  <svg viewBox="0 0 24 24" width="24" height="24" stroke="white" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  <div id="chatBadge" style="position:absolute;top:-4px;right:-4px;background:var(--red);color:white;font-size:10px;font-weight:900;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;border:2px solid var(--bg)">1</div>
+</div>
+
+<!-- CHAT WINDOW -->
+<div id="chatWindow" style="position:fixed;bottom:160px;left:20px;width:300px;height:400px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;z-index:151;display:none;flex-direction:column;box-shadow:0 12px 48px rgba(0,0,0,0.6);overflow:hidden">
+  <div style="padding:14px 18px;background:var(--card);border-bottom:1px solid var(--border);display:flex;justify-content:between;align-items:center">
+    <div style="font-weight:800;font-size:13px;letter-spacing:1px;color:var(--blue)">SUPPORT CHAT</div>
+    <button onclick="toggleChatWindow()" style="background:none;color:var(--gray);font-size:18px">×</button>
+  </div>
+  <div id="chatMessages" style="flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:8px">
+    <div style="background:var(--card);padding:10px;border-radius:12px;font-size:12px;color:var(--gray);line-height:1.4">Assalomu alaykum! SportCity yordam xizmatiga xush kelibsiz. Savolingiz bormi?</div>
+  </div>
+  <div style="padding:10px;border-top:1px solid var(--border);display:flex;gap:8px">
+    <input id="chatInput" placeholder="Yozing..." style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:white;font-size:12px;outline:none" onkeydown="if(event.key==='Enter')sendChatMessage()">
+    <button onclick="sendChatMessage()" style="background:var(--blue);border:none;border-radius:10px;padding:8px 12px;color:white;font-weight:800;font-size:12px">></button>
+  </div>
+</div>
+
+</body>
+</html>
+
