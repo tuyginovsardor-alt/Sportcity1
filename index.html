@@ -111,7 +111,8 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 .tb-menu span:nth-child(2) { width: 16px; }
 .tb-menu span:nth-child(3) { width: 22px; }
 .tb-logo { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-.tb-logo-img { height: 38px; width: auto; object-fit: contain; }
+.tb-logo-img { height: 28px; width: auto; object-fit: contain; }
+.tb-logo-name { font-family: 'Bebas Neue', cursive; font-size: 24px; letter-spacing: 1.5px; color: white; line-height: 1; margin-left: 2px; }
 .tb-logo-sub { font-size: 7.5px; color: rgba(255,255,255,0.4); letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; font-family: 'Montserrat', sans-serif; font-weight: 600; }
 .tb-bell { position: relative; width: 36px; height: 36px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .tb-bell svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.8); fill: none; stroke-width: 2; }
@@ -316,13 +317,68 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 .p-coins { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.25); border-radius: 10px; padding: 8px 20px; font-size: 14px; font-weight: 800; color: var(--gold); }
 .p-orders-section { margin-top: 16px; }
 .p-orders-title { font-size: 11px; font-weight: 800; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
-.p-order-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
-.poi-head { display: flex; justify-content: space-between; margin-bottom: 6px; }
-.poi-id { font-size: 11px; font-weight: 800; color: var(--blue); }
+.p-order-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+.poi-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.poi-id { font-size: 11px; font-weight: 800; color: var(--blue); background: rgba(26,108,255,0.1); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px; }
+.poi-status { font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; }
+.status-new { background: rgba(255,165,0,0.1); color: #ffa500; border: 1px solid rgba(255,165,0,0.2); }
+.status-processing { background: rgba(26,108,255,0.1); color: var(--blue); border: 1px solid rgba(26,108,255,0.2); }
+.status-delivered { background: rgba(34,197,94,0.1); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+.status-cancelled { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+.poi-items { font-size: 13px; color: white; line-height: 1.4; margin-bottom: 12px; }
+.poi-foot { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px dashed var(--border); padding-top: 10px; }
+.poi-total { font-weight: 800; font-size: 15px; color: var(--blue); }
 .poi-date { font-size: 10px; color: var(--gray); }
-.poi-items { font-size: 12px; color: white; font-weight: 600; margin-bottom: 4px; }
-.poi-total { font-size: 12px; font-weight: 900; }
-.poi-coin { font-size: 10px; color: var(--gold); font-weight: 700; margin-top: 3px; }
+.poi-cancel-btn { font-size: 9px; font-weight: 700; background: #ef4444; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; transition: 0.2s; }
+.poi-cancel-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+/* ─── Notifications ─── */
+.notif-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(8px); }
+.notif-overlay.open { opacity: 1; pointer-events: auto; }
+.notif-drawer { position: absolute; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: var(--bg); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; border-left: 1px solid var(--border); }
+.notif-overlay.open .notif-drawer { right: 0; }
+.notif-head { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.notif-body { flex: 1; overflow-y: auto; padding: 10px; }
+.notif-item { display: flex; gap: 15px; padding: 15px; border-radius: 12px; background: var(--card); margin-bottom: 8px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
+.notif-item:hover { background: var(--card2); border-color: var(--border); }
+.notif-item.unread { background: rgba(26,108,255,0.05); border-color: rgba(26,108,255,0.2); }
+.notif-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.notif-icon.order { background: rgba(26,108,255,0.1); }
+.notif-icon.msg { background: rgba(34,197,94,0.1); }
+.notif-icon.info { background: rgba(255,165,0,0.1); }
+.notif-info { flex: 1; }
+.notif-title { font-weight: 800; font-size: 14px; color: white; margin-bottom: 4px; }
+.notif-text { font-size: 11px; color: var(--gray); line-height: 1.4; margin-bottom: 6px; }
+.notif-time { font-size: 10px; color: var(--gray); opacity: 0.6; }
+
+/* ─── Admin Chat Improved ─── */
+.admin-chat-layout { display: grid; grid-template-columns: 280px 1fr; height: calc(100vh - 180px); background: var(--bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.admin-chat-sidebar { border-right: 1px solid var(--border); overflow-y: auto; background: var(--card); }
+.admin-chat-header { padding: 16px; border-bottom: 1px solid var(--border); font-weight: 900; font-size: 11px; color: var(--blue); letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+.admin-chat-user { padding: 14px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: center; cursor: pointer; transition: 0.2s; position: relative; }
+.admin-chat-user:hover { background: rgba(255,255,255,0.02); }
+.admin-chat-user.active { background: rgba(26,108,255,0.1); }
+.admin-chat-user.has-new { background: rgba(34,197,94,0.05); }
+.acu-avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--blue), var(--blue2)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 16px; }
+.acu-info { flex: 1; overflow: hidden; }
+.acu-name { font-weight: 800; font-size: 12px; color: white; margin-bottom: 2px; }
+.acu-last { font-size: 10px; color: var(--gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acu-badge { position: absolute; top: 12px; right: 12px; background: #22c55e; color: white; font-size: 8px; font-weight: 900; padding: 2px 6px; border-radius: 10px; text-transform: uppercase; }
+
+.admin-chat-view { display: flex; flex-direction: column; background: var(--bg); position: relative; }
+.admin-chat-msgs-scroll { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.admin-msg-item { display: flex; width: 100%; }
+.admin-msg-item.is-me { justify-content: flex-end; }
+.admin-msg-bubble { max-width: 70%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.5; color: white; position: relative; }
+.admin-msg-item.is-me .admin-msg-bubble { background: var(--blue); border-bottom-right-radius: 4px; box-shadow: 0 4px 15px rgba(26,108,255,0.2); }
+.admin-msg-item:not(.is-me) .admin-msg-bubble { background: var(--card2); border-bottom-left-radius: 4px; }
+.admin-msg-time { font-size: 9px; opacity: 0.6; margin-top: 6px; text-align: right; }
+.admin-chat-input-area { padding: 16px; border-top: 1px solid var(--border); display: flex; gap: 12px; align-items: center; }
+.admin-chat-inp { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: white; font-size: 13px; transition: 0.2s; }
+.admin-chat-inp:focus { border-color: var(--blue); outline: none; background: var(--bg); }
+.admin-chat-send { width: 40px; height: 40px; border-radius: 10px; background: var(--blue); color: white; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: 0.2s; }
+.admin-chat-send:active { transform: scale(0.95); }
+.admin-chat-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gray); opacity: 0.5; text-align: center; padding: 40px; }
 .logout-btn2 { width: 100%; background: rgba(255,59,59,0.1); color: var(--red); border: 1px solid rgba(255,59,59,0.25); border-radius: 10px; padding: 12px; font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-top: 16px; }
 .otp-row2 { display: flex; gap: 10px; justify-content: center; margin: 6px 0; }
 .otp-inp2 { width: 52px; height: 54px; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; color: white; font-size: 22px; font-weight: 800; text-align: center; outline: none; transition: border-color 0.2s; }
@@ -567,12 +623,15 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
     <span></span><span></span><span></span>
   </button>
   <div class="tb-logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-    <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="SPORTCITY Logo" class="tb-logo-img">
-    <span class="tb-logo-sub">Sport Anjomlar Do'koni</span>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:2px">
+      <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" class="tb-logo-img" style="height:32px">
+      <span class="tb-logo-name" style="font-size:26px; letter-spacing:1px">SPORTCITY</span>
+    </div>
+    <span class="tb-logo-sub" style="margin-top:0">Sport Anjomlar Do'koni</span>
   </div>
-  <button class="tb-bell">
+  <button class="tb-bell" onclick="document.getElementById('notifOverlay').classList.add('open')">
     <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-    <span class="bell-badge">3</span>
+    <div class="bell-badge" id="bellBadge" style="display:none">0</div>
   </button>
 </header>
 
@@ -684,7 +743,10 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
   <footer style="background:var(--bg);padding:40px 20px 100px;border-top:1px solid var(--border);margin-top:40px">
     <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:30px">
       <div>
-        <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="SPORTCITY.UZ" style="height:46px; width:auto; margin-bottom:15px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
+          <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" style="height:32px; width:auto">
+          <span class="tb-logo-name" style="font-size:28px">SPORTCITY</span>
+        </div>
         <p style="font-size:13px; color:var(--gray); line-height:1.6">
           <strong>SPORTCITY.UZ</strong> — O'zbekistondagi eng yirik sport anjomlari va kiyimlari internet do'koni. 
           Biz sportcity ishqibozlari uchun eng sifatli futbol, fitnes va boks anjomlarini yetkazib beramiz. 
@@ -791,8 +853,9 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 <div class="catalog-overlay" id="catalogOverlay" onclick="closeCatalogCheck(event)">
   <div class="catalog-drawer">
     <div class="catalog-head">
-      <div class="catalog-logo">
-        <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="SPORTCITY" style="height:32px; width:auto">
+      <div class="catalog-logo" style="display:flex;align-items:center;gap:8px">
+        <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" style="height:24px; width:auto">
+        <span class="tb-logo-name" style="font-size:20px">SPORTCITY</span>
       </div>
       <div class="catalog-close" onclick="closeCatalog()">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -1163,18 +1226,26 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 
     <!-- SUPPORT CHAT SECTION -->
     <div class="admin-section" id="tab-chat">
-      <div class="a-sec-title">Support Chat</div>
-      <div style="display:flex;height:500px;background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden">
-        <div id="chatUserList" style="width:150px;border-right:1px solid var(--border);overflow-y:auto;background:rgba(255,255,255,0.02)">
-          <!-- User list -->
+      <div class="admin-chat-layout">
+        <!-- Sidebar -->
+        <div class="admin-chat-sidebar">
+          <div class="admin-chat-header">📂 CHATLAR</div>
+          <div id="chatUserList"></div>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column">
-          <div id="adminChatMessages" style="flex:1;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px">
-            <div style="text-align:center;color:var(--gray);font-size:12px;margin-top:100px">Foydalanuvchi tanlang</div>
+
+        <!-- Chat View -->
+        <div class="admin-chat-view">
+          <div id="adminChatPlaceholder" class="admin-chat-placeholder">
+            <svg style="width:60px;height:60px;margin-bottom:15px;stroke:currentColor" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            <p style="font-size:15px;font-weight:700">Chatni tanlang</p>
+            <p style="font-size:12px">Mijozlar bilan aloqani boshlash uchun ro'yxatdan birini tanlang</p>
           </div>
-          <div id="adminChatInputRow" style="padding:12px;border-top:1px solid var(--border);display:none;gap:8px">
-            <input class="a-input" id="adminChatMessageInp" placeholder="Xabar yozing..." onkeydown="if(event.key==='Enter')sendAdminChat()">
-            <button class="a-btn" onclick="sendAdminChat()">Yuborish</button>
+          <div id="adminChatMessages" class="admin-chat-msgs-scroll"></div>
+          <div class="admin-chat-input-area" id="adminChatInputRow" style="display:none">
+            <input type="text" id="adminChatMessageInp" class="admin-chat-inp" placeholder="Xabaringizni yozing..." onkeydown="if(event.key==='Enter') sendAdminChat()">
+            <button class="admin-chat-send" onclick="sendAdminChat()">
+              <svg style="width:20px;height:20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -1231,7 +1302,17 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
-<!-- PRODUCT IMAGE EDIT MODAL -->
+<!-- NOTIFICATION OVERLAY -->
+<div class="notif-overlay" id="notifOverlay" onclick="if(event.target.id==='notifOverlay') this.classList.remove('open')">
+  <div class="notif-drawer">
+    <div class="notif-head">
+      <h3 style="font-weight:900;letter-spacing:1px;font-size:16px">BILDIRISHNOMALAR</h3>
+      <button onclick="clearNotifications()" style="background:none;border:none;color:var(--blue);font-size:11px;font-weight:700;cursor:pointer">Hammasini o'qildi qilish</button>
+    </div>
+    <div class="notif-body" id="notifList"></div>
+    <button onclick="document.getElementById('notifOverlay').classList.remove('open')" style="margin:20px;padding:14px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:white;font-weight:700;cursor:pointer">Yopish</button>
+  </div>
+</div>
 <div id="imgEditModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1100;align-items:center;justify-content:center;backdrop-filter:blur(8px)">
   <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:24px;width:90%;max-width:380px">
     <div style="font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:2px;margin-bottom:6px">RASM ALMASHTIRISH</div>

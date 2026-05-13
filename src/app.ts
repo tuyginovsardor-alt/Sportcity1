@@ -133,8 +133,57 @@ async function loadAll() {
   if (currentUser) {
     loadUserData();
     loadChat();
+    loadUserNotifications();
   }
 }
+
+async function loadUserNotifications() {
+  if (!currentUser) return;
+  const q = query(collection(db, 'notifications'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'), limit(15));
+  onSnapshot(q, (snapshot) => {
+    const list = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderNotifications(list);
+  }, (err) => handleFirestoreError(err, OperationType.LIST, 'notifications'));
+}
+
+function renderNotifications(list: any[]) {
+  const badge = document.getElementById('bellBadge');
+  const count = list.filter((n: any) => !n.read).length;
+  if (badge) {
+    badge.textContent = String(count);
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
+  const el = document.getElementById('notifList');
+  if (!el) return;
+  if (!list.length) {
+    el.innerHTML = '<div style="padding:40px;text-align:center;color:var(--gray);font-size:13px">Hozircha xabarlar yo\'q</div>';
+    return;
+  }
+  el.innerHTML = list.map(n => `
+    <div class="notif-item ${n.read ? '' : 'unread'}" onclick="markNotifRead('${n.id}')">
+      <div class="notif-icon ${n.type || 'info'}">
+        ${n.type === 'order' ? '📦' : n.type === 'msg' ? '💬' : '🔔'}
+      </div>
+      <div class="notif-info">
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-text">${n.text}</div>
+        <div class="notif-time">${n.createdAt?.toDate().toLocaleString()}</div>
+      </div>
+    </div>`).join('');
+}
+
+(window as any).markNotifRead = async (id: string) => {
+  await updateDoc(doc(db, 'notifications', id), { read: true });
+};
+
+(window as any).clearNotifications = async () => {
+  if (!currentUser) return;
+  const q = query(collection(db, 'notifications'), where('userId', '==', currentUser.uid));
+  const snap = await getDocs(q);
+  snap.forEach(async (d) => {
+    await updateDoc(doc(db, 'notifications', d.id), { read: true });
+  });
+};
 
 async function loadChat() {
   if (!currentUser) return;
@@ -200,32 +249,54 @@ async function loadUserData() {
 }
 
 async function loadAdminChatSessions() {
-  onSnapshot(collection(db, 'support_chats'), (snapshot) => {
+  onSnapshot(query(collection(db, 'support_chats'), orderBy('createdAt', 'desc')), (snapshot) => {
     const allMsgs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
     const sessions = new Map();
     allMsgs.forEach((m: any) => {
-      sessions.set(m.userId, (sessions.get(m.userId) || 0) + 1);
+      if (!sessions.has(m.userId)) {
+        sessions.set(m.userId, {
+          lastMsg: m.text,
+          lastTime: m.createdAt,
+          unread: m.sender === 'user' && !m.adminRead,
+          userId: m.userId
+        });
+      }
     });
-    renderAdminChatUserList(Array.from(sessions.keys()));
+    renderAdminChatUserList(Array.from(sessions.values()));
   }, (err) => handleFirestoreError(err, OperationType.LIST, 'admin_chat_sessions'));
 }
 
-function renderAdminChatUserList(userIds: string[]) {
+function renderAdminChatUserList(sessions: any[]) {
   const el = document.getElementById('chatUserList');
   if (!el) return;
-  el.innerHTML = userIds.map(uid => `
-    <div onclick="selectChatChannel('${uid}')" style="padding:12px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;cursor:pointer;background:${uid === selectedChatUserId ? 'rgba(26,108,255,0.1)' : 'transparent'}">
-      User: ${uid.substring(0,8)}
+  el.innerHTML = sessions.map(s => `
+    <div class="admin-chat-user ${s.userId === selectedChatUserId ? 'active' : ''} ${s.unread ? 'has-new' : ''}" onclick="selectChatChannel('${s.userId}')">
+      <div class="acu-avatar">${s.userId.substring(0,1).toUpperCase()}</div>
+      <div class="acu-info">
+        <div class="acu-name">User ${s.userId.substring(0,6)}</div>
+        <div class="acu-last">${s.lastMsg.substring(0, 20)}${s.lastMsg.length > 20 ? '...' : ''}</div>
+      </div>
+      ${s.unread ? '<div class="acu-badge">Yangi</div>' : ''}
     </div>`).join('');
 }
 
-(window as any).selectChatChannel = (uid: string) => {
+(window as any).selectChatChannel = async (uid: string) => {
   selectedChatUserId = uid;
   (document.getElementById('adminChatInputRow') as HTMLElement).style.display = 'flex';
+  (document.getElementById('adminChatPlaceholder') as HTMLElement).style.display = 'none';
+  
   const qChat = query(collection(db, 'support_chats'), where('userId', '==', uid), orderBy('createdAt', 'asc'));
   onSnapshot(qChat, (snapshot) => {
     const messages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
     renderAdminChatMessages(messages);
+    
+    // Mark as read
+    snapshot.docs.forEach(async (d) => {
+      const m = d.data();
+      if (m.sender === 'user' && !m.adminRead) {
+        await updateDoc(doc(db, 'support_chats', d.id), { adminRead: true });
+      }
+    });
   }, (err) => handleFirestoreError(err, OperationType.LIST, 'admin_chat_channel'));
 };
 
@@ -233,8 +304,11 @@ function renderAdminChatMessages(messages: any[]) {
   const el = document.getElementById('adminChatMessages');
   if (!el) return;
   el.innerHTML = messages.map(m => `
-    <div style="align-self: ${m.sender === 'admin' ? 'flex-end' : 'flex-start'}; background: ${m.sender === 'admin' ? 'var(--blue)' : 'var(--card2)'}; padding: 10px 14px; border-radius: 12px; font-size: 13px; max-width: 80%; line-height: 1.4; color: white">
-      ${m.text}
+    <div class="admin-msg-item ${m.sender === 'admin' ? 'is-me' : ''}">
+      <div class="admin-msg-bubble">
+        ${m.text}
+        <div class="admin-msg-time">${m.createdAt?.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+      </div>
     </div>`).join('');
   el.scrollTop = el.scrollHeight;
 }
@@ -583,14 +657,40 @@ function renderProfileOrders(orders: any[]) {
   const ol = document.getElementById('pOrdersList');
   if (!ol) return;
   if (!orders.length) { ol.innerHTML = '<div style="color:var(--gray);font-size:12px">Hozircha zakaz yo\'q</div>'; return; }
-  ol.innerHTML = orders.map(o => `
+  
+  const now = Date.now();
+  const TWO_HOURS = 2 * 60 * 60 * 1000;
+
+  ol.innerHTML = orders.map(o => {
+    const created = o.createdAt?.toMillis() || 0;
+    const canCancel = (now - created < TWO_HOURS) && o.status === 'new';
+    
+    return `
     <div class="p-order-item">
-      <div class="poi-head"><span class="poi-id">${o.order_code || o.id}</span><span class="poi-date">${o.createdAt?.toDate().toLocaleString() || ''}</span></div>
+      <div class="poi-head">
+        <span class="poi-id">${o.order_code || o.id}</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="poi-status status-${o.status}">${o.status.toUpperCase()}</span>
+          ${canCancel ? `<button class="poi-cancel-btn" onclick="cancelOrder('${o.id}')">Bekor qilish</button>` : ''}
+        </div>
+      </div>
       <div class="poi-items">${o.items}</div>
-      <div class="poi-total">${fmt(o.total)} so'm</div>
+      <div class="poi-foot">
+        <div class="poi-total">${fmt(o.total)} so'm</div>
+        <div class="poi-date">${o.createdAt?.toDate().toLocaleString() || ''}</div>
+      </div>
       <div class="poi-coin">🪙 +${o.coins_earned || 0} coin olindi</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
+
+(window as any).cancelOrder = async (id: string) => {
+  if (!confirm('Haqiqatdan ham buyurtmani bekor qilmoqchimisiz?')) return;
+  try {
+    await updateDoc(doc(db, 'orders', id), { status: 'cancelled' });
+    showToast('Buyurtma bekor qilindi', '', 'i');
+  } catch (e: any) { showToast('Xatolik', e.message, 'e'); }
+};
 
 function showProfileData() {
   if (!currentUser) return;
