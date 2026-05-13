@@ -73,6 +73,10 @@
 }
 </script>
 
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0d13">
+<link rel="manifest" href="/manifest.json">
 <link rel="icon" type="image/png" href="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png">
 <link rel="apple-touch-icon" href="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -925,6 +929,10 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
           <div class="coin-info-row">♾️ Coinlar <b>&nbsp;muddatsiz</b> amal qiladi</div>
         </div>
         <div class="p-orders-section">
+          <div class="p-orders-title">Ilova</div>
+          <button id="pwaInstallBtn" onclick="installPWA()" style="display:none;width:100%;background:linear-gradient(135deg, var(--blue), var(--blue2));color:white;border:none;border-radius:12px;padding:14px;font-weight:900;font-size:13px;letter-spacing:1px;text-transform:uppercase;box-shadow:0 6px 20px rgba(26,108,255,0.4);margin-bottom:12px">
+            📲 Ilovani O'rnatish
+          </button>
           <div class="p-orders-title">Mening zakazlarim</div>
           <div id="pOrdersList"></div>
         </div>
@@ -1213,6 +1221,15 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 </div>
 
 <script type="module" src="/src/app.ts"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('SW registerered', reg))
+      .catch(err => console.log('SW failed', err));
+  });
+}
+</script>
 
 <!-- PRODUCT IMAGE EDIT MODAL -->
 <div id="imgEditModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1100;align-items:center;justify-content:center;backdrop-filter:blur(8px)">

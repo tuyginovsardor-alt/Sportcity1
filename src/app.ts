@@ -748,7 +748,12 @@ function updateStructuredData(data: any) {
   const dynamicSd = document.getElementById('dynamic-ld-json');
   if (dynamicSd) dynamicSd.remove();
 };
-(window as any).closeProfile = () => { document.getElementById('profileOverlay')?.classList.remove('open'); document.body.style.overflow = ''; setNavActive('navHome'); };
+function closeProfile() { 
+  document.getElementById('profileOverlay')?.classList.remove('open'); 
+  document.body.style.overflow = ''; 
+  setNavActive('navHome'); 
+}
+(window as any).closeProfile = closeProfile;
 
 // ─── Admin logic ──────────────────────────────────────────────
 (window as any).openAdmin = () => {
@@ -1100,6 +1105,26 @@ function handleRouting() {
 
 window.addEventListener('hashchange', handleRouting);
 setTimeout(handleRouting, 1200);
+
+let deferredPrompt: any;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const installBtn = document.getElementById('pwaInstallBtn');
+  if (installBtn) installBtn.style.display = 'block';
+});
+
+(window as any).installPWA = async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') {
+    const installBtn = document.getElementById('pwaInstallBtn');
+    if (installBtn) installBtn.style.display = 'none';
+  }
+  deferredPrompt = null;
+};
 
 loadAll();
 loadSiteInfo();
