@@ -9,9 +9,10 @@ import { uploadImage } from './supabase';
 let products: any[] = [];
 let categories: any[] = [];
 let banners: any[] = [];
+let posts: any[] = [];
 let cart: any[] = [], favs = new Set();
 (window as any).favs = favs; // Expose to window for index.html access
-let currentFilter = 'all', currentCatFilter = 'all';
+let currentFilter = 'all', currentCatFilter = 'all', searchKeyword = '';
 let currentUser: any = null;
 let adminUnlocked = false;
 let selectedChatUserId = '';
@@ -122,6 +123,12 @@ async function loadAll() {
     banners = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
     renderHeroSlides();
   }, (err) => handleFirestoreError(err, OperationType.LIST, 'banners'));
+
+  onSnapshot(collection(db, 'posts'), (snapshot) => {
+    posts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderPosts();
+    renderAdminPosts();
+  }, (err) => handleFirestoreError(err, OperationType.LIST, 'posts'));
 
   if (currentUser) {
     loadUserData();
@@ -268,8 +275,11 @@ function renderAll() {
   renderGrid(getFiltered());
   const sel = document.getElementById('ap-cat') as HTMLSelectElement;
   if (sel) sel.innerHTML = categories.map(c => `<option>${c.name}</option>`).join('');
+  const fc = document.getElementById('footerCats');
+  if (fc) fc.innerHTML = categories.slice(0, 6).map(c => `<li onclick="filterCat('${c.name}')" style="cursor:pointer">${c.name}</li>`).join('');
   renderAdminProducts();
   renderAdminCategories();
+  renderAdminPosts();
 }
 
 // ─── Auth ───────────────────────────────────────────────────────
@@ -367,17 +377,21 @@ function renderBrands() {
 function renderPopular() {
   const el = document.getElementById('popularScroll');
   if (!el) return;
-  el.innerHTML = products.slice(0, 6).map(p => `
-    <div class="prod-card" onclick="openProduct('${p.id}')">
+  // Filter for TOP products, fallback to first 6 if none marked
+  let topList = products.filter(p => p.isTop);
+  if (!topList.length) topList = products.slice(0, 6);
+  
+  el.innerHTML = topList.map(p => `
+    <article class="prod-card" onclick="openProduct('${p.id}')">
       <div class="prod-img-wrap">
         ${p.badge ? `<div class="prod-badge badge-${p.badge}">${p.badge_text || ''}</div>` : ''}
-        <img class="prod-img" src="${p.img}" alt="${p.name}" loading="lazy">
+        <img class="prod-img" src="${p.img}" alt="${p.name} - ${p.brand} sport anjomi" loading="lazy">
       </div>
       <div class="prod-info">
-        <div class="prod-name2">${p.name}</div>
+        <h3 class="prod-name2">${p.name}</h3>
         <div class="prod-price2">${fmt(p.price)} <span>so'm</span></div>
       </div>
-    </div>`).join('');
+    </article>`).join('');
 }
 
 function renderGrid(list: any[]) {
@@ -385,15 +399,15 @@ function renderGrid(list: any[]) {
   if (!g) return;
   if (!list.length) { g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gray);font-size:13px">Mahsulot topilmadi</div>'; return; }
   g.innerHTML = list.map(p => `
-    <div class="prod-grid-card" onclick="openProduct('${p.id}')">
+    <article class="prod-grid-card" onclick="openProduct('${p.id}')">
       ${p.badge ? `<div class="prod-badge badge-${p.badge}" style="position:absolute;top:8px;left:8px;z-index:2;font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 8px;border-radius:5px">${p.badge_text || ''}</div>` : ''}
       <button class="pgc-fav ${favs.has(p.id) ? 'active' : ''}" onclick="toggleFav(event,'${p.id}')">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
       </button>
-      <div class="pgc-img-wrap"><img class="pgc-img" src="${p.img}" alt="${p.name}" loading="lazy"></div>
+      <div class="pgc-img-wrap"><img class="pgc-img" src="${p.img}" alt="${p.name} - ${p.brand} sport anjomi" loading="lazy"></div>
       <div class="pgc-info">
         <div class="pgc-brand">${p.brand}</div>
-        <div class="pgc-name">${p.name}</div>
+        <h3 class="pgc-name">${p.name}</h3>
         <div class="rating-row">${renderStars(p.rating)}<span class="rating-count2">(${p.reviews || 0})</span></div>
         <div class="pgc-price-row">
           <div>
@@ -405,7 +419,7 @@ function renderGrid(list: any[]) {
           </button>
         </div>
       </div>
-    </div>`).join('');
+    </article>`).join('');
 }
 
 function renderStars(r: number = 5) {
@@ -417,9 +431,19 @@ function renderStars(r: number = 5) {
 function getFiltered() {
   return products.filter(p =>
     (currentFilter === 'all' || p.brand === currentFilter) &&
-    (currentCatFilter === 'all' || p.cat === currentCatFilter)
+    (currentCatFilter === 'all' || p.cat === currentCatFilter) &&
+    (!searchKeyword || 
+      p.name?.toLowerCase().includes(searchKeyword.toLowerCase()) || 
+      p.brand?.toLowerCase().includes(searchKeyword.toLowerCase()) || 
+      p.description?.toLowerCase().includes(searchKeyword.toLowerCase())
+    )
   );
 }
+
+(window as any).globalSearch = (val: string) => {
+  searchKeyword = val;
+  renderGrid(getFiltered());
+};
 
 // ─── Web API ──────────────────────────────────────────────────
 (window as any).filterBrand = (b: string) => { currentFilter = b; currentCatFilter = 'all'; renderBrands(); renderGrid(getFiltered()); scrollToProds(); };
@@ -593,8 +617,98 @@ function renderCatalogList(list: any[]) {
       </div>`).join('')}`;
 }
 
+function renderPosts() {
+  const el = document.getElementById('postsRow');
+  if (!el) return;
+  if (!posts.length) { el.innerHTML = ''; return; }
+  el.innerHTML = posts.map(p => `
+    <article class="post-card" onclick="openPost('${p.id}')">
+      <div class="post-img-wrap">
+        <img class="post-img" src="${p.img}" alt="${p.title}" loading="lazy">
+      </div>
+      <div class="post-info">
+        <time class="post-date">${p.createdAt?.toDate().toLocaleDateString('uz-UZ') || ''}</time>
+        <h3 class="post-title">${p.title}</h3>
+        <p class="post-excerpt">${p.excerpt || p.text?.substring(0, 80) + '...'}</p>
+      </div>
+    </article>`).join('');
+}
+
+(window as any).openPost = (id: string) => {
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  
+  // Hash Routing
+  window.history.pushState(null, '', `#post-${id}`);
+
+  // SEO updates
+  document.title = `${p.title} — SPORTCITY Yangiliklari`;
+  updateMeta('description', p.excerpt || p.text?.substring(0, 160));
+  updateMeta('og:title', p.title);
+  updateMeta('og:image', p.img);
+
+  (document.getElementById('prodModalContent') as HTMLElement).innerHTML = `
+    <button class="pm-close" onclick="closeProdModal()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <img class="pm-img" src="${p.img}" alt="${p.title}">
+    <div class="pm-info">
+      <div class="pm-brand">YANGILIKLAR</div>
+      <h2 class="pm-name">${p.title}</h2>
+      <div class="pm-desc" style="white-space: pre-wrap">${p.text}</div>
+      <div class="pm-price-row">
+        <div class="poi-date">Sana: ${p.createdAt?.toDate().toLocaleString() || ''}</div>
+      </div>
+    </div>`;
+  document.getElementById('prodModalOverlay')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+function updateMeta(name: string, content: string) {
+  if (!content) return;
+  let el = document.querySelector(`meta[name="${name}"]`) || document.querySelector(`meta[property="${name}"]`);
+  if (el) el.setAttribute('content', content);
+}
+
+function updateStructuredData(data: any) {
+  let script = document.getElementById('dynamic-ld-json');
+  if (!script) {
+    script = document.createElement('script');
+    script.id = 'dynamic-ld-json';
+    script.setAttribute('type', 'application/ld+json');
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(data);
+}
+
 (window as any).openProduct = (id: string) => {
   const p = products.find(x => x.id === id); if (!p) return;
+  
+  // Hash Routing
+  window.history.pushState(null, '', `#product-${id}`);
+
+  // Dynamic SEO
+  document.title = `${p.name} — SPORTCITY`;
+  updateMeta('description', p.description || `${p.name} - ${p.brand} brendidan sifatli sport anjomi.`);
+  updateMeta('og:title', p.name);
+  updateMeta('og:image', p.img);
+  updateMeta('keywords', `${p.name}, ${p.brand}, ${p.cat}, sport city, o'zbekiston`);
+  
+  // Product Schema
+  updateStructuredData({
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": p.name,
+    "image": p.img,
+    "description": p.description,
+    "brand": { "@type": "Brand", "name": p.brand },
+    "offers": {
+      "@type": "Offer",
+      "url": window.location.href,
+      "priceCurrency": "UZS",
+      "price": p.price,
+      "availability": "https://schema.org/InStock"
+    }
+  });
+
   const sizes = Array.isArray(p.sizes) ? p.sizes : (p.sizes ? p.sizes.split(',') : []);
   let selSize = sizes[0] || '';
   (document.getElementById('prodModalContent') as HTMLElement).innerHTML = `
@@ -623,7 +737,17 @@ function renderCatalogList(list: any[]) {
   document.body.style.overflow = 'hidden';
 };
 
-(window as any).closeProdModal = () => { document.getElementById('prodModalOverlay')?.classList.remove('open'); document.body.style.overflow = ''; };
+(window as any).closeProdModal = () => { 
+  document.getElementById('prodModalOverlay')?.classList.remove('open'); 
+  document.body.style.overflow = ''; 
+  // Reset Hash
+  window.history.pushState(null, '', window.location.pathname);
+  // Reset SEO
+  document.title = "SPORTCITY — Premium Sport Anjomlari Do'koni";
+  updateMeta('description', "SPORTCITY — O'zbekistondagi eng yaxshi sport anjomlari do'koni. Futbol, fitnes, boks va yugurish uchun sifatli jihozlar va kiyimlar. Toshkent bo'ylab tezkor yetkazib berish!");
+  const dynamicSd = document.getElementById('dynamic-ld-json');
+  if (dynamicSd) dynamicSd.remove();
+};
 (window as any).closeProfile = () => { document.getElementById('profileOverlay')?.classList.remove('open'); document.body.style.overflow = ''; setNavActive('navHome'); };
 
 // ─── Admin logic ──────────────────────────────────────────────
@@ -636,11 +760,11 @@ function renderCatalogList(list: any[]) {
 (window as any).closeAdmin = () => { document.getElementById('adminOverlay')?.classList.remove('open'); document.body.style.overflow = ''; };
 
 (window as any).switchAdminTab = (name: string) => {
-  const tabs = ['dashboard', 'hero', 'products', 'orders', 'coins', 'categories', 'chat', 'contacts'];
+  const tabs = ['dashboard', 'hero', 'products', 'orders', 'coins', 'categories', 'posts', 'chat', 'contacts'];
   document.querySelectorAll('.admin-tab').forEach((t, i) => t.classList.toggle('active', tabs[idx(name)] === tabs[i]));
   document.querySelectorAll('.admin-section').forEach(s => s.classList.toggle('active', s.id === 'tab-' + name));
 };
-function idx(name: string) { return ['dashboard', 'hero', 'products', 'orders', 'coins', 'categories', 'chat', 'contacts'].indexOf(name); }
+function idx(name: string) { return ['dashboard', 'hero', 'products', 'orders', 'coins', 'categories', 'posts', 'chat', 'contacts'].indexOf(name); }
 
 function updateAdminStats(allOrders: any[]) {
   const sp = document.getElementById('statProducts'); if (sp) sp.textContent = String(products.length);
@@ -685,17 +809,23 @@ function renderAdminProducts() {
     <div class="a-prod-row">
       <img class="a-prod-img" src="${p.img}" alt="${p.name}">
       <div class="a-prod-info">
-        <div class="a-prod-brand">${p.brand}</div>
+        <div class="a-prod-brand">${p.brand} ${p.isTop ? '<span style="color:var(--gold);font-size:14px">⭐</span>' : ''}</div>
         <div class="a-prod-name">${p.name}</div>
         <div class="a-prod-price">${fmt(p.price)} so'm</div>
       </div>
       <div class="a-prod-actions">
+        <button class="a-btn-sm ${p.isTop ? 'active' : ''}" onclick="toggleTopStatus('${p.id}',${p.isTop||false})" title="Topga chiqarish/olish">⭐</button>
         <button class="a-btn-sm" onclick="editPrice('${p.id}',${p.price},${p.old_price||0})">💰</button>
         <button class="a-btn-sm" onclick="editImg('${p.id}','${p.name}','${p.img}')">🖼</button>
         <button class="a-btn-danger" onclick="deleteProduct('${p.id}')">🗑</button>
       </div>
     </div>`).join('');
 }
+
+(window as any).toggleTopStatus = async (id: string, current: boolean) => {
+  await updateDoc(doc(db, 'products', id), { isTop: !current });
+  showToast(!current ? 'Topga qo\'shildi' : 'Topdan olindi', '', 's');
+};
 
 (window as any).editPrice = (id: string, p: number, old: number) => {
   (document.getElementById('editProdId') as HTMLInputElement).value = id;
@@ -744,15 +874,20 @@ function renderAdminProducts() {
   const cat = (document.getElementById('ap-cat') as HTMLSelectElement).value;
   const badge = (document.getElementById('ap-badge') as HTMLSelectElement).value;
   const badge_text = badge.toUpperCase();
+  const isTop = (document.getElementById('ap-top') as HTMLInputElement).checked;
   const sizes = (document.getElementById('ap-sizes') as HTMLInputElement).value.split(',').map(s=>s.trim()).filter(s=>s);
   const description = (document.getElementById('ap-desc') as HTMLInputElement).value;
 
   if (!brand || !name || !price) return showToast('Malumotlar chala', '', 'e');
   await addDoc(collection(db, 'products'), {
-    brand, name, price, old_price, img, cat, badge, badge_text, sizes, description,
+    brand, name, price, old_price, img, cat, badge, badge_text, sizes, description, isTop,
     rating: 5, reviews: 0, createdAt: serverTimestamp()
   });
   showToast('Qoshildi', name, 's');
+  // Reset form
+  (document.getElementById('ap-name') as HTMLInputElement).value = '';
+  (document.getElementById('ap-price') as HTMLInputElement).value = '';
+  (document.getElementById('ap-top') as HTMLInputElement).checked = false;
 };
 
 function renderAdminUsers(allUsers: any[]) {
@@ -840,6 +975,38 @@ function renderAdminCategories() {
   showToast('Ochirildi', '', 'i');
 };
 
+(window as any).addPost = async () => {
+  const title = (document.getElementById('post-title') as HTMLInputElement).value;
+  const excerpt = (document.getElementById('post-excerpt') as HTMLInputElement).value;
+  const text = (document.getElementById('post-text') as HTMLTextAreaElement).value;
+  const img = (document.getElementById('post-img') as HTMLInputElement).value;
+  if (!title || !text || !img) return showToast('Malumotlar chala', '', 'e');
+  await addDoc(collection(db, 'posts'), { title, excerpt, text, img, createdAt: serverTimestamp() });
+  showToast('Yangilik qoshildi', title, 's');
+};
+
+function renderAdminPosts() {
+  const el = document.getElementById('adminPostsList');
+  if (!el) return;
+  el.innerHTML = posts.map(p => `
+    <div class="a-prod-row">
+      <img class="a-prod-img" src="${p.img}" alt="${p.title}">
+      <div class="a-prod-info">
+        <div class="a-prod-name">${p.title}</div>
+        <div style="font-size:10px;color:var(--gray)">${p.createdAt?.toDate().toLocaleDateString()}</div>
+      </div>
+      <div class="a-prod-actions">
+        <button class="a-btn-danger" onclick="deletePost('${p.id}')">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+(window as any).deletePost = async (id: string) => {
+  if (!confirm('Ochirilsinmi?')) return;
+  await deleteDoc(doc(db, 'posts', id));
+  showToast('Ochirildi', '', 'i');
+};
+
 (window as any).updateSiteInfo = async () => {
   const phone = (document.getElementById('site-phone') as HTMLInputElement).value;
   const address = (document.getElementById('site-address') as HTMLInputElement).value;
@@ -915,5 +1082,24 @@ async function loadSiteInfo() {
 }
 
 // ─── Start ────────────────────────────────────────────────────
+function handleRouting() {
+  const hash = window.location.hash;
+  if (!hash) {
+    (window as any).closeProdModalActual();
+    return;
+  }
+  if (hash.startsWith('#product-')) {
+    const id = hash.replace('#product-', '');
+    // Delay slightly to ensure products are loaded
+    setTimeout(() => (window as any).openProduct(id), products.length ? 0 : 1000);
+  } else if (hash.startsWith('#post-')) {
+    const id = hash.replace('#post-', '');
+    setTimeout(() => (window as any).openPost(id), posts.length ? 0 : 1000);
+  }
+}
+
+window.addEventListener('hashchange', handleRouting);
+setTimeout(handleRouting, 1200);
+
 loadAll();
 loadSiteInfo();

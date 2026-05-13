@@ -3,7 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>SPORTCITY — Sport Anjomlar Do'koni</title>
+<title>SPORTCITY — Premium Sport Anjomlari Do'koni</title>
+<meta name="description" content="SPORTCITY — O'zbekistondagi eng yaxshi sport anjomlari do'koni. Futbol, fitnes, boks va yugurish uchun sifatli jihozlar va kiyimlar. Toshkent bo'ylab tezkor yetkazib berish!">
+<meta name="keywords" content="sportcity, sport anjomlari, krossovkalar, futbol to'pi, fitnes jihozlari, sport kiyimlari, boks qoplari, Toshkent sport do'koni">
+<meta name="author" content="SPORTCITY Team">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sportcity.uz/">
+<meta property="og:title" content="SPORTCITY — Kuchli Sport, Kuchli Natija">
+<meta property="og:description" content="Sifatli sport anjomlari va kiyimlarini eng hamyonbop narxlarda xarid qiling.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://sportcity.uz/">
+<meta property="twitter:title" content="SPORTCITY — Premium Sport Anjomlari">
+<meta property="twitter:description" content="Sifatli sport anjomlari va kiyimlarini eng hamyonbop narxlarda xarid qiling.">
+<meta property="twitter:image" content="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200">
+
+<!-- Canonical Tag -->
+<link rel="canonical" href="https://sportcity.uz/">
+
+<!-- Structured Data: LocalBusiness -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SportsStore",
+  "name": "SPORTCITY",
+  "image": "https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png",
+  "@id": "https://sportcity.uz",
+  "url": "https://sportcity.uz",
+  "telephone": "+998901234567",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Yunusobod tumani",
+    "addressLocality": "Toshkent",
+    "addressCountry": "UZ"
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "09:00",
+    "closes": "21:00"
+  }
+}
+</script>
+
+<link rel="icon" type="image/png" href="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -35,12 +93,9 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 .tb-menu span:nth-child(1) { width: 22px; }
 .tb-menu span:nth-child(2) { width: 16px; }
 .tb-menu span:nth-child(3) { width: 22px; }
-.tb-logo { display: flex; flex-direction: column; align-items: center; }
-.tb-logo-row { display: flex; align-items: center; gap: 7px; }
-.tb-logo-icon { width: 28px; height: 28px; background: var(--blue); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
-.tb-logo-icon svg { width: 16px; height: 16px; fill: white; }
-.tb-logo-name { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: 2px; color: white; line-height: 1; }
-.tb-logo-sub { font-size: 7.5px; color: rgba(255,255,255,0.4); letter-spacing: 3px; text-transform: uppercase; margin-top: 1px; font-family: 'Montserrat', sans-serif; font-weight: 600; }
+.tb-logo { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+.tb-logo-img { height: 38px; width: auto; object-fit: contain; }
+.tb-logo-sub { font-size: 7.5px; color: rgba(255,255,255,0.4); letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; font-family: 'Montserrat', sans-serif; font-weight: 600; }
 .tb-bell { position: relative; width: 36px; height: 36px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .tb-bell svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.8); fill: none; stroke-width: 2; }
 .bell-badge { position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; background: var(--blue); color: white; font-size: 9px; font-weight: 800; border-radius: 9px; padding: 0 4px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg); font-family: 'Montserrat', sans-serif; }
@@ -128,6 +183,18 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 .cat-img { width: 100%; height: 100%; object-fit: cover; }
 .cat-overlay2 { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 20%, rgba(8,11,18,0.9) 100%); }
 .cat-name2 { position: absolute; bottom: 7px; left: 8px; right: 8px; font-size: 9.5px; font-weight: 800; color: white; text-align: center; line-height: 1.2; }
+
+/* ─── POSTS (NEWS) ─── */
+.posts-scroll { display: flex; gap: 14px; padding: 0 20px 22px; overflow-x: auto; scrollbar-width: none; }
+.posts-scroll::-webkit-scrollbar { display: none; }
+.post-card { flex-shrink: 0; width: 240px; background: var(--card); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; transition: transform 0.3s; }
+.post-card:active { transform: scale(0.98); }
+.post-img-wrap { width: 100%; height: 130px; overflow: hidden; }
+.post-img { width: 100%; height: 100%; object-fit: cover; }
+.post-info { padding: 12px; }
+.post-date { font-size: 9px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; }
+.post-title { font-size: 14px; font-weight: 800; color: white; margin: 4px 0 6px; line-height: 1.3; font-family: 'Barlow', sans-serif; }
+.post-excerpt { font-size: 11px; color: var(--gray); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 /* ─── TOAST ─── */
 .toast-wrap { position: fixed; bottom: 90px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 300; pointer-events: none; }
@@ -482,13 +549,8 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
   <button class="tb-menu" onclick="openCatalog()">
     <span></span><span></span><span></span>
   </button>
-  <div class="tb-logo">
-    <div class="tb-logo-row">
-      <div class="tb-logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      </div>
-      <span class="tb-logo-name">SPORTCITY</span>
-    </div>
+  <div class="tb-logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+    <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="SPORTCITY Logo" class="tb-logo-img">
     <span class="tb-logo-sub">Sport Anjomlar Do'koni</span>
   </div>
   <button class="tb-bell">
@@ -570,6 +632,14 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
   </div>
   <div class="cats-grid" id="catsGrid"></div>
 
+  <!-- NEWS (POSTS) -->
+  <div class="sec-divider"></div>
+  <div class="sec-head">
+    <div class="sec-title2">Yangiliklar</div>
+    <a href="#" class="sec-all2">Barchasi <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+  </div>
+  <div class="posts-scroll" id="postsRow"></div>
+
   <!-- BRANDS -->
   <div class="sec-divider" style="margin-top:8px"></div>
   <div class="sec-head" style="padding-bottom:8px">
@@ -582,10 +652,44 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
   <div id="prodSection">
     <div class="sec-head">
       <div class="sec-title2">Mahsulotlar</div>
-      <a href="#" class="sec-all2" onclick="resetFilter();return false">Barchasi <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="catalog-search" style="margin:0;width:180px">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="catalog-search-inp" id="globalSearch" placeholder="Qidirish..." style="padding:8px 12px 8px 34px;font-size:11px" oninput="globalSearch(this.value)">
+        </div>
+        <a href="#" class="sec-all2" onclick="resetFilter();return false">Barchasi <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      </div>
     </div>
     <div class="prod-grid" id="prodGrid"></div>
   </div>
+  
+  <!-- FOOTER -->
+  <footer style="background:var(--bg);padding:40px 20px 100px;border-top:1px solid var(--border);margin-top:40px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:30px">
+      <div>
+        <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="SPORTCITY" style="height:46px; width:auto; margin-bottom:15px">
+        <p style="font-size:13px;color:var(--gray);line-height:1.6">O'zbekistondagi eng yirik sport anjomlari va kiyimlari do'koni. Biz har bir mijoz uchun individual yondashuv va sifatli xizmatni kafolatlaymiz.</p>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:15px;color:var(--blue)">Kategoriyalar</h4>
+        <ul style="list-style:none;font-size:13px;color:var(--gray);display:grid;gap:8px" id="footerCats">
+          <li>Futbol</li><li>Basketbol</li><li>Fitnes</li><li>Yugurish</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:15px;color:var(--blue)">Ma'lumotlar</h4>
+        <ul style="list-style:none;font-size:13px;color:var(--gray);display:grid;gap:8px">
+          <li><a href="#about">Biz haqimizda</a></li>
+          <li><a href="#delivery">Yetkazib berish</a></li>
+          <li><a href="#contact">Kontaktlar</a></li>
+          <li><a href="/sitemap.xml">Sayt xaritasi</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--border);text-align:center;font-size:11px;color:rgba(255,255,255,0.2)">
+      &copy; 2025 SPORTCITY. Barcha huquqlar himoyalangan. O'zbekiston, Toshkent.
+    </div>
+  </footer>
   <div style="height:16px"></div>
 </div>
 
@@ -667,10 +771,7 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
   <div class="catalog-drawer">
     <div class="catalog-head">
       <div class="catalog-logo">
-        <div class="catalog-logo-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        </div>
-        <span class="catalog-logo-name">SPORTCITY</span>
+        <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="SPORTCITY" style="height:32px; width:auto">
       </div>
       <div class="catalog-close" onclick="closeCatalog()">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -696,7 +797,9 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
     <div class="auth-box2">
       <!-- Step 1: Login Method Selection -->
       <div class="auth-step2 active" id="step0">
-        <div class="auth-logo2"><div class="auth-logo-mark2"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div></div>
+        <div class="auth-logo2">
+          <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="SPORTCITY" style="height:60px; width:auto; filter: drop-shadow(0 0 20px rgba(26,108,255,0.3))">
+        </div>
         <div class="auth-title2">XUSH KELIBSIZ</div>
         <div class="auth-sub2">Kirish usulini tanlang</div>
         
@@ -821,7 +924,10 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 <!-- ═══════════ ADMIN PANEL ═══════════ -->
 <div class="admin-overlay" id="adminOverlay">
   <div class="admin-topbar">
-    <div class="admin-logo">⚙️ ADMIN PANEL</div>
+    <div class="admin-logo" style="display:flex;align-items:center;gap:10px">
+      <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="SPORTCITY" style="height:24px;width:auto">
+      <span>ADMIN PANEL</span>
+    </div>
     <button class="admin-close-btn" onclick="closeAdmin()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
   </div>
   <div class="admin-tabs">
@@ -831,6 +937,7 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
     <div class="admin-tab" onclick="switchAdminTab('orders')">🛍 Zakazlar</div>
     <div class="admin-tab" onclick="switchAdminTab('coins')">🪙 Foydalanuvchilar</div>
     <div class="admin-tab" onclick="switchAdminTab('categories')">🗂 Kategoriyalar</div>
+    <div class="admin-tab" onclick="switchAdminTab('posts')">📰 Yangiliklar</div>
     <div class="admin-tab" onclick="switchAdminTab('chat')">💬 Support Chat</div>
     <div class="admin-tab" onclick="switchAdminTab('contacts')">📞 Kontaktlar</div>
   </div>
@@ -936,6 +1043,10 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
         <label class="a-label">Tavsif</label>
         <input class="a-input" id="ap-desc" placeholder="Mahsulot haqida qisqacha...">
       </div>
+      <div class="a-form-group" style="display:flex;align-items:center;gap:10px;background:rgba(26,108,255,0.05);padding:10px;border-radius:10px;border:1px dashed var(--blue)">
+        <input type="checkbox" id="ap-top" style="width:20px;height:20px;cursor:pointer">
+        <label for="ap-top" class="a-label" style="margin:0;cursor:pointer">Mashhurlar qatoriga qo'shish (TOP)</label>
+      </div>
       <button class="a-btn" onclick="addProduct()" style="width:100%;margin-top:4px">✚ Tovar Qo'shish</button>
 
       <div style="height:24px"></div>
@@ -995,6 +1106,34 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
       <button class="a-btn" onclick="addCategory()" style="width:100%;margin-bottom:24px">✚ Kategoriya Qo'shish</button>
       <div class="a-sec-title">Mavjud Kategoriyalar</div>
       <div class="cat-admin-list" id="catAdminList"></div>
+    </div>
+
+    <!-- POSTS SECTION -->
+    <div class="admin-section" id="tab-posts">
+      <div class="a-sec-title">Yangi Yangilik Qo'shish</div>
+      <div class="a-form-group">
+        <label class="a-label">Sarlavha</label>
+        <input class="a-input" id="post-title" placeholder="Yangi mahsulotlar keldi!">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Qisqa tavsif (SEO uchun)</label>
+        <input class="a-input" id="post-excerpt" placeholder="Ushbu haftada bizda ajoyib yangiliklar...">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Rasm yuklash / URL</label>
+        <div style="display:flex;gap:10px">
+          <input type="file" id="post-file" style="display:none" onchange="uploadFile('post-file','post-img')">
+          <button class="a-btn" onclick="document.getElementById('post-file').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto">📁</button>
+          <input class="a-input" id="post-img" placeholder="https:// images.unsplash.com/...">
+        </div>
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">To'liq matn</label>
+        <textarea class="a-input" id="post-text" rows="6" style="height:auto" placeholder="Yangilik tafsilotlari..."></textarea>
+      </div>
+      <button class="a-btn" onclick="addPost()" style="width:100%;margin-bottom:24px">✚ Yangilik Qo'shish</button>
+      <div class="a-sec-title">Mavjud Yangiliklar</div>
+      <div class="a-prod-list" id="adminPostsList"></div>
     </div>
 
     <!-- SUPPORT CHAT SECTION -->
