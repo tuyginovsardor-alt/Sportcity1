@@ -56,14 +56,15 @@ function closeCart() {
 }
 (window as any).closeCart = closeCart;
 
-function openCart() { 
+(window as any).openCart = () => { 
   document.getElementById('cartOverlay')?.classList.add('open'); 
   document.getElementById('cartSheet')?.classList.add('open'); 
   document.body.style.overflow = 'hidden'; 
+  renderCart(); 
+  setNavActive('navCart'); 
   // Update path without reload if not already there
   if (window.location.pathname !== '/cart') window.history.pushState(null, '', '/cart');
-}
-(window as any).openCart = openCart;
+};
 
 function openProfile() { 
   document.getElementById('profileOverlay')?.classList.add('open'); 
@@ -413,6 +414,68 @@ function renderAll() {
   } catch (e: any) { showToast('Xatolik', e.message, 'e'); }
 };
 
+// ─── Missing Auth/UI Functions ───
+let currentPin = '';
+(window as any).formatPhoneInput = (el: HTMLInputElement) => {
+  let v = el.value.replace(/\D/g, '');
+  if (v.length > 9) v = v.substring(0, 9);
+  let fmt = '';
+  if (v.length > 0) fmt += v.substring(0, 2);
+  if (v.length > 2) fmt += ' ' + v.substring(2, 5);
+  if (v.length > 5) fmt += ' ' + v.substring(5, 7);
+  if (v.length > 7) fmt += ' ' + v.substring(7, 9);
+  el.value = fmt;
+};
+
+(window as any).loginByPhone = () => {
+  const phone = (document.getElementById('phoneInput') as HTMLInputElement).value.replace(/\D/g, '');
+  if (phone.length < 9) return showToast('Xatolik', 'Raqamni to\'liq kiriting', 'e');
+  currentPin = '';
+  updatePinDots();
+  goAuthStep(2);
+};
+
+(window as any).pinPress = (digit: string) => {
+  if (currentPin.length < 4) {
+    currentPin += digit;
+    updatePinDots();
+    if (currentPin.length === 4) {
+      // Logic for PIN verification or simulation
+      if (currentPin === '1111') {
+        showToast('Xush kelibsiz!', 'Muvaffaqiyatli kirildi', 's');
+        goAuthStep(3);
+        // In real app, we would authenticate here
+      } else {
+        (document.getElementById('pinErrMsg') as HTMLElement).textContent = 'PIN kod noto\'g\'ri';
+        setTimeout(() => {
+          currentPin = '';
+          updatePinDots();
+          (document.getElementById('pinErrMsg') as HTMLElement).textContent = '';
+        }, 1000);
+      }
+    }
+  }
+};
+
+(window as any).pinBack = () => {
+  currentPin = currentPin.slice(0, -1);
+  updatePinDots();
+};
+
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('pd' + i);
+    if (dot) dot.classList.toggle('filled', i < currentPin.length);
+  }
+}
+
+(window as any).goSlide = (n: number) => {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  slides.forEach((s, i) => s.classList.toggle('active', i === n));
+  dots.forEach((d, i) => d.classList.toggle('active', i === n));
+};
+
 async function syncUser(user: any) {
   const userDoc = doc(db, 'users', user.uid);
   const snap = await getDoc(userDoc);
@@ -565,12 +628,7 @@ function updateCartBadge() {
   if (cc) cc.textContent = String(t); 
 }
 
-(window as any).openCart = () => { 
-  document.getElementById('cartOverlay')?.classList.add('open'); 
-  document.getElementById('cartSheet')?.classList.add('open'); 
-  document.body.style.overflow = 'hidden'; 
-  renderCart(); setNavActive('navCart'); 
-};
+// Removed duplicate openCart
 
 function renderCart() {
   const wrap = document.getElementById('cartItems') as HTMLElement;
