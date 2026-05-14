@@ -10,8 +10,19 @@ service cloud.firestore {
       return isSignedIn() && (
         request.auth.token.email == "tuyginovsardor36@gmail.com" ||
         request.auth.token.email == "numanovbekzod21@gmail.com" ||
-        request.auth.token.email == "numanovbegzod20@gmail.com"
+        request.auth.token.email == "numanovbegzod20@gmail.com" ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
       );
+    }
+
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /site_settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /site_info/{document=**} {

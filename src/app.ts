@@ -14,11 +14,12 @@ let cart: any[] = [], favs = new Set();
 (window as any).favs = favs; // Expose to window for index.html access
 let currentFilter = 'all', currentCatFilter = 'all', searchKeyword = '';
 let currentUser: any = null;
+let isAdminUser = false;
 let adminUnlocked = false;
 let selectedChatUserId = '';
 let selectedPayment = 'cash';
 
-const ADMIN_EMAILS = [
+const SITE_OWNERS = [
   'tuyginovsardor36@gmail.com',
   'numanovbekzod21@gmail.com',
   'numanovbegzod20@gmail.com'
@@ -55,11 +56,20 @@ function closeCart() {
 }
 (window as any).closeCart = closeCart;
 
+function openCart() { 
+  document.getElementById('cartOverlay')?.classList.add('open'); 
+  document.getElementById('cartSheet')?.classList.add('open'); 
+  document.body.style.overflow = 'hidden'; 
+  // Update path without reload if not already there
+  if (window.location.pathname !== '/cart') window.history.pushState(null, '', '/cart');
+}
+(window as any).openCart = openCart;
+
 function openProfile() { 
   document.getElementById('profileOverlay')?.classList.add('open'); 
   document.body.style.overflow = 'hidden'; 
-  setNavActive('navProfile'); 
   if(currentUser) goAuthStep(3); else goAuthStep(0); 
+  if (window.location.pathname !== '/profile') window.history.pushState(null, '', '/profile');
 }
 (window as any).openProfile = openProfile;
 
@@ -228,6 +238,11 @@ function renderChat(messages: any[]) {
 
 async function loadUserData() {
   if (!currentUser) return;
+  
+  // Check Admin Status Dynamically
+  const adminDoc = await getDoc(doc(db, 'admins', currentUser.uid));
+  isAdminUser = SITE_OWNERS.includes(currentUser.email) || adminDoc.exists();
+
   const ordersQuery = query(collection(db, 'orders'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'));
   onSnapshot(ordersQuery, (snapshot) => {
     const userOrders = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -241,10 +256,13 @@ async function loadUserData() {
     }
   }, (err) => handleFirestoreError(err, OperationType.GET, 'user_doc'));
 
-  if (ADMIN_EMAILS.includes(currentUser.email)) {
-    (document.getElementById('adminEntryBtn') as HTMLElement).style.display = 'block';
+  if (isAdminUser) {
+    const btn = document.getElementById('adminEntryBtn');
+    if (btn) btn.style.display = 'block';
     loadAdminData();
     loadAdminChatSessions();
+    loadAdminList();
+    loadAdminSiteSettings();
   }
 }
 
@@ -857,7 +875,7 @@ function closeProfile() {
 
 // ─── Admin logic ──────────────────────────────────────────────
 (window as any).openAdmin = () => {
-  if (!ADMIN_EMAILS.includes(currentUser?.email)) return showToast('Kirish taqiqlangan', 'Faqat adminlar uchun', 'e');
+  if (!isAdminUser) return showToast('Kirish taqiqlangan', 'Faqat adminlar uchun', 'e');
   document.getElementById('adminOverlay')?.classList.add('open');
   document.body.style.overflow = 'hidden';
 };
@@ -865,11 +883,104 @@ function closeProfile() {
 (window as any).closeAdmin = () => { document.getElementById('adminOverlay')?.classList.remove('open'); document.body.style.overflow = ''; };
 
 (window as any).switchAdminTab = (name: string) => {
-  const tabs = ['dashboard', 'hero', 'products', 'orders', 'coins', 'categories', 'posts', 'chat', 'contacts'];
-  document.querySelectorAll('.admin-tab').forEach((t, i) => t.classList.toggle('active', tabs[idx(name)] === tabs[i]));
+  const tabs = ['dashboard', 'hero', 'products', 'orders', 'coins', 'categories', 'posts', 'chat', 'contacts', 'admins', 'settings'];
+  const currentTab = tabs.includes(name) ? name : 'dashboard';
+  
+  document.querySelectorAll('.admin-tab').forEach(t => {
+    const tabName = t.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+    t.classList.toggle('active', tabName === name);
+  });
+  
   document.querySelectorAll('.admin-section').forEach(s => s.classList.toggle('active', s.id === 'tab-' + name));
 };
-function idx(name: string) { return ['dashboard', 'hero', 'products', 'orders', 'coins', 'categories', 'posts', 'chat', 'contacts'].indexOf(name); }
+
+async function loadAdminList() {
+  onSnapshot(collection(db, 'admins'), (snapshot) => {
+    const admins = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderAdminList(admins);
+  });
+}
+
+function renderAdminList(admins: any[]) {
+  const el = document.getElementById('adminManagerList');
+  if (!el) return;
+  el.innerHTML = admins.map(a => `
+    <div class="a-user-row">
+      <div class="a-user-avatar" style="background:var(--blue)">${(a.email || '?')[0].toUpperCase()}</div>
+      <div class="a-user-info">
+        <div class="a-user-phone">${a.email}</div>
+        <div class="a-user-orders">Lavozim: ${a.role || 'Admin'}</div>
+      </div>
+      <button class="a-btn-danger" onclick="removeAdmin('${a.id}')" style="padding:6px 12px;font-size:10px">Tashlatish</button>
+    </div>`).join('');
+}
+
+(window as any).promoteToAdmin = async () => {
+  const phone = (document.getElementById('promotePhone') as HTMLInputElement).value.trim();
+  if (!phone) return showToast('Xatolik', 'Email yoki Phone kiriting', 'e');
+  
+  try {
+    // Search for user by email or phone
+    let q = query(collection(db, 'users'), where('email', '==', phone));
+    let snap = await getDocs(q);
+    
+    if (snap.empty) {
+      q = query(collection(db, 'users'), where('phone', '==', phone));
+      snap = await getDocs(q);
+    }
+    
+    if (snap.empty) return showToast('Xatolik', 'Foydalanuvchi topilmadi', 'e');
+    
+    const user = snap.docs[0];
+    const userData = user.data();
+    
+    await setDoc(doc(db, 'admins', user.id), {
+      email: userData.email,
+      uid: user.id,
+      role: 'admin',
+      promotedBy: currentUser.email,
+      createdAt: serverTimestamp()
+    });
+    
+    showToast('Muvaffaqiyatli', 'Yangi admin tayinlandi', 's');
+    (document.getElementById('promotePhone') as HTMLInputElement).value = '';
+  } catch (e: any) { showToast('Xatolik', e.message, 'e'); }
+};
+
+(window as any).removeAdmin = async (id: string) => {
+  if (!confirm('Ushbu adminni huquqlaridan mahrum qilmoqchimisiz?')) return;
+  await deleteDoc(doc(db, 'admins', id));
+  showToast('Amalga oshirildi', 'Admin olib tashlandi', 'i');
+};
+
+async function loadAdminSiteSettings() {
+  try {
+    const snap = await getDoc(doc(db, 'site_settings', 'socials'));
+    if (snap.exists()) {
+      const d = snap.data();
+      (document.getElementById('set-tg') as HTMLInputElement).value = d.telegram || '';
+      (document.getElementById('set-inst') as HTMLInputElement).value = d.instagram || '';
+      (document.getElementById('set-yt') as HTMLInputElement).value = d.youtube || '';
+      (document.getElementById('set-tt') as HTMLInputElement).value = d.tiktok || '';
+    }
+  } catch (e) {
+    console.error('Error loading admin site settings', e);
+  }
+}
+
+(window as any).saveSocialSettings = async () => {
+  const telegram = (document.getElementById('set-tg') as HTMLInputElement).value;
+  const instagram = (document.getElementById('set-inst') as HTMLInputElement).value;
+  const youtube = (document.getElementById('set-yt') as HTMLInputElement).value;
+  const tiktok = (document.getElementById('set-tt') as HTMLInputElement).value;
+  
+  await setDoc(doc(db, 'site_settings', 'socials'), {
+    telegram, instagram, youtube, tiktok,
+    updatedAt: serverTimestamp()
+  });
+  showToast('Saqlandi', 'Ijtimoiy tarmoqlar yangilandi', 's');
+  loadGlobalSettings(); // Update footer
+};
 
 function updateAdminStats(allOrders: any[]) {
   const sp = document.getElementById('statProducts'); if (sp) sp.textContent = String(products.length);
@@ -1183,28 +1294,87 @@ async function loadSiteInfo() {
       const sa = document.getElementById('site-address') as HTMLInputElement; if (sa) sa.value = data.address || '';
       const st = document.getElementById('site-tg') as HTMLInputElement; if (st) st.value = data.telegram || '';
     }
-  });
+  }, (err) => handleFirestoreError(err, OperationType.GET, 'site_info/main'));
 }
 
-// ─── Start ────────────────────────────────────────────────────
+async function loadGlobalSettings() {
+  onSnapshot(doc(db, 'site_settings', 'socials'), (snap) => {
+    if (snap.exists()) {
+      const d = snap.data();
+      const footerSocials = document.getElementById('footerSocialLinks');
+      if (footerSocials) {
+        footerSocials.innerHTML = `
+          ${d.telegram ? `<a href="${d.telegram}" target="_blank" class="f-social-link">Telegram</a>` : ''}
+          ${d.instagram ? `<a href="${d.instagram}" target="_blank" class="f-social-link">Instagram</a>` : ''}
+          ${d.youtube ? `<a href="${d.youtube}" target="_blank" class="f-social-link">YouTube</a>` : ''}
+          ${d.tiktok ? `<a href="${d.tiktok}" target="_blank" class="f-social-link">TikTok</a>` : ''}
+        `;
+      }
+    }
+  }, (err) => handleFirestoreError(err, OperationType.GET, 'site_settings/socials'));
+}
+
+// ─── Routing ──────────────────────────────────────────────────
+(window as any).navigateTo = (path: string) => {
+  window.history.pushState(null, '', path);
+  handleRouting();
+};
+
 function handleRouting() {
+  const path = window.location.pathname;
   const hash = window.location.hash;
-  if (!hash) {
-    (window as any).closeProdModalActual();
-    return;
+  
+  // Close all overlays by default when navigating
+  const overlays = ['catalogOverlay', 'cartOverlay', 'profileOverlay', 'prodModalOverlay', 'notifOverlay'];
+  overlays.forEach(id => document.getElementById(id)?.classList.remove('open'));
+  document.body.style.overflow = '';
+
+  // Handle Home
+  if (path === '/' || path === '/index.html' || path === '') {
+    // If there is a hash, handle it (backward compatibility or deep links)
+    if (hash.startsWith('#product-')) {
+      const id = hash.replace('#product-', '');
+      setTimeout(() => (window as any).openProduct(id), products.length ? 0 : 800);
+      return;
+    }
   }
-  if (hash.startsWith('#product-')) {
-    const id = hash.replace('#product-', '');
-    // Delay slightly to ensure products are loaded
-    setTimeout(() => (window as any).openProduct(id), products.length ? 0 : 1000);
-  } else if (hash.startsWith('#post-')) {
-    const id = hash.replace('#post-', '');
-    setTimeout(() => (window as any).openPost(id), posts.length ? 0 : 1000);
+
+  // Handle Paths
+  if (path.startsWith('/product/')) {
+    const id = path.replace('/product/', '');
+    setTimeout(() => (window as any).openProduct(id), products.length ? 0 : 800);
+  } else if (path.startsWith('/post/')) {
+    const id = path.replace('/post/', '');
+    setTimeout(() => (window as any).openPost(id), posts.length ? 0 : 800);
+  } else if (path === '/catalog') {
+    (window as any).openCatalog();
+  } else if (path === '/favorites') {
+    (window as any).openProfile(); // Profile has favorites for now
+  } else if (path === '/cart') {
+    (window as any).openCart();
+  } else if (path === '/profile') {
+    (window as any).openProfile();
   }
+  
+  // Update nav active states
+  updateNavState(path);
 }
 
+function updateNavState(path: string) {
+  const navs = {
+    '/': 'navHome',
+    '/favorites': 'navFav',
+    '/cart': 'navCart',
+    '/profile': 'navProfile'
+  } as any;
+  const activeId = navs[path] || 'navHome';
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById(activeId)?.classList.add('active');
+}
+
+window.addEventListener('popstate', handleRouting);
 window.addEventListener('hashchange', handleRouting);
-setTimeout(handleRouting, 1200);
+setTimeout(handleRouting, 800);
 
 let deferredPrompt: any;
 
@@ -1228,3 +1398,4 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 loadAll();
 loadSiteInfo();
+loadGlobalSettings();

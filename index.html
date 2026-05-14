@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>SPORTCITY.UZ — Premium Sport Anjomlari Do'koni O'zbekistonda</title>
-<meta name="description" content="SPORTCITY.UZ — O'zbekistondagi eng yaxshi sport anjomlari do'koni. Futbol, fitnes, boks va yugurish uchun sifatli jihozlar va kiyimlar. Sport City bilan g'alaba sari!">
+<title>SPORT CITY — Sport Anjomlari va Kiyimlari Do'koni O'zbekistonda</title>
+<meta name="description" content="SPORT CITY — O'zbekistondagi eng yirik sport anjomlari va kiyimlari internet do'koni. Futbol, fitnes, boks va yugurish uchun sifatli jihozlar va kiyimlar. Sport City bilan g'alaba sari!">
 <meta name="google-site-verification" content="rE_NP0FKKapj4AlPZJ6N-Lq33EDqtzJV9sQkWvBFH-U" />
-<meta name="keywords" content="sportcity uz, sport city, sportcity, sport anjomlari, krossovkalar, futbol to'pi, fitnes jihozlari, sport kiyimlari, boks qoplari, Toshkent sport do'koni, sport tovarlari O'zbekiston">
+<meta name="keywords" content="sport city, sportcity, sportcity uz, sport anjomlari, krossovkalar, futbol to'pi, fitnes jihozlari, sport kiyimlari, boks qoplari, Toshkent sport do'koni, sport tovarlari O'zbekiston">
 <meta name="author" content="SPORTCITY Team">
 <meta name="robots" content="index, follow">
 
@@ -104,13 +104,13 @@ img { display: block; }
 button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 
 /* ─── TOP BAR ─── */
-.topbar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 100%; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: rgba(10,13,19,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.topbar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 100%; z-index: 1500; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: rgba(10,13,19,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
 .tb-menu { width: 36px; height: 36px; background: none; border: none; display: flex; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; padding: 4px; }
 .tb-menu span { display: block; height: 2px; border-radius: 2px; background: white; transition: all 0.3s; }
 .tb-menu span:nth-child(1) { width: 22px; }
 .tb-menu span:nth-child(2) { width: 16px; }
 .tb-menu span:nth-child(3) { width: 22px; }
-.tb-logo { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+.tb-logo { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .tb-logo-img { height: 28px; width: auto; object-fit: contain; }
 .tb-logo-name { font-family: 'Bebas Neue', cursive; font-size: 24px; letter-spacing: 1.5px; color: white; line-height: 1; margin-left: 2px; }
 .tb-logo-sub { font-size: 7.5px; color: rgba(255,255,255,0.4); letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; font-family: 'Montserrat', sans-serif; font-weight: 600; }
@@ -170,7 +170,7 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 .prod-price2 span { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 600; }
 
 /* ─── BOTTOM NAV ─── */
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background: rgba(13,17,25,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; z-index: 100; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background: rgba(13,17,25,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; z-index: 1500; padding-bottom: env(safe-area-inset-bottom, 0px); }
 .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 10px 8px; background: none; border: none; cursor: pointer; transition: all 0.2s; color: rgba(255,255,255,0.4); position: relative; }
 .nav-item.active { color: var(--blue); }
 .nav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; transition: all 0.2s; }
@@ -484,7 +484,7 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 .admin-lock-err { font-size: 11px; color: var(--red); font-weight: 700; margin-top: -4px; margin-bottom: 10px; display: none; }
 
 /* ─── ADMIN PANEL ─── */
-.admin-overlay { position: fixed; inset: 0; background: #060810; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+.admin-overlay { position: fixed; inset: 0; background: #060810; z-index: 3000; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
 .admin-overlay.open { opacity: 1; pointer-events: all; }
 .admin-topbar { position: sticky; top: 0; background: rgba(6,8,16,0.96); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(26,108,255,0.2); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
 .admin-logo { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 3px; color: var(--blue); }
@@ -577,6 +577,9 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 .cat-admin-info { flex: 1; }
 .cat-admin-name { font-size: 13px; font-weight: 800; }
 .cat-admin-img-prev { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--bg2); }
+.f-social-link { padding: 8px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; font-size: 11px; font-weight: 700; color: white; transition: 0.2s; }
+.f-social-link:hover { background: var(--blue); border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(26,108,255,0.3); }
+
 /* ─── DESKTOP & TABLET RESPONSIVENESS ─── */
 @media (min-width: 768px) {
   .hero { height: 520px; }
@@ -623,11 +626,11 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
     <span></span><span></span><span></span>
   </button>
   <div class="tb-logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-    <div style="display:flex; align-items:center; gap:8px; margin-bottom:2px">
-      <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" class="tb-logo-img" style="height:32px">
-      <span class="tb-logo-name" style="font-size:26px; letter-spacing:1px">SPORTCITY</span>
+    <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" class="tb-logo-img" style="height:32px">
+    <div style="display:flex; flex-direction:column; align-items:flex-start">
+      <span class="tb-logo-name" style="font-size:22px; margin-left:0">SPORT CITY</span>
+      <span class="tb-logo-sub" style="margin-top:0">Sport Anjomlari Do'koni</span>
     </div>
-    <span class="tb-logo-sub" style="margin-top:0">Sport Anjomlar Do'koni</span>
   </div>
   <button class="tb-bell" onclick="document.getElementById('notifOverlay').classList.add('open')">
     <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
@@ -743,9 +746,9 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
   <footer style="background:var(--bg);padding:40px 20px 100px;border-top:1px solid var(--border);margin-top:40px">
     <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:30px">
       <div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
-          <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" style="height:32px; width:auto">
-          <span class="tb-logo-name" style="font-size:28px">SPORTCITY</span>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:15px">
+          <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" style="height:38px; width:auto">
+          <span class="tb-logo-name" style="font-size:32px">SPORT CITY</span>
         </div>
         <p style="font-size:13px; color:var(--gray); line-height:1.6">
           <strong>SPORTCITY.UZ</strong> — O'zbekistondagi eng yirik sport anjomlari va kiyimlari internet do'koni. 
@@ -760,13 +763,10 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
         </ul>
       </div>
       <div>
-        <h4 style="font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:15px;color:var(--blue)">Ma'lumotlar</h4>
-        <ul style="list-style:none;font-size:13px;color:var(--gray);display:grid;gap:8px">
-          <li><a href="#about">Biz haqimizda</a></li>
-          <li><a href="#delivery">Yetkazib berish</a></li>
-          <li><a href="#contact">Kontaktlar</a></li>
-          <li><a href="/sitemap.xml">Sayt xaritasi</a></li>
-        </ul>
+        <h4 style="font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:15px;color:var(--blue)">Ijtimoiy tarmoqlar</h4>
+        <div id="footerSocialLinks" style="display:flex; gap:12px; flex-wrap:wrap">
+          <!-- Dinamik linklar -->
+        </div>
       </div>
     </div>
     <div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--border);text-align:center;font-size:11px;color:rgba(255,255,255,0.2)">
@@ -778,23 +778,23 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 
 <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
-  <button class="nav-item active" id="navHome" onclick="setNavActive('navHome')">
+  <button class="nav-item active" id="navHome" onclick="navigateTo('/')">
     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     <span class="nav-label">Bosh sahifa</span>
     <div class="nav-active-dot"></div>
   </button>
-  <button class="nav-item" id="navFav" onclick="setNavActive('navFav');showToast('Sevimlilar', favs.size + ' ta mahsulot', 'i')">
+  <button class="nav-item" id="navFav" onclick="navigateTo('/favorites');showToast('Sevimlilar', favs.size + ' ta mahsulot', 'i')">
     <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
     <span class="nav-label">Sevimlilar</span>
     <div class="nav-active-dot"></div>
   </button>
-  <button class="nav-item" id="navCart" onclick="openCart()">
+  <button class="nav-item" id="navCart" onclick="navigateTo('/cart')">
     <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
     <span class="nav-label">Savat</span>
     <div class="nav-active-dot"></div>
     <div class="nav-cart-badge" id="cartBadge">0</div>
   </button>
-  <button class="nav-item" id="navProfile" onclick="openProfile()">
+  <button class="nav-item" id="navProfile" onclick="navigateTo('/profile')">
     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     <span class="nav-label">Profil</span>
     <div class="nav-active-dot"></div>
@@ -853,9 +853,9 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 <div class="catalog-overlay" id="catalogOverlay" onclick="closeCatalogCheck(event)">
   <div class="catalog-drawer">
     <div class="catalog-head">
-      <div class="catalog-logo" style="display:flex;align-items:center;gap:8px">
-        <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" style="height:24px; width:auto">
-        <span class="tb-logo-name" style="font-size:20px">SPORTCITY</span>
+      <div class="catalog-logo" style="display:flex;align-items:center;gap:10px">
+        <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" style="height:28px; width:auto">
+        <span class="tb-logo-name" style="font-size:22px">SPORT CITY</span>
       </div>
       <div class="catalog-close" onclick="closeCatalog()">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -1027,6 +1027,8 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
     <div class="admin-tab" onclick="switchAdminTab('categories')">🗂 Kategoriyalar</div>
     <div class="admin-tab" onclick="switchAdminTab('posts')">📰 Yangiliklar</div>
     <div class="admin-tab" onclick="switchAdminTab('chat')">💬 Support Chat</div>
+    <div class="admin-tab" onclick="switchAdminTab('admins')">👥 Xodimlar</div>
+    <div class="admin-tab" onclick="switchAdminTab('settings')">⚙️ Sozlamalar</div>
     <div class="admin-tab" onclick="switchAdminTab('contacts')">📞 Kontaktlar</div>
   </div>
 
@@ -1267,6 +1269,43 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
         <input class="a-input" id="site-tg" placeholder="https://t.me/...">
       </div>
       <button class="a-btn" onclick="updateSiteInfo()" style="width:100%">💾 Saqlash</button>
+    </div>
+
+    <!-- ADMINS SECTION -->
+    <div class="admin-section" id="tab-admins">
+      <div class="a-sec-title">Adminlarni Boshqarish</div>
+      <div style="background:rgba(26,108,255,0.05);padding:16px;border-radius:12px;border:1px dashed var(--blue);margin-bottom:20px">
+        <label class="a-label">Yangi Admin Tayinlash (Email yoki Tel)</label>
+        <div style="display:flex;gap:10px">
+          <input class="a-input" id="promotePhone" placeholder="example@gmail.com">
+          <button class="a-btn" onclick="promoteToAdmin()">Tayinlash</button>
+        </div>
+        <p style="font-size:10px;color:var(--gray);margin-top:8px">Foydalanuvchi avval ro'yxatdan o'tgan bo'lishi shart.</p>
+      </div>
+      <div class="a-sec-title" style="font-size:16px">Amaldagi Adminlar</div>
+      <div class="a-users-list" id="adminManagerList"></div>
+    </div>
+
+    <!-- SETTINGS SECTION -->
+    <div class="admin-section" id="tab-settings">
+      <div class="a-sec-title">Ijtimoiy Tarmoqlar</div>
+      <div class="a-form-group">
+        <label class="a-label">Telegram Link</label>
+        <input class="a-input" id="set-tg" placeholder="https://t.me/sportcity">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">Instagram Link</label>
+        <input class="a-input" id="set-inst" placeholder="https://instagram.com/sportcity">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">YouTube Link</label>
+        <input class="a-input" id="set-yt" placeholder="https://youtube.com/@sportcity">
+      </div>
+      <div class="a-form-group">
+        <label class="a-label">TikTok Link</label>
+        <input class="a-input" id="set-tt" placeholder="https://tiktok.com/@sportcity">
+      </div>
+      <button class="a-btn" onclick="saveSocialSettings()" style="width:100%">💾 Sozlamalarni Saqlash</button>
     </div>
   </div>
 </div>

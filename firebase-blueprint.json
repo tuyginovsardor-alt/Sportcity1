@@ -59,6 +59,29 @@
         "sender": { "type": "string", "enum": ["user", "admin"] },
         "createdAt": { "type": "string", "format": "date-time" }
       }
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Admin user record",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "uid": { "type": "string" },
+        "role": { "type": "string", "enum": ["owner", "admin"] }
+      },
+      "required": ["email", "uid"]
+    },
+    "SiteSettings": {
+      "title": "Site Settings",
+      "description": "Global settings for the shop",
+      "type": "object",
+      "properties": {
+        "telegram": { "type": "string" },
+        "instagram": { "type": "string" },
+        "youtube": { "type": "string" },
+        "tiktok": { "type": "string" },
+        "facebook": { "type": "string" }
+      }
     }
   },
   "firestore": {
@@ -68,6 +91,8 @@
     "orders": { "schema": "Order", "description": "Order records" },
     "users": { "schema": "object", "description": "User profiles" },
     "support_chats/{chatId}": { "schema": "ChatMessage", "description": "Chat messages" },
+    "admins": { "schema": "Admin", "description": "Admin user UIDs" },
+    "site_settings": { "schema": "SiteSettings", "description": "Social media and other settings" },
     "site_info/main": { "schema": "object", "description": "Site global config" }
   }
 }

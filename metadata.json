@@ -1,6 +1,10 @@
 {
-  "name": "SPORTCITY",
-  "description": "Premium Sport Anjomlar Do'koni",
-  "requestFramePermissions": [],
+  "name": "SPORT CITY",
+  "description": "O'zbekistondagi eng yirik sport anjomlari va kiyimlari internet do'koni. Sifatli mahsulotlar, tezkor yetkazib berish va hamyonbop narxlar.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
   "majorCapabilities": []
 }
