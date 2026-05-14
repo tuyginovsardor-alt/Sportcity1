@@ -855,7 +855,9 @@ function updateStructuredData(data: any) {
   document.body.style.overflow = 'hidden';
 };
 
-(window as any).closeProdModal = () => { 
+(window as any).closeProdModal = (e: any) => { 
+  if (e !== undefined && e.target && e.target.id !== 'prodModalOverlay' && e.target.closest('.pm-close') === null) return;
+  
   document.getElementById('prodModalOverlay')?.classList.remove('open'); 
   document.body.style.overflow = ''; 
   // Reset Hash
@@ -1264,8 +1266,6 @@ function renderAdminPosts() {
 
 (window as any).closeCatalogCheck = (e: any) => { if (e.target.id === 'catalogOverlay') closeCatalog(); };
 (window as any).closeProfileCheck = (e: any) => { if (e.target.id === 'profileOverlay') closeProfile(); };
-(window as any).closeProdModal = (e: any) => { if (e === undefined || e.target.id === 'prodModalOverlay') (window as any).closeProdModalActual(); };
-(window as any).closeProdModalActual = () => { document.getElementById('prodModalOverlay')?.classList.remove('open'); document.body.style.overflow = ''; };
 
 (window as any).filterCatalogList = (val: string) => {
   const filtered = categories.filter(c => c.name.toLowerCase().includes(val.toLowerCase()));
@@ -1325,7 +1325,7 @@ function handleRouting() {
   const hash = window.location.hash;
   
   // Close all overlays by default when navigating
-  const overlays = ['catalogOverlay', 'cartOverlay', 'profileOverlay', 'prodModalOverlay', 'notifOverlay'];
+  const overlays = ['catalogOverlay', 'cartOverlay', 'profileOverlay', 'prodModalOverlay', 'notifOverlay', 'adminOverlay'];
   overlays.forEach(id => document.getElementById(id)?.classList.remove('open'));
   document.body.style.overflow = '';
 
