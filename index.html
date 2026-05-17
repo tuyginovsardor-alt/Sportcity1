@@ -790,7 +790,7 @@ function checkAdminLogin() {
       <div class="auth-step2 active" id="step0">
         <div class="auth-logo2"><div class="auth-logo-mark2"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div></div>
         <div class="auth-title2">XUSH KELIBSIZ</div>
-        <div class="auth-sub2">Google hisobingiz orqali kiring</div>
+        <div class="auth-sub2">Kirish usulini tanlang</div>
         
         <div style="margin-bottom:20px">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
@@ -800,10 +800,22 @@ function checkAdminLogin() {
           </div>
         </div>
 
-        <button class="auth-btn2" onclick="loginWithGoogle()" style="background:#fff;color:#111;display:flex;align-items:center;justify-content:center;gap:12px;font-size:14px;padding:16px;border-radius:14px;box-shadow:0 4px 20px rgba(255,255,255,0.12)">
-          <svg viewBox="0 0 24 24" width="22" height="22"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          Google orqali kirish
-        </button>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button id="authBtnGoogle" class="auth-btn2" onclick="loginWithGoogle()" style="background:#fff;color:#111;display:flex;align-items:center;justify-content:center;gap:12px;font-size:14px;padding:16px;border-radius:14px;box-shadow:0 4px 20px rgba(255,255,255,0.12)">
+            <svg viewBox="0 0 24 24" width="22" height="22"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Google orqali kirish
+          </button>
+          
+          <button id="authBtnPhone" class="auth-btn2" onclick="goAuthStep(1)" style="display:flex;align-items:center;justify-content:center;gap:12px;font-size:14px;padding:16px;border-radius:14px;background:var(--card);border:1px solid var(--border)">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="white" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.906.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Telefon raqam orqali
+          </button>
+
+          <button id="authBtnEmail" class="auth-btn2" onclick="goAuthStep(4)" style="display:flex;align-items:center;justify-content:center;gap:12px;font-size:14px;padding:16px;border-radius:14px;background:var(--card);border:1px solid var(--border)">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="white" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email orqali kirish
+          </button>
+        </div>
 
         <div style="margin-top:14px;font-size:11px;color:rgba(255,255,255,0.3);text-align:center;line-height:1.6">
           Kirib, siz Sport City xizmat shartlarini qabul qilasiz
@@ -820,7 +832,6 @@ function checkAdminLogin() {
         <div class="auth-logo2"><div class="auth-logo-mark2"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.906.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg></div></div>
         <div class="auth-title2">TELEFON</div>
         <div class="auth-sub2">Telefon raqamingizni kiriting</div>
-        ... (qolgan qismlar scriptda davom etadi)
         <div class="inp-group2">
           <label class="inp-label2">Telefon raqam *</label>
           <div class="phone-wrap">
@@ -831,6 +842,7 @@ function checkAdminLogin() {
           </div>
         </div>
         <button class="auth-btn2" onclick="loginByPhone()">Kirish →</button>
+        <button class="auth-btn2" onclick="goAuthStep(0)" style="background:none;border:none;margin-top:14px;color:var(--gray);text-transform:none;box-shadow:none">← Orqaga</button>
       </div>
 
       <!-- Step 2: PIN -->
@@ -950,6 +962,7 @@ function checkAdminLogin() {
     <div class="admin-tab" onclick="switchAdminTab('categories')">🗂 Kategoriyalar</div>
     <div class="admin-tab" onclick="switchAdminTab('chat')">💬 Support Chat</div>
     <div class="admin-tab" onclick="switchAdminTab('contacts')">📞 Kontaktlar</div>
+    <div class="admin-tab" onclick="switchAdminTab('settings')">⚙️ Sozlamalar</div>
   </div>
 
   <!-- DASHBOARD -->
@@ -1148,13 +1161,39 @@ function checkAdminLogin() {
       </div>
       <div class="a-form-group">
         <label class="a-label">Manzil</label>
-        <input class="a-input" id="site-address" placeholder="Toshkent sh., ...">
+        <input class="a-input" id="site-address" placeholder="Namangan sh., ...">
       </div>
       <div class="a-form-group">
         <label class="a-label">Telegram link</label>
         <input class="a-input" id="site-tg" placeholder="https://t.me/...">
       </div>
       <button class="a-btn" onclick="updateSiteInfo()" style="width:100%">💾 Saqlash</button>
+    </div>
+
+    <!-- SETTINGS SECTION -->
+    <div class="admin-section" id="tab-settings">
+      <div class="a-sec-title">Tizim Sozlamalari</div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:20px">
+        <div style="font-size:12px;font-weight:800;color:var(--blue2);margin-bottom:14px;letter-spacing:1px">KIRISH USULLARI</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <label style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+            <span style="font-size:13px;color:rgba(255,255,255,0.7)">Google orqali kirish</span>
+            <input type="checkbox" id="set-auth-google" checked style="width:18px;height:18px;accent-color:var(--blue)">
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+            <span style="font-size:13px;color:rgba(255,255,255,0.7)">Email/Parol orqali kirish</span>
+            <input type="checkbox" id="set-auth-email" checked style="width:18px;height:18px;accent-color:var(--blue)">
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+            <span style="font-size:13px;color:rgba(255,255,255,0.7)">Telefon raqam orqali kirish</span>
+            <input type="checkbox" id="set-auth-phone" checked style="width:18px;height:18px;accent-color:var(--blue)">
+          </label>
+        </div>
+        <div style="font-size:10px;color:var(--gray);margin-top:14px;line-height:1.5">
+          ⚠️ Diqqat! Kamida bitta kirish usuli faol bo'lishi shart.
+        </div>
+      </div>
+      <button class="a-btn" onclick="saveAuthSettings()" style="width:100%">💾 Sozlamalarni Saqlash</button>
     </div>
   </div>
 </div>
@@ -1231,13 +1270,21 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "http
 // ⚠️ O'ZINGIZNING FIREBASE CONFIG INI KIRITING:
 // Agar Firebase sozlanmagan bo'lsa, LocalStorage rejimida ishlaydi
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBT7nN_yKBiSSquXDeXFVtw3eOWygTrzOQ",
+  authDomain: "fabled-meridian-486409-f2.firebaseapp.com",
+  projectId: "fabled-meridian-486409-f2",
+  storageBucket: "fabled-meridian-486409-f2.firebasestorage.app",
+  messagingSenderId: "704115298205",
+  appId: "1:704115298205:web:51e0fe145c63a213a2a974"
 };
+
+const SITE_OWNERS = [
+  'tuyginovsardor36@gmail.com',
+  'numanovbekzod21@gmail.com',
+  'numanovbegzod20@gmail.com',
+  'tuyginovsardor@gmail.com',
+  'tuyginovsardor729@gmail.com'
+];
 
 // Firebase ulanmagan bo'lsa LocalStorage ishlatamiz
 const USE_LOCAL_STORAGE = (firebaseConfig.apiKey === "YOUR_API_KEY");
@@ -1873,9 +1920,19 @@ window.checkSecretKey = async function() {
 if (!USE_LOCAL_STORAGE) {
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
-    if (user && document.getElementById('step3')?.closest('.auth-step2.active')) {
-      goAuthStep(3);
+    if (user) {
+      if (document.getElementById('step3')?.closest('.auth-step2.active')) {
+        goAuthStep(3);
+      }
       await loadUserProfile(user);
+      
+      // Admin check
+      const isAdmin = SITE_OWNERS.includes(user.email);
+      const adminBtn = document.getElementById('adminEntryBtn');
+      if (isAdmin && adminBtn) adminBtn.style.display = 'block';
+    } else {
+      const adminBtn = document.getElementById('adminEntryBtn');
+      if (adminBtn) adminBtn.style.display = 'none';
     }
   });
 }
@@ -2284,6 +2341,53 @@ window.addCoinsToUser = async function() {
   } catch(e) { showToast('Xato', e.message, 'e'); }
 }
 
+window.saveAuthSettings = async function() {
+  const auth_google = document.getElementById('set-auth-google').checked;
+  const auth_email = document.getElementById('set-auth-email').checked;
+  const auth_phone = document.getElementById('set-auth-phone').checked;
+
+  if (!auth_google && !auth_email && !auth_phone) {
+    showToast('Xato', 'Kamida 1 ta usul faol bo\'lishi shart!', 'e');
+    return;
+  }
+
+  try {
+    if (USE_LOCAL_STORAGE) {
+      localDB.setData('settings_auth', [{ id: 'auth', auth_google, auth_email, auth_phone }]);
+    } else {
+      await setDoc(doc(db, 'settings', 'auth'), { auth_google, auth_email, auth_phone }, { merge: true });
+    }
+    showToast('Saqlandi', 'Kirish usullari yangilandi', 's');
+    applyAuthSettings({ auth_google, auth_email, auth_phone });
+  } catch(e) { showToast('Xato', e.message, 'e'); }
+}
+
+function applyAuthSettings(s) {
+  const bg = document.getElementById('authBtnGoogle');
+  const be = document.getElementById('authBtnEmail');
+  const bp = document.getElementById('authBtnPhone');
+  if (bg) bg.style.display = s.auth_google !== false ? 'flex' : 'none';
+  if (be) be.style.display = s.auth_email !== false ? 'flex' : 'none';
+  if (bp) bp.style.display = s.auth_phone !== false ? 'flex' : 'none';
+}
+
+async function loadAuthSettings() {
+  try {
+    let d = {};
+    if (USE_LOCAL_STORAGE) {
+      const s = localDB.getData('settings_auth');
+      d = s[0] || {};
+    } else {
+      const snap = await getDoc(doc(db, 'settings', 'auth'));
+      if (snap.exists()) d = snap.data();
+    }
+    document.getElementById('set-auth-google').checked = d.auth_google !== false;
+    document.getElementById('set-auth-email').checked = d.auth_email !== false;
+    document.getElementById('set-auth-phone').checked = d.auth_phone !== false;
+    applyAuthSettings(d);
+  } catch(e) {}
+}
+
 // Stats
 async function updateStats() {
   let orders = [];
@@ -2498,7 +2602,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (adminCloseBtn) adminCloseBtn.onclick = closeAdmin;
 
   // Load data
-  await Promise.all([loadProducts(), loadCategories()]);
+  await Promise.all([loadProducts(), loadCategories(), loadAuthSettings()]);
 
   // Load site info
   try {
