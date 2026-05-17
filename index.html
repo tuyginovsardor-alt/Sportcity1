@@ -104,20 +104,24 @@ img { display: block; }
 button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 
 /* ─── TOP BAR ─── */
-.topbar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 100%; z-index: 1500; display: flex; align-items: center; justify-content: flex-start; gap: 14px; padding: 14px 20px; background: rgba(10,13,19,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-.tb-logo-group { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.topbar { position: fixed; top: 0; left: 0; right: 0; height: 64px; z-index: 1500; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; background: rgba(10,13,19,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.tb-logo-group { display: flex; align-items: center; gap: 12px; }
+li { list-style: none; }
+button { transition: transform 0.15s ease; outline: none; }
+button:active { transform: scale(0.95); }
+svg { stroke-linecap: round; stroke-linejoin: round; }
 .tb-menu { width: 36px; height: 36px; background: none; border: none; display: flex; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; padding: 4px; flex-shrink: 0; }
 .tb-menu span { display: block; height: 2px; border-radius: 2px; background: white; transition: all 0.3s; }
 .tb-menu span:nth-child(1) { width: 22px; }
 .tb-menu span:nth-child(2) { width: 16px; }
 .tb-menu span:nth-child(3) { width: 22px; }
 .tb-logo { display: flex; align-items: center; gap: 8px; cursor: pointer; overflow: hidden; }
-.tb-logo-img { height: 26px; width: auto; object-fit: contain; flex-shrink: 0; }
+.tb-logo-img { height: 28px; width: auto; object-fit: contain; flex-shrink: 0; }
 .tb-logo-text-wrap { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
-.tb-logo-name { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 1.2px; color: white; line-height: 1; white-space: nowrap; }
-.tb-logo-sub { font-size: 6.5px; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; font-family: 'Montserrat', sans-serif; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tb-logo-name { font-family: 'Bebas Neue', cursive; font-size: 24px; letter-spacing: 1px; color: white; line-height: 1; white-space: nowrap; }
+.tb-logo-sub { font-size: 8px; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase; margin-top: 1px; font-family: 'Montserrat', sans-serif; font-weight: 600; white-space: nowrap; }
 .tb-bell { position: relative; width: 36px; height: 36px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-.tb-bell svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.8); fill: none; stroke-width: 2; }
+.tb-bell svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.8); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .bell-badge { position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; background: var(--blue); color: white; font-size: 9px; font-weight: 800; border-radius: 9px; padding: 0 4px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg); font-family: 'Montserrat', sans-serif; }
 
 /* ─── HERO ─── */
@@ -175,7 +179,7 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background: rgba(13,17,25,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; z-index: 1500; padding-bottom: env(safe-area-inset-bottom, 0px); }
 .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 10px 8px; background: none; border: none; cursor: pointer; transition: all 0.2s; color: rgba(255,255,255,0.4); position: relative; }
 .nav-item.active { color: var(--blue); }
-.nav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; transition: all 0.2s; }
+.nav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: all 0.2s; }
 .nav-item.active svg { stroke-width: 2.2; }
 .nav-label { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; }
 .nav-active-dot { position: absolute; bottom: 5px; width: 4px; height: 4px; border-radius: 50%; background: var(--blue); display: none; }
@@ -631,7 +635,7 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
     <div class="tb-logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
       <img src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" alt="Logo" class="tb-logo-img">
       <div class="tb-logo-text-wrap">
-        <span class="tb-logo-name">SPORT CITY</span>
+        <span class="tb-logo-name">SportCity</span>
         <span class="tb-logo-sub">Sport Anjomlari Do'koni</span>
       </div>
     </div>
