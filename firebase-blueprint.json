@@ -80,7 +80,10 @@
         "instagram": { "type": "string" },
         "youtube": { "type": "string" },
         "tiktok": { "type": "string" },
-        "facebook": { "type": "string" }
+        "facebook": { "type": "string" },
+        "auth_google": { "type": "boolean" },
+        "auth_email": { "type": "boolean" },
+        "auth_phone": { "type": "boolean" }
       }
     }
   },
@@ -92,7 +95,7 @@
     "users": { "schema": "object", "description": "User profiles" },
     "support_chats/{chatId}": { "schema": "ChatMessage", "description": "Chat messages" },
     "admins": { "schema": "Admin", "description": "Admin user UIDs" },
-    "site_settings": { "schema": "SiteSettings", "description": "Social media and other settings" },
+    "site_settings": { "schema": "SiteSettings", "description": "Social media and auth settings" },
     "site_info/main": { "schema": "object", "description": "Site global config" }
   }
 }

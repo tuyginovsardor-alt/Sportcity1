@@ -38,7 +38,7 @@ export default function App() {
       try {
         const configDoc = await getDoc(doc(db, 'site_info', 'config'));
         if (!configDoc.exists()) {
-          await setDoc(doc(db, 'site_info', 'config'), { name: "SPORTCITY", description: "Premium Sport Anjomlari", contact: { phone: "+998 90 123 45 67", address: "Toshkent" } });
+          await setDoc(doc(db, 'site_info', 'config'), { name: "SPORTCITY", description: "Premium Sport Anjomlari", contact: { phone: "+998 90 123 45 67", address: "Namangan" } });
         }
       } finally { setLoading(false); }
     };
@@ -361,7 +361,7 @@ function StoreView({ categories, products, siteInfo, setView, isAdmin, cart, set
               <div className="p-12 bg-white/5 rounded-[3rem] space-y-6 border border-white/10 hover:bg-white/10 transition-colors">
                 <MapPin className="w-12 h-12 text-orange-600 mb-4" />
                 <span className="text-slate-500 font-black text-xs uppercase tracking-[0.3em]">Bosh Ofis</span>
-                <p className="text-3xl font-black leading-tight italic uppercase tracking-tighter">{siteInfo?.contact.address || "Toshkent, Yunusobod"}</p>
+                <p className="text-3xl font-black leading-tight italic uppercase tracking-tighter">{siteInfo?.contact.address || "Namangan"}</p>
               </div>
               <div className="p-12 bg-white/5 rounded-[3rem] space-y-6 border border-white/10 hover:bg-white/10 transition-colors">
                 <Phone className="w-12 h-12 text-orange-600 mb-4" />

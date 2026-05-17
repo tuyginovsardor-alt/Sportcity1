@@ -22,7 +22,9 @@ let selectedPayment = 'cash';
 const SITE_OWNERS = [
   'tuyginovsardor36@gmail.com',
   'numanovbekzod21@gmail.com',
-  'numanovbegzod20@gmail.com'
+  'numanovbegzod20@gmail.com',
+  'tuyginovsardor@gmail.com',
+  'tuyginovsardor729@gmail.com'
 ];
 
 // ─── Yordamchi Funksiyalar ─────────────────────────────────────
@@ -922,7 +924,7 @@ function updateStructuredData(data: any) {
   window.history.pushState(null, '', window.location.pathname);
   // Reset SEO
   document.title = "SPORTCITY — Premium Sport Anjomlari Do'koni";
-  updateMeta('description', "SPORTCITY — O'zbekistondagi eng yaxshi sport anjomlari do'koni. Futbol, fitnes, boks va yugurish uchun sifatli jihozlar va kiyimlar. Toshkent bo'ylab tezkor yetkazib berish!");
+  updateMeta('description', "SPORTCITY — O'zbekistondagi eng yaxshi sport anjomlari do'koni. Futbol, fitnes, boks va yugurish uchun sifatli jihozlar va kiyimlar. Namangan bo'ylab tezkor yetkazib berish!");
   const dynamicSd = document.getElementById('dynamic-ld-json');
   if (dynamicSd) dynamicSd.remove();
 };
@@ -1022,6 +1024,13 @@ async function loadAdminSiteSettings() {
       (document.getElementById('set-inst') as HTMLInputElement).value = d.instagram || '';
       (document.getElementById('set-yt') as HTMLInputElement).value = d.youtube || '';
       (document.getElementById('set-tt') as HTMLInputElement).value = d.tiktok || '';
+      
+      const sg = document.getElementById('set-auth-google') as HTMLInputElement;
+      const se = document.getElementById('set-auth-email') as HTMLInputElement;
+      const sp = document.getElementById('set-auth-phone') as HTMLInputElement;
+      if (sg) sg.checked = d.auth_google !== false;
+      if (se) se.checked = d.auth_email !== false;
+      if (sp) sp.checked = d.auth_phone !== false;
     }
   } catch (e) {
     console.error('Error loading admin site settings', e);
@@ -1033,13 +1042,22 @@ async function loadAdminSiteSettings() {
   const instagram = (document.getElementById('set-inst') as HTMLInputElement).value;
   const youtube = (document.getElementById('set-yt') as HTMLInputElement).value;
   const tiktok = (document.getElementById('set-tt') as HTMLInputElement).value;
+
+  const auth_google = (document.getElementById('set-auth-google') as HTMLInputElement).checked;
+  const auth_email = (document.getElementById('set-auth-email') as HTMLInputElement).checked;
+  const auth_phone = (document.getElementById('set-auth-phone') as HTMLInputElement).checked;
+
+  if (!auth_google && !auth_email && !auth_phone) {
+    return showToast('Xatolik', 'Kamida 1 ta kirish usuli faol bo\'lishi shart!', 'e');
+  }
   
   await setDoc(doc(db, 'site_settings', 'socials'), {
     telegram, instagram, youtube, tiktok,
+    auth_google, auth_email, auth_phone,
     updatedAt: serverTimestamp()
   });
-  showToast('Saqlandi', 'Ijtimoiy tarmoqlar yangilandi', 's');
-  loadGlobalSettings(); // Update footer
+  showToast('Saqlandi', 'Sozlamalar yangilandi', 's');
+  loadGlobalSettings(); // Update UI
 };
 
 function updateAdminStats(allOrders: any[]) {
@@ -1368,6 +1386,14 @@ async function loadGlobalSettings() {
           ${d.tiktok ? `<a href="${d.tiktok}" target="_blank" class="f-social-link">TikTok</a>` : ''}
         `;
       }
+
+      // Update Auth Buttons Visibility
+      const bg = document.getElementById('authBtnGoogle');
+      const be = document.getElementById('authBtnEmail');
+      const bp = document.getElementById('authBtnPhone');
+      if (bg) bg.style.display = d.auth_google !== false ? 'flex' : 'none';
+      if (be) be.style.display = d.auth_email !== false ? 'flex' : 'none';
+      if (bp) bp.style.display = d.auth_phone !== false ? 'flex' : 'none';
     }
   }, (err) => handleFirestoreError(err, OperationType.GET, 'site_settings/socials'));
 }
