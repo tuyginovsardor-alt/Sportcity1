@@ -28,20 +28,23 @@ a { text-decoration: none; color: inherit; }
 img { display: block; }
 button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 
-/* ─── TOP BAR ─── */
-.topbar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 100%; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: rgba(10,13,19,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-.tb-menu { width: 36px; height: 36px; background: none; border: none; display: flex; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; padding: 4px; }
+// ─── TOP BAR ───
+.topbar { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 100%; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: rgba(10,13,19,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+.tb-menu { width: 40px; height: 40px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4.5px; cursor: pointer; transition: all 0.2s; }
+.tb-menu:active { transform: scale(0.92); background: var(--card2); }
 .tb-menu span { display: block; height: 2px; border-radius: 2px; background: white; transition: all 0.3s; }
 .tb-menu span:nth-child(1) { width: 22px; }
-.tb-menu span:nth-child(2) { width: 16px; }
+.tb-menu span:nth-child(2) { width: 14px; margin-left: -8px; }
 .tb-menu span:nth-child(3) { width: 22px; }
-.tb-logo { display: flex; flex-direction: column; align-items: center; }
-.tb-logo-row { display: flex; align-items: center; gap: 7px; }
-.tb-logo-icon { width: 28px; height: 28px; background: var(--blue); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
-.tb-logo-icon svg { width: 16px; height: 16px; fill: white; }
-.tb-logo-name { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: 2px; color: white; line-height: 1; }
-.tb-logo-sub { font-size: 7.5px; color: rgba(255,255,255,0.4); letter-spacing: 3px; text-transform: uppercase; margin-top: 1px; font-family: 'Montserrat', sans-serif; font-weight: 600; }
-.tb-bell { position: relative; width: 36px; height: 36px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.tb-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.tb-logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--blue), var(--blue2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(26,108,255,0.4); }
+.tb-logo-icon svg { width: 20px; height: 20px; fill: white; }
+.tb-logo-text { display: flex; flex-direction: column; }
+.tb-logo-name { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: -0.5px; color: white; line-height: 1; }
+.tb-logo-name span { color: var(--blue); }
+.tb-logo-sub { font-size: 8px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; font-weight: 700; white-space: nowrap; }
+.tb-bell { position: relative; width: 40px; height: 40px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+.tb-bell:active { transform: scale(0.92); }
 .tb-bell svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.8); fill: none; stroke-width: 2; }
 .bell-badge { position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; background: var(--blue); color: white; font-size: 9px; font-weight: 800; border-radius: 9px; padding: 0 4px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg); font-family: 'Montserrat', sans-serif; }
 
@@ -572,18 +575,18 @@ function checkAdminLogin() {
   <button class="tb-menu" onclick="openCatalog()">
     <span></span><span></span><span></span>
   </button>
-  <div class="tb-logo">
-    <div class="tb-logo-row">
-      <div class="tb-logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      </div>
-      <span class="tb-logo-name">SPORTCITY</span>
+  <div class="tb-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <div class="tb-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
     </div>
-    <span class="tb-logo-sub">Sport Anjomlar Do'koni</span>
+    <div class="tb-logo-text">
+       <div class="tb-logo-name">SPORT<span>CITY</span></div>
+       <div class="tb-logo-sub">Sport Anjomlar Do'koni</div>
+    </div>
   </div>
-  <button class="tb-bell">
+  <button class="tb-bell" onclick="showToast('Xabarlar','Hozircha yangi xabarlar yo\'q','i')">
     <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-    <span class="bell-badge">3</span>
+    <span class="bell-badge">0</span>
   </button>
 </header>
 
@@ -867,10 +870,11 @@ function checkAdminLogin() {
           <button class="pin-key" onclick="pinPress('7')">7<span class="pin-sub">PQRS</span></button>
           <button class="pin-key" onclick="pinPress('8')">8<span class="pin-sub">TUV</span></button>
           <button class="pin-key" onclick="pinPress('9')">9<span class="pin-sub">WXYZ</span></button>
-          <button class="pin-key del" onclick="goAuthStep(1)">←</button>
+          <button class="pin-key" onclick="goAuthStep(0)" style="font-size:10px;text-transform:none">← Chiqish</button>
           <button class="pin-key zero" onclick="pinPress('0')">0</button>
           <button class="pin-key del" onclick="pinBack()">⌫</button>
         </div>
+        <button class="auth-btn2" onclick="forgotPin()" style="background:none;border:none;margin-top:14px;color:rgba(255,255,255,0.3);text-transform:none;box-shadow:none;font-size:11px">PIN kodni unutdingizmi?</button>
         <div class="pin-hint" id="pinHintTxt"></div>
       </div>
 
@@ -917,7 +921,25 @@ function checkAdminLogin() {
           <div class="coin-info-row">🎁 Coinlar keyingi xaridingizda <b>&nbsp;avtomatik</b> qo'llaniladi</div>
           <div class="coin-info-row">♾️ Coinlar <b>&nbsp;muddatsiz</b> amal qiladi</div>
         </div>
-        <div class="p-orders-section">
+      <div class="p-orders-section">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">
+            <div style="font-size:11px;font-weight:800;color:var(--gray);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">PROFIL SOZLAMALARI</div>
+            <div class="a-form-group">
+              <label class="a-label">To'liq ism</label>
+              <input class="a-input" id="profileFullName" placeholder="Falonchi Pistonchiyev">
+            </div>
+            <div class="a-form-group">
+              <label class="a-label">Manzil</label>
+              <input class="a-input" id="profileAddress" placeholder="Ko'cha, uy, xonadon...">
+            </div>
+            <button class="a-btn" onclick="saveProfileInfo()" style="width:100%;margin-bottom:10px">💾 Ma'lumotlarni Saqlash</button>
+            <div style="height:1px;background:var(--border);margin:15px 0"></div>
+            <div class="a-form-group">
+              <label class="a-label">Yangi PIN Kod (4 xonali)</label>
+              <input class="a-input" id="profilePinInput" type="password" maxlength="4" placeholder="••••">
+            </div>
+            <button class="a-btn-sm" onclick="saveNewPin()" style="width:100%">🔑 PIN Kodni Yangilash</button>
+          </div>
           <div class="p-orders-title">Mening zakazlarim</div>
           <div id="pOrdersList"></div>
         </div>
@@ -1173,6 +1195,16 @@ function checkAdminLogin() {
     <!-- SETTINGS SECTION -->
     <div class="admin-section" id="tab-settings">
       <div class="a-sec-title">Tizim Sozlamalari</div>
+      
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:20px">
+        <div style="font-size:12px;font-weight:800;color:var(--blue);margin-bottom:14px;letter-spacing:1px">SAYT LOGOSI</div>
+        <div class="a-form-group">
+          <label class="a-label">Logo URL</label>
+          <input class="a-input" id="set-site-logo" placeholder="https://example.com/logo.png">
+          <div style="font-size:10px;color:var(--gray);margin-top:5px">Bo'sh bo'lsa, standart HTML logo ishlatiladi.</div>
+        </div>
+      </div>
+
       <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:20px">
         <div style="font-size:12px;font-weight:800;color:var(--blue2);margin-bottom:14px;letter-spacing:1px">KIRISH USULLARI</div>
         <div style="display:flex;flex-direction:column;gap:12px">
@@ -1262,6 +1294,13 @@ function checkAdminLogin() {
 
 <script type="module">
 // ─── FIREBASE CONFIG ───
+const APP_VERSION = '1.0.8';
+if (localStorage.getItem('sc_app_version') !== APP_VERSION) {
+  // Clear non-essential caches
+  localStorage.removeItem('sc_products_cache');
+  localStorage.setItem('sc_app_version', APP_VERSION);
+  console.log('App updated to ' + APP_VERSION);
+}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, doc, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -1845,15 +1884,67 @@ async function saveUserProfile(user) {
 }
 
 async function loadUserProfile(user) {
-  const uRef = doc(db, 'users', user.uid);
-  const snap = await getDoc(uRef);
-  const data = snap.exists() ? snap.data() : {};
-  const pName = document.getElementById('pName');
-  const pPhone = document.getElementById('pPhone');
-  const pCoins = document.getElementById('pCoins');
-  if (pName) pName.textContent = data.name || user.displayName || user.email?.split('@')[0] || 'Foydalanuvchi';
-  if (pPhone) pPhone.textContent = data.phone || user.email || '';
-  if (pCoins) pCoins.textContent = data.coins || 0;
+  if (!user) return;
+  let udata = {};
+  try {
+    if (USE_LOCAL_STORAGE) {
+      udata = localDB.getDoc('users', user.uid) || {};
+    } else {
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      if (snap.exists()) udata = snap.data();
+    }
+    
+    const pName = document.getElementById('pName');
+    const pPhone = document.getElementById('pPhone');
+    const pCoins = document.getElementById('pCoins');
+    const nameInp = document.getElementById('profileFullName');
+    const addrInp = document.getElementById('profileAddress');
+    
+    if (pName) pName.textContent = udata.fullName || user.displayName || user.email?.split('@')[0] || 'Foydalanuvchi';
+    if (pPhone) pPhone.textContent = udata.phone || user.phoneNumber || user.email || 'Raqam yo\'q';
+    if (pCoins) pCoins.textContent = udata.coins || 0;
+    
+    if (nameInp) nameInp.value = udata.fullName || user.displayName || '';
+    if (addrInp) addrInp.value = udata.address || '';
+
+    renderMyOrders(user.uid);
+  } catch(e) { console.error("Error loading profile:", e); }
+}
+
+window.saveProfileInfo = async function() {
+  if (!currentUser) return;
+  const fullName = document.getElementById('profileFullName').value;
+  const address = document.getElementById('profileAddress').value;
+  
+  try {
+    if (USE_LOCAL_STORAGE) {
+      localDB.updateItem('users', currentUser.uid, { fullName, address });
+    } else {
+      await setDoc(doc(db, 'users', currentUser.uid), { fullName, address }, { merge: true });
+    }
+    showToast('Muvaffaqiyatli', 'Profil ma\'lumotlari saqlandi', 's');
+    loadUserProfile(currentUser);
+  } catch(e) { showToast('Xato', e.message, 'e'); }
+}
+
+window.saveNewPin = async function() {
+  if (!currentUser) return;
+  const pin = document.getElementById('profilePinInput').value;
+  if (pin.length !== 4 || isNaN(pin)) {
+    showToast('Xato', 'PIN kod 4 ta raqam bo\'lishi kerak!', 'e');
+    return;
+  }
+  
+  try {
+    if (USE_LOCAL_STORAGE) {
+      localDB.updateItem('users', currentUser.uid, { pin });
+    } else {
+      await setDoc(doc(db, 'users', currentUser.uid), { pin }, { merge: true });
+    }
+    localStorage.setItem('sc_pin', pin); // Sync local cache
+    showToast('Muvaffaqiyatli', 'PIN kod o\'rnatildi', 's');
+    document.getElementById('profilePinInput').value = '';
+  } catch(e) { showToast('Xato', e.message, 'e'); }
 }
 
 window.logoutUser = async function() {
@@ -1930,10 +2021,22 @@ if (!USE_LOCAL_STORAGE) {
       const isAdmin = SITE_OWNERS.includes(user.email);
       const adminBtn = document.getElementById('adminEntryBtn');
       if (isAdmin && adminBtn) adminBtn.style.display = 'block';
+
+      // Auto-close profile if login was from step 0
+      const activeStep = document.querySelector('.auth-step2.active');
+      if (activeStep && activeStep.id === 'step0') {
+         setTimeout(closeProfile, 500); 
+      }
     } else {
       const adminBtn = document.getElementById('adminEntryBtn');
       if (adminBtn) adminBtn.style.display = 'none';
+      if (confirmingPin) { 
+          resetPinUI();
+          goAuthStep(0);
+      }
     }
+    // Always load settings to apply logo/auth methods
+    loadAuthSettings();
   });
 }
 
@@ -2006,8 +2109,22 @@ window.setNavActive = function(id) {
 }
 
 // ─── ADMIN PANEL ───
+window.openAdmin = function() {
+  if (!currentUser) {
+    showToast('Xato', 'Avval login qiling', 'e');
+    openProfile();
+    return;
+  }
+  if (!SITE_OWNERS.includes(currentUser.email)) {
+    showToast('Kirish taqiqlangan', 'Siz admin emassiz', 'e');
+    return;
+  }
+  document.getElementById('adminOverlay').classList.add('open');
+  switchAdminTab('dashboard');
+}
+
 window.openAdminPanel = function() {
-  document.getElementById('adminLockOverlay').classList.add('open');
+  window.openAdmin();
 }
 
 window.checkAdminPass = async function() {
@@ -2341,10 +2458,19 @@ window.addCoinsToUser = async function() {
   } catch(e) { showToast('Xato', e.message, 'e'); }
 }
 
+window.forgotPin = function() {
+  if (confirm('PIN kodni tiklash uchun hisobingizdan chiqiladi. Rozimisiz?')) {
+    localStorage.removeItem('sc_pin');
+    logoutUser();
+    showToast('PIN tiklash', 'Qayta kiring va yangi PIN o\'rnating', 'i');
+  }
+}
+
 window.saveAuthSettings = async function() {
   const auth_google = document.getElementById('set-auth-google').checked;
   const auth_email = document.getElementById('set-auth-email').checked;
   const auth_phone = document.getElementById('set-auth-phone').checked;
+  const site_logo = document.getElementById('set-site-logo').value.trim();
 
   if (!auth_google && !auth_email && !auth_phone) {
     showToast('Xato', 'Kamida 1 ta usul faol bo\'lishi shart!', 'e');
@@ -2352,13 +2478,14 @@ window.saveAuthSettings = async function() {
   }
 
   try {
+    const sData = { auth_google, auth_email, auth_phone, site_logo };
     if (USE_LOCAL_STORAGE) {
-      localDB.setData('settings_auth', [{ id: 'auth', auth_google, auth_email, auth_phone }]);
+      localDB.setData('settings_auth', [{ id: 'auth', ...sData }]);
     } else {
-      await setDoc(doc(db, 'settings', 'auth'), { auth_google, auth_email, auth_phone }, { merge: true });
+      await setDoc(doc(db, 'settings', 'auth'), sData, { merge: true });
     }
-    showToast('Saqlandi', 'Kirish usullari yangilandi', 's');
-    applyAuthSettings({ auth_google, auth_email, auth_phone });
+    showToast('Saqlandi', 'Sozlamalar yangilandi', 's');
+    applyAuthSettings(sData);
   } catch(e) { showToast('Xato', e.message, 'e'); }
 }
 
@@ -2369,6 +2496,15 @@ function applyAuthSettings(s) {
   if (bg) bg.style.display = s.auth_google !== false ? 'flex' : 'none';
   if (be) be.style.display = s.auth_email !== false ? 'flex' : 'none';
   if (bp) bp.style.display = s.auth_phone !== false ? 'flex' : 'none';
+  
+  // Apply logo
+  const logoInp = document.querySelector('.tb-logo-icon');
+  const logoName = document.querySelector('.tb-logo-name');
+  if (s.site_logo) {
+    if (logoInp) logoInp.innerHTML = `<img src="${s.site_logo}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit">`;
+  } else {
+    if (logoInp) logoInp.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`;
+  }
 }
 
 async function loadAuthSettings() {
@@ -2384,6 +2520,7 @@ async function loadAuthSettings() {
     document.getElementById('set-auth-google').checked = d.auth_google !== false;
     document.getElementById('set-auth-email').checked = d.auth_email !== false;
     document.getElementById('set-auth-phone').checked = d.auth_phone !== false;
+    document.getElementById('set-site-logo').value = d.site_logo || '';
     applyAuthSettings(d);
   } catch(e) {}
 }
