@@ -9,13 +9,13 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png",
+      "src": "https://i.ibb.co/jPwJj7xm/IMG-20260517-212636-403.jpg",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png",
+      "src": "https://i.ibb.co/jPwJj7xm/IMG-20260517-212636-403.jpg",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -26,12 +26,12 @@
     {
       "name": "Savat",
       "url": "/#navCart",
-      "icons": [{ "src": "https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png", "sizes": "192x192" }]
+      "icons": [{ "src": "https://i.ibb.co/jPwJj7xm/IMG-20260517-212636-403.jpg", "sizes": "192x192" }]
     },
     {
       "name": "Profil",
       "url": "/#navProfile",
-      "icons": [{ "src": "https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png", "sizes": "192x192" }]
+      "icons": [{ "src": "https://i.ibb.co/jPwJj7xm/IMG-20260517-212636-403.jpg", "sizes": "192x192" }]
     }
   ]
 }

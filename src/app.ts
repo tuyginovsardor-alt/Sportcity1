@@ -1034,8 +1034,7 @@ let currentAdminPage = 1;
   if (!isAdminUser) return showToast('Kirish taqiqlangan', 'Faqat adminlar uchun', 'e');
   const overlay = document.getElementById('adminOverlay');
   if (overlay) {
-    overlay.style.display = 'flex';
-    setTimeout(() => overlay.classList.add('open'), 10);
+    overlay.classList.add('open');
   }
   document.body.style.overflow = 'hidden';
 };
@@ -1044,7 +1043,6 @@ let currentAdminPage = 1;
   const overlay = document.getElementById('adminOverlay');
   if (overlay) {
     overlay.classList.remove('open');
-    setTimeout(() => overlay.style.display = 'none', 300);
   }
   document.body.style.overflow = ''; 
 };
