@@ -385,6 +385,7 @@ function renderAll() {
     showToast('Xush kelibsiz! 👋', currentUser.displayName || currentUser.email, 's');
     goAuthStep(3);
     showProfileData();
+    setTimeout(() => closeProfile(), 1500);
   } catch (e: any) { showToast('Xatolik', e.message, 'e'); }
 };
 
@@ -398,6 +399,7 @@ function renderAll() {
     showToast('Kirish muvaffaqiyatli! ✅', email, 's');
     goAuthStep(3);
     showProfileData();
+    setTimeout(() => closeProfile(), 1500);
   } catch (e: any) { showToast('Kirishda xatolik', e.message, 'e'); }
 };
 
@@ -436,22 +438,26 @@ let currentPin = '';
   goAuthStep(2);
 };
 
-(window as any).pinPress = (digit: string) => {
+(window as any).pinPress = async (digit: string) => {
   if (currentPin.length < 4) {
     currentPin += digit;
     updatePinDots();
     if (currentPin.length === 4) {
-      // Logic for PIN verification or simulation
-      if (currentPin === '1111') {
+      const snap = await getDoc(doc(db, 'users', currentUser?.uid || 'temp'));
+      const savedPin = snap.exists() ? snap.data().pin : '1111';
+      
+      if (currentPin === savedPin) {
         showToast('Xush kelibsiz!', 'Muvaffaqiyatli kirildi', 's');
         goAuthStep(3);
-        // In real app, we would authenticate here
+        showProfileData();
+        setTimeout(() => closeProfile(), 1500);
       } else {
-        (document.getElementById('pinErrMsg') as HTMLElement).textContent = 'PIN kod noto\'g\'ri';
+        const err = document.getElementById('pinErrMsg');
+        if (err) err.textContent = 'PIN kod noto\'g\'ri';
         setTimeout(() => {
           currentPin = '';
           updatePinDots();
-          (document.getElementById('pinErrMsg') as HTMLElement).textContent = '';
+          if (err) err.textContent = '';
         }, 1000);
       }
     }
@@ -519,10 +525,15 @@ onAuthStateChanged(auth, (user) => {
 });
 
 (window as any).logout = async () => {
-  await signOut(auth);
-  currentUser = null;
-  showToast('Chiqish amalga oshirildi', 'Xayr!', 'i');
-  goAuthStep(0);
+  if (confirm('Haqiqatdan ham tizimdan chiqmoqchimisiz?')) {
+    // Clear cache/localStorage on logout as requested for "fresh" site next time
+    localStorage.clear();
+    sessionStorage.clear();
+    await signOut(auth);
+    currentUser = null;
+    showToast('Chiqish amalga oshirildi', 'Barcha keshlar tozalandi', 'i');
+    setTimeout(() => location.reload(), 1000);
+  }
 };
 
 // ─── UI ──────────────────────────────────────────────────────────
@@ -793,8 +804,33 @@ function renderProfileOrders(orders: any[]) {
 
 function showProfileData() {
   if (!currentUser) return;
-  (document.getElementById('pPhone') as HTMLElement).textContent = currentUser.email || 'Foydalanuvchi';
-  (document.getElementById('pName') as HTMLElement).textContent = currentUser.displayName || 'Foydalanuvchi';
+  const pName = document.getElementById('pName');
+  const pEmail = document.getElementById('pEmail');
+  const pFullName = document.getElementById('pFullName');
+  const pAddress = document.getElementById('pAddress');
+  const admBtn = document.getElementById('adminEntryBtn');
+
+  if (pName) pName.textContent = currentUser.displayName || currentUser.email?.split('@')[0] || 'Foydalanuvchi';
+  if (pEmail) pEmail.textContent = currentUser.email || '—';
+
+  onSnapshot(doc(db, 'users', currentUser.uid), (snap) => {
+    if (snap.exists()) {
+      const d = snap.data();
+      if (pFullName) pFullName.textContent = d.full_name || 'Belgilanmagan';
+      if (pAddress) pAddress.textContent = d.address || 'Belgilanmagan';
+      const c = document.getElementById('pCoins'); if (c) c.textContent = String(d.coins || 0);
+    }
+  });
+
+  if (SITE_OWNERS.includes(currentUser.email || '')) {
+    isAdminUser = true;
+    if (admBtn) admBtn.style.display = 'block';
+  } else {
+    getDoc(doc(db, 'admins', currentUser.uid)).then(s => {
+      isAdminUser = s.exists();
+      if (isAdminUser && admBtn) admBtn.style.display = 'block';
+    });
+  }
 }
 
 (window as any).openCatalog = () => { renderCatalogList(categories); document.getElementById('catalogOverlay')?.classList.add('open'); document.body.style.overflow = 'hidden'; };
@@ -1549,6 +1585,95 @@ window.addEventListener('beforeinstallprompt', (e) => {
   deferredPrompt = null;
 };
 
+// ─── Profile & PIN Features ──────────────────────────────────
+(window as any).openEditProfile = () => {
+    const mod = document.getElementById('editProfileModal');
+    if (mod) mod.style.display = 'flex';
+    const fInp = document.getElementById('editFullName') as HTMLInputElement;
+    const aInp = document.getElementById('editAddress') as HTMLTextAreaElement;
+    const curF = document.getElementById('pFullName')?.textContent;
+    const curA = document.getElementById('pAddress')?.textContent;
+    if (fInp && curF && curF !== 'Belgilanmagan') fInp.value = curF;
+    if (aInp && curA && curA !== 'Belgilanmagan') aInp.value = curA;
+};
+
+(window as any).saveProfileUpdates = async () => {
+    if (!currentUser) return;
+    const full_name = (document.getElementById('editFullName') as HTMLInputElement).value;
+    const address = (document.getElementById('editAddress') as HTMLTextAreaElement).value;
+    try {
+        await updateDoc(doc(db, 'users', currentUser.uid), { full_name, address });
+        showToast('Saqlandi', 'Profil ma\'lumotlari yangilandi', 's');
+        document.getElementById('editProfileModal')!.style.display = 'none';
+    } catch (e: any) { showToast('Xatolik', e.message, 'e'); }
+};
+
+(window as any).openPinSettings = () => {
+    const mod = document.getElementById('pinSettingsModal');
+    if (mod) mod.style.display = 'flex';
+};
+
+(window as any).saveNewPin = async () => {
+    if (!currentUser) return;
+    const pin = (document.getElementById('newPin1') as HTMLInputElement).value;
+    if (pin.length !== 4) return showToast('Xatolik', 'PIN 4 ta raqam bo\'lishi kerak', 'e');
+    try {
+        await updateDoc(doc(db, 'users', currentUser.uid), { pin });
+        showToast('Muvaffaqiyatli', 'PIN kod yangilandi', 's');
+        document.getElementById('pinSettingsModal')!.style.display = 'none';
+    } catch (e: any) { showToast('Xatolik', e.message, 'e'); }
+};
+
+let recoveryCodeSent = '';
+(window as any).startPinRecovery = () => {
+    if (!currentUser) return;
+    const mod = document.getElementById('pinRecoveryModal');
+    if (mod) mod.style.display = 'flex';
+    const disp = document.getElementById('recoveryEmailDisplay');
+    if (disp) disp.textContent = currentUser.email || 'Email topilmadi';
+    document.getElementById('recoveryCodeInput')!.style.display = 'none';
+    document.getElementById('sendRecoveryBtn')!.style.display = 'block';
+};
+
+(window as any).sendRecoveryEmail = async () => {
+    recoveryCodeSent = Math.floor(100000 + Math.random() * 900000).toString();
+    showToast('Kod yuborildi', 'Recovery kod (simulyatsiya): ' + recoveryCodeSent, 'i');
+    document.getElementById('recoveryCodeInput')!.style.display = 'block';
+    document.getElementById('sendRecoveryBtn')!.style.display = 'none';
+};
+
+(window as any).verifyRecoveryCode = () => {
+    const inp = (document.getElementById('recoveryCode') as HTMLInputElement).value;
+    if (inp === recoveryCodeSent && recoveryCodeSent !== '') {
+        showToast('Tasdiqlandi', 'Yangi PIN o\'rnating', 's');
+        document.getElementById('pinRecoveryModal')!.style.display = 'none';
+        (window as any).openPinSettings();
+    } else {
+        showToast('Xato', 'Kod noto\'g\'ri', 'e');
+    }
+};
+
+let currentAdminPage = 1;
+(window as any).toggleAdminPanelPage = () => {
+    currentAdminPage = currentAdminPage === 1 ? 2 : 1;
+    const p1 = document.getElementById('adminPage1');
+    const p2 = document.getElementById('adminPage2');
+    const ind = document.getElementById('adminPageIndicator');
+    if (currentAdminPage === 1) {
+        if (p1) p1.style.display = 'flex';
+        if (p2) p2.style.display = 'none';
+        if (ind) ind.textContent = '(1-BOSH SAHIFA)';
+        (window as any).switchAdminTab('dashboard');
+    } else {
+        if (p1) p1.style.display = 'none';
+        if (p2) p2.style.display = 'flex';
+        if (ind) ind.textContent = '(2-OMBOR & KONTENT)';
+        (window as any).switchAdminTab('products');
+    }
+};
+
 loadAll();
 loadSiteInfo();
 loadGlobalSettings();
+loadAdminSiteSettings();
+
