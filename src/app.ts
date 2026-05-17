@@ -22,9 +22,7 @@ let selectedPayment = 'cash';
 const SITE_OWNERS = [
   'tuyginovsardor36@gmail.com',
   'numanovbekzod21@gmail.com',
-  'numanovbegzod20@gmail.com',
-  'tuyginovsardor@gmail.com',
-  'tuyginovsardor729@gmail.com'
+  'numanovbegzod20@gmail.com'
 ];
 
 // ─── Yordamchi Funksiyalar ─────────────────────────────────────
@@ -144,6 +142,7 @@ async function loadAll() {
   }, (err) => handleFirestoreError(err, OperationType.LIST, 'posts'));
 
   if (currentUser) {
+    await syncUser(currentUser);
     loadUserData();
     loadChat();
     loadUserNotifications();
@@ -487,11 +486,26 @@ async function syncUser(user: any) {
       coins: 0, createdAt: serverTimestamp()
     });
   }
+  
+  // Sync Admin Status if in SITE_OWNERS
+  if (SITE_OWNERS.includes(user.email)) {
+    const adminDoc = doc(db, 'admins', user.uid);
+    const adminSnap = await getDoc(adminDoc);
+    if (!adminSnap.exists()) {
+      await setDoc(adminDoc, {
+        email: user.email,
+        uid: user.uid,
+        role: 'owner',
+        createdAt: serverTimestamp()
+      });
+    }
+  }
 }
 
 onAuthStateChanged(auth, (user) => {
   currentUser = user;
   if (user) {
+    syncUser(user);
     loadUserData();
     loadChat();
     if (document.getElementById('profileOverlay')?.classList.contains('open')) {
@@ -697,7 +711,7 @@ function renderCart() {
 
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const itemsStr = cart.map(i => i.name + (i.qty > 1 ? ' x' + i.qty : '')).join(', ');
-  const coinsEarned = cart.length * 10;
+  const coinsEarned = Math.floor(total / 10000); // 1 coin for every 10k so'm
   
   try {
     const orderData = {
@@ -716,7 +730,9 @@ function renderCart() {
 
     if (selectedPayment === 'card') {
       showToast('QulayPay...', 'To\'lov tizimiga yo\'naltirilmoqda', 'i');
-      // Simulate redirection or adding to special queue
+      // In a real scenario, we would redirect to a checkout URL here
+      // window.location.href = `https://qulaypay.uz/pay?orderId=${orderId}&amount=${total}`;
+      // For now, we just save the order as 'card' payment
     }
 
     await addDoc(collection(db, 'orders'), orderData);
@@ -726,7 +742,12 @@ function renderCart() {
     updateCartBadge(); 
     renderCart();
     
-    showToast('Buyurtma yuborildi! 🎉', selectedPayment === 'cash' ? 'Naqd to\'lov (kuryerga)' : 'Karta orqali (QulayPay)', 's');
+    if (selectedPayment === 'card') {
+      showToast('Karta orqali tayyor! ✅', 'QulayPay orqali muvaffaqiyatli', 's');
+    } else {
+      showToast('Buyurtma yuborildi! 🎉', 'Naqd to\'lov (kuryerga)', 's');
+    }
+    
     setTimeout(closeCart, 700);
   } catch (e: any) { showToast('Xatolik', e.message, 'e'); }
 };
@@ -924,7 +945,7 @@ function updateStructuredData(data: any) {
   window.history.pushState(null, '', window.location.pathname);
   // Reset SEO
   document.title = "SPORTCITY — Premium Sport Anjomlari Do'koni";
-  updateMeta('description', "SPORTCITY — O'zbekistondagi eng yaxshi sport anjomlari do'koni. Futbol, fitnes, boks va yugurish uchun sifatli jihozlar va kiyimlar. Namangan bo'ylab tezkor yetkazib berish!");
+  updateMeta('description', "SPORTCITY — O'zbekistondagi eng yaxshi sport anjomlari do'koni. Futbol, fitnes, boks va yugurish uchun sifatli jihozlar va kiyimlar. Toshkent bo'ylab tezkor yetkazib berish!");
   const dynamicSd = document.getElementById('dynamic-ld-json');
   if (dynamicSd) dynamicSd.remove();
 };
@@ -1024,13 +1045,6 @@ async function loadAdminSiteSettings() {
       (document.getElementById('set-inst') as HTMLInputElement).value = d.instagram || '';
       (document.getElementById('set-yt') as HTMLInputElement).value = d.youtube || '';
       (document.getElementById('set-tt') as HTMLInputElement).value = d.tiktok || '';
-      
-      const sg = document.getElementById('set-auth-google') as HTMLInputElement;
-      const se = document.getElementById('set-auth-email') as HTMLInputElement;
-      const sp = document.getElementById('set-auth-phone') as HTMLInputElement;
-      if (sg) sg.checked = d.auth_google !== false;
-      if (se) se.checked = d.auth_email !== false;
-      if (sp) sp.checked = d.auth_phone !== false;
     }
   } catch (e) {
     console.error('Error loading admin site settings', e);
@@ -1042,22 +1056,13 @@ async function loadAdminSiteSettings() {
   const instagram = (document.getElementById('set-inst') as HTMLInputElement).value;
   const youtube = (document.getElementById('set-yt') as HTMLInputElement).value;
   const tiktok = (document.getElementById('set-tt') as HTMLInputElement).value;
-
-  const auth_google = (document.getElementById('set-auth-google') as HTMLInputElement).checked;
-  const auth_email = (document.getElementById('set-auth-email') as HTMLInputElement).checked;
-  const auth_phone = (document.getElementById('set-auth-phone') as HTMLInputElement).checked;
-
-  if (!auth_google && !auth_email && !auth_phone) {
-    return showToast('Xatolik', 'Kamida 1 ta kirish usuli faol bo\'lishi shart!', 'e');
-  }
   
   await setDoc(doc(db, 'site_settings', 'socials'), {
     telegram, instagram, youtube, tiktok,
-    auth_google, auth_email, auth_phone,
     updatedAt: serverTimestamp()
   });
-  showToast('Saqlandi', 'Sozlamalar yangilandi', 's');
-  loadGlobalSettings(); // Update UI
+  showToast('Saqlandi', 'Ijtimoiy tarmoqlar yangilandi', 's');
+  loadGlobalSettings(); // Update footer
 };
 
 function updateAdminStats(allOrders: any[]) {
@@ -1305,7 +1310,7 @@ function renderAdminPosts() {
   const phone = (document.getElementById('site-phone') as HTMLInputElement).value;
   const address = (document.getElementById('site-address') as HTMLInputElement).value;
   const tg = (document.getElementById('site-tg') as HTMLInputElement).value;
-  await setDoc(doc(db, 'site_info', 'main'), { phone, address, telegram: tg, updatedAt: serverTimestamp() });
+  await setDoc(doc(db, 'site_info', 'config'), { contact: { phone, address }, telegram: tg, updatedAt: serverTimestamp() }, { merge: true });
   showToast('Saqlandi', 'Kontaktlar yangilandi', 's');
 };
 
@@ -1363,15 +1368,73 @@ function renderHeroSlides() {
 }
 
 async function loadSiteInfo() {
-  onSnapshot(doc(db, 'site_info', 'main'), (snapshot) => {
+  onSnapshot(doc(db, 'site_info', 'config'), (snapshot) => {
     if (snapshot.exists()) {
       const data = snapshot.data();
       const sp = document.getElementById('site-phone') as HTMLInputElement; if (sp) sp.value = data.phone || '';
       const sa = document.getElementById('site-address') as HTMLInputElement; if (sa) sa.value = data.address || '';
       const st = document.getElementById('site-tg') as HTMLInputElement; if (st) st.value = data.telegram || '';
+      
+      if (data.logo) {
+        applySiteLogo(data.logo);
+        const lInp = document.getElementById('logoUrlInput') as HTMLInputElement; if (lInp) lInp.value = data.logo;
+        const lPrev = document.getElementById('adminLogoPreview') as HTMLImageElement; if (lPrev) lPrev.src = data.logo;
+      }
     }
   }, (err) => handleFirestoreError(err, OperationType.GET, 'site_info/main'));
 }
+
+function applySiteLogo(url: string) {
+  // Update Favicons
+  const favicon = document.querySelector('link[rel="icon"]');
+  if (favicon) favicon.setAttribute('href', url);
+  const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+  if (appleIcon) appleIcon.setAttribute('href', url);
+
+  // Update all logo images in DOM
+  const selectors = [
+    '.tb-logo-img', 
+    '.footer-logo-img', 
+    '.catalog-logo-img', 
+    '.auth-logo-img', 
+    '.admin-logo-img',
+    'img[alt="Logo"]',
+    'img[alt="SPORTCITY"]'
+  ];
+  selectors.forEach(selector => {
+    document.querySelectorAll(selector).forEach(el => {
+      (el as HTMLImageElement).src = url;
+    });
+  });
+}
+
+(window as any).uploadLogo = async (input: HTMLInputElement) => {
+  const file = input.files?.[0];
+  if (!file) return;
+  try {
+    showToast('Yuklanmoqda...', 'Logo rasm saqlanmoqda', 'i');
+    const url = await uploadImage(file);
+    const lInp = document.getElementById('logoUrlInput') as HTMLInputElement; if (lInp) lInp.value = url;
+    const lPrev = document.getElementById('adminLogoPreview') as HTMLImageElement; if (lPrev) lPrev.src = url;
+    showToast('Tayyor!', 'Rasm yuklandi', 's');
+  } catch (e: any) { showToast('Xatolik', e.message, 'e'); }
+};
+
+(window as any).updateSiteLogo = async () => {
+  const url = (document.getElementById('logoUrlInput') as HTMLInputElement).value;
+  if (!url) return showToast('Xatolik', 'Logo URL kerak', 'e');
+  try {
+    await updateDoc(doc(db, 'site_info', 'config'), { logo: url });
+    showToast('Muvaffaqiyatli', 'Sayt logotipi yangilandi', 's');
+  } catch (e: any) {
+    if (e.message.includes('NOT_FOUND') || e.message.includes('no document to update')) {
+      await setDoc(doc(db, 'site_info', 'config'), { logo: url }, { merge: true });
+      showToast('Muvaffaqiyatli', 'Sayt logotipi saqlandi', 's');
+    } else {
+      showToast('Xatolik', e.message, 'e');
+    }
+  }
+};
 
 async function loadGlobalSettings() {
   onSnapshot(doc(db, 'site_settings', 'socials'), (snap) => {
@@ -1386,14 +1449,6 @@ async function loadGlobalSettings() {
           ${d.tiktok ? `<a href="${d.tiktok}" target="_blank" class="f-social-link">TikTok</a>` : ''}
         `;
       }
-
-      // Update Auth Buttons Visibility
-      const bg = document.getElementById('authBtnGoogle');
-      const be = document.getElementById('authBtnEmail');
-      const bp = document.getElementById('authBtnPhone');
-      if (bg) bg.style.display = d.auth_google !== false ? 'flex' : 'none';
-      if (be) be.style.display = d.auth_email !== false ? 'flex' : 'none';
-      if (bp) bp.style.display = d.auth_phone !== false ? 'flex' : 'none';
     }
   }, (err) => handleFirestoreError(err, OperationType.GET, 'site_settings/socials'));
 }
@@ -1404,13 +1459,27 @@ async function loadGlobalSettings() {
   handleRouting();
 };
 
+(window as any).openFavorites = () => {
+  if (favs.size === 0) {
+    showToast('Hozircha bo\'sh', 'Hech qanday mahsulot sevimlilarga qo\'shilmagan', 'i');
+  } else {
+    showToast('Sevimlilar', favs.size + ' ta mahsulot', 'i');
+  }
+  // Navigate to profile or a special section if we had one
+  // For now, we reuse the profile logic
+  openProfile();
+};
+
 function handleRouting() {
   const path = window.location.pathname;
   const hash = window.location.hash;
   
-  // Close all overlays by default when navigating
-  const overlays = ['catalogOverlay', 'cartOverlay', 'profileOverlay', 'prodModalOverlay', 'notifOverlay', 'adminOverlay'];
-  overlays.forEach(id => document.getElementById(id)?.classList.remove('open'));
+  // Close all overlays and sheets by default when navigating
+  const closables = [
+    'catalogOverlay', 'cartOverlay', 'profileOverlay', 'prodModalOverlay', 'notifOverlay', 'adminOverlay',
+    'cartSheet', 'profileSheet', 'catalogDrawer'
+  ];
+  closables.forEach(id => document.getElementById(id)?.classList.remove('open'));
   document.body.style.overflow = '';
 
   // Handle Home

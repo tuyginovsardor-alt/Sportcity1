@@ -10,18 +10,31 @@ import {
 } from 'firebase/firestore';
 import { onAuthStateChanged, User, signOut } from 'firebase/auth';
 import { db, auth, loginWithGoogle } from './lib/firebase';
+import { uploadImage } from './supabase';
 
 // --- TYPES ---
 interface Category { id: string; name: string; img: string; }
 interface Product { id: string; name: string; price: string; category: string; image: string; is_new: boolean; stock: number; }
-interface SiteInfo { name: string; description: string; contact: { phone: string; address: string; }; }
+interface SiteInfo { name: string; description: string; logo?: string; contact: { phone: string; address: string; }; }
 interface CartItem extends Product { quantity: number; }
 interface Order { id: string; customerName: string; phone: string; address: string; items: any[]; total: string; status: 'pending' | 'completed'; createdAt: any; }
 
 export default function App() {
-  const [view, setView] = useState<'store' | 'admin'>('store');
+  const [view, setView] = useState<'store' | 'admin' | 'hidden'>('hidden');
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+  
+  // Expose to window for index.html access
+  useEffect(() => {
+    (window as any).openNewAdmin = () => {
+      setView('admin');
+      // Close old admin if open
+      document.getElementById('adminOverlay')?.classList.remove('open');
+    };
+    (window as any).openNewStore = () => setView('store');
+    (window as any).closeNewProject = () => setView('hidden');
+  }, []);
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null);
@@ -38,7 +51,7 @@ export default function App() {
       try {
         const configDoc = await getDoc(doc(db, 'site_info', 'config'));
         if (!configDoc.exists()) {
-          await setDoc(doc(db, 'site_info', 'config'), { name: "SPORTCITY", description: "Premium Sport Anjomlari", contact: { phone: "+998 90 123 45 67", address: "Namangan" } });
+          await setDoc(doc(db, 'site_info', 'config'), { name: "SPORTCITY", description: "Premium Sport Anjomlari", contact: { phone: "+998 90 123 45 67", address: "Toshkent" } });
         }
       } finally { setLoading(false); }
     };
@@ -46,7 +59,13 @@ export default function App() {
     return () => { unsubAuth(); unsubCats(); unsubProds(); unsubInfo(); };
   }, []);
 
-  const isAdmin = user?.email === "tuyginovsardor36@gmail.com";
+  const SITE_OWNERS = [
+    'tuyginovsardor36@gmail.com',
+    'numanovbekzod21@gmail.com',
+    'numanovbegzod20@gmail.com'
+  ];
+
+  const isAdmin = user?.email && SITE_OWNERS.includes(user.email);
 
   const addToCart = (product: Product) => {
     setCart(prev => {
@@ -56,10 +75,12 @@ export default function App() {
     });
   };
 
-  if (loading) return <div className="h-screen flex flex-col items-center justify-center bg-white"><Loader2 className="w-12 h-12 text-orange-600 animate-spin" /><p className="mt-4 font-bold tracking-widest text-slate-400">YUKLANMOQDA...</p></div>;
+  if (loading && view !== 'hidden') return <div className="h-screen flex flex-col items-center justify-center bg-white"><Loader2 className="w-12 h-12 text-orange-600 animate-spin" /><p className="mt-4 font-bold tracking-widest text-slate-400">YUKLANMOQDA...</p></div>;
+
+  if (view === 'hidden') return null;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] font-sans text-slate-900 selection:bg-orange-100">
+    <div className="fixed inset-0 z-[4000] bg-[#fafafa] font-sans text-slate-900 selection:bg-orange-100 overflow-y-auto">
       {view === 'store' ? (
         <StoreView 
           categories={categories} products={products} siteInfo={siteInfo} setView={setView} 
@@ -96,7 +117,11 @@ function StoreView({ categories, products, siteInfo, setView, isAdmin, cart, set
               animate={{ opacity: 1, x: 0 }}
               className={`text-3xl font-black italic tracking-tighter transition-colors duration-500 ${isScrolled ? 'text-orange-600' : 'text-white'}`}
             >
-              {siteInfo?.name || "SPORTCITY"}
+              {siteInfo?.logo ? (
+                <img src={siteInfo.logo} alt={siteInfo.name} className="h-10 w-auto object-contain" />
+              ) : (
+                siteInfo?.name || "SPORTCITY"
+              )}
             </motion.h1>
             <div className={`hidden lg:flex gap-8 text-[10px] font-black uppercase tracking-[0.3em] italic transition-colors duration-500 ${isScrolled ? 'text-slate-500' : 'text-white/60'}`}>
               <a href="#" className="hover:text-orange-600 transition-colors">BOSH SAHIFA</a>
@@ -361,7 +386,7 @@ function StoreView({ categories, products, siteInfo, setView, isAdmin, cart, set
               <div className="p-12 bg-white/5 rounded-[3rem] space-y-6 border border-white/10 hover:bg-white/10 transition-colors">
                 <MapPin className="w-12 h-12 text-orange-600 mb-4" />
                 <span className="text-slate-500 font-black text-xs uppercase tracking-[0.3em]">Bosh Ofis</span>
-                <p className="text-3xl font-black leading-tight italic uppercase tracking-tighter">{siteInfo?.contact.address || "Namangan"}</p>
+                <p className="text-3xl font-black leading-tight italic uppercase tracking-tighter">{siteInfo?.contact.address || "Toshkent, Yunusobod"}</p>
               </div>
               <div className="p-12 bg-white/5 rounded-[3rem] space-y-6 border border-white/10 hover:bg-white/10 transition-colors">
                 <Phone className="w-12 h-12 text-orange-600 mb-4" />
@@ -506,7 +531,13 @@ function AdminPanel({ categories, products, siteInfo, setView, user }: any) {
     });
   }, []);
 
-  const isAdmin = user?.email === "tuyginovsardor36@gmail.com";
+  const SITE_OWNERS = [
+    'tuyginovsardor36@gmail.com',
+    'numanovbekzod21@gmail.com',
+    'numanovbegzod20@gmail.com'
+  ];
+
+  const isAdmin = user?.email && SITE_OWNERS.includes(user.email);
 
   const handleSave = async (e: any) => {
     e.preventDefault();
@@ -558,7 +589,8 @@ function AdminPanel({ categories, products, siteInfo, setView, user }: any) {
   return (
     <div className="flex h-screen bg-[#f1f5f9] overflow-hidden">
       <aside className="w-80 bg-slate-950 text-white p-10 flex flex-col gap-16 relative overflow-hidden hidden lg:flex">
-         <div className="relative z-10">
+         <div className="relative z-10 flex items-center gap-4">
+           {siteInfo?.logo && <img src={siteInfo.logo} className="h-12 w-auto object-contain brightness-0 invert" alt="Logo" />}
            <h1 className="text-3xl font-black italic text-orange-600 leading-none tracking-tighter">SPORTCITY <br /> <span className="text-white text-sm tracking-widest uppercase">PRO PANEL</span></h1>
          </div>
          
@@ -579,10 +611,17 @@ function AdminPanel({ categories, products, siteInfo, setView, user }: any) {
          </nav>
 
          <div className="space-y-6 relative z-10 pt-10 border-t border-white/5">
-           <button onClick={() => setView('store')} className="w-full flex items-center gap-3 text-slate-500 font-black uppercase text-[10px] tracking-widest hover:text-white transition-colors">
-              <ChevronLeft className="w-4 h-4" /> DO'KONNI KO'RISH
-           </button>
-           <button onClick={() => signOut(auth)} className="w-full flex items-center gap-3 text-red-500 font-black uppercase text-[10px] tracking-widest hover:text-red-400 transition-colors">
+            <button onClick={() => {
+              setView('hidden');
+              (window as any).openAdmin?.();
+            }} className="w-full flex items-center gap-3 text-orange-500 font-black uppercase text-[10px] tracking-widest hover:text-orange-400 transition-colors border border-orange-500/20 p-4 rounded-2xl mb-4 bg-orange-500/5">
+               <Settings className="w-4 h-4" /> ESKI ADMIN
+            </button>
+
+            <button onClick={() => setView('hidden')} className="w-full flex items-center gap-3 text-slate-500 font-black uppercase text-[10px] tracking-widest hover:text-white transition-colors">
+               <ChevronLeft className="w-4 h-4" /> DO'KONNI KO'RISH
+            </button>
+            <button onClick={() => signOut(auth)} className="w-full flex items-center gap-3 text-red-500 font-black uppercase text-[10px] tracking-widest hover:text-red-400 transition-colors">
               <LogOut className="w-4 h-4" /> TIZIMDAN CHIQISH
            </button>
          </div>
@@ -783,6 +822,108 @@ function AdminPanel({ categories, products, siteInfo, setView, user }: any) {
               )}
             </div>
           </div>
+        )}
+
+        {tab === 'info' && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-12 max-w-4xl">
+            <div className="bg-white p-12 rounded-[4rem] shadow-2xl shadow-slate-200/50 border border-slate-50 space-y-12">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-orange-600 rounded-2xl flex items-center justify-center text-white">
+                  <Settings className="w-6 h-6" />
+                </div>
+                <h3 className="text-3xl font-black italic uppercase tracking-tighter">SAYT SOZLAMALARI</h3>
+              </div>
+
+              <div className="space-y-12">
+                {/* Logo Section */}
+                <div className="space-y-6">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Sayt Logotipi</label>
+                  <div className="flex flex-col md:flex-row items-center gap-8 bg-slate-50 p-8 rounded-[3rem]">
+                    <div className="w-32 h-32 bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-slate-100 flex items-center justify-center">
+                      {siteInfo?.logo ? <img src={siteInfo.logo} className="w-full h-full object-contain p-2" /> : <Layers className="w-12 h-12 text-slate-200" />}
+                    </div>
+                    <div className="flex-1 space-y-4 w-full">
+                      <div className="flex gap-4">
+                        <input 
+                          type="file" 
+                          id="logoUpload" 
+                          className="hidden" 
+                          accept="image/*"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              try {
+                                setLoading(true);
+                                const url = await uploadImage(file);
+                                await updateDoc(doc(db, 'site_info', 'config'), { logo: url });
+                                alert("Logo yangilandi!");
+                              } catch (err) { alert("Xatolik yuklashda"); } finally { setLoading(false); }
+                            }
+                          }}
+                        />
+                        <button 
+                          onClick={() => document.getElementById('logoUpload')?.click()}
+                          className="flex-1 bg-slate-900 text-white py-5 rounded-2xl font-black italic uppercase text-[10px] tracking-widest hover:bg-orange-600 transition-all flex items-center justify-center gap-2"
+                        >
+                          <Plus className="w-4 h-4" /> RASM YUKLASH
+                        </button>
+                        <button 
+                          onClick={async () => {
+                            const url = prompt("Logo rasm URL manzili:");
+                            if (url) {
+                              await updateDoc(doc(db, 'site_info', 'config'), { logo: url });
+                              alert("Logo manzil orqali yangilandi!");
+                            }
+                          }}
+                          className="bg-white border border-slate-200 text-slate-900 px-6 py-5 rounded-2xl font-black italic uppercase text-[10px] tracking-widest hover:border-orange-600 transition-all"
+                        >
+                          URL
+                        </button>
+                      </div>
+                      <p className="text-[10px] font-bold text-slate-400 italic">Tavsiya etiladi: PNG yoki SVG format, shaffof fon bilan.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Info Form */}
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Do'kon Nomi</label>
+                    <input 
+                      value={siteInfo?.name || ''} 
+                      onChange={async (e) => await updateDoc(doc(db, 'site_info', 'config'), { name: e.target.value })}
+                      className="w-full bg-slate-50 p-6 rounded-[2rem] border-2 border-transparent outline-none focus:border-orange-600 transition-all font-bold" 
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Telefon</label>
+                    <input 
+                      value={siteInfo?.contact.phone || ''} 
+                      onChange={async (e) => await updateDoc(doc(db, 'site_info', 'config'), { contact: { ...siteInfo?.contact, phone: e.target.value } })}
+                      className="w-full bg-slate-50 p-6 rounded-[2rem] border-2 border-transparent outline-none focus:border-orange-600 transition-all font-bold" 
+                    />
+                  </div>
+                  <div className="md:col-span-2 space-y-4">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Manzil</label>
+                    <input 
+                      value={siteInfo?.contact.address || ''} 
+                      onChange={async (e) => await updateDoc(doc(db, 'site_info', 'config'), { contact: { ...siteInfo?.contact, address: e.target.value } })}
+                      className="w-full bg-slate-50 p-6 rounded-[2rem] border-2 border-transparent outline-none focus:border-orange-600 transition-all font-bold" 
+                    />
+                  </div>
+                  <div className="md:col-span-2 space-y-4">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Tavsif (Description)</label>
+                    <textarea 
+                      rows={4}
+                      value={siteInfo?.description || ''} 
+                      onChange={async (e) => await updateDoc(doc(db, 'site_info', 'config'), { description: e.target.value })}
+                      className="w-full bg-slate-50 p-8 rounded-[3rem] border-2 border-transparent outline-none focus:border-orange-600 transition-all font-bold resize-none" 
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         )}
       </main>
     </div>
