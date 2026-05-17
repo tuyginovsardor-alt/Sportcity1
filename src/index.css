@@ -20,6 +20,18 @@
   }
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+}
+
 body {
   cursor: default;
+  background: var(--bg);
+  color: white;
+  -webkit-font-smoothing: antialiased;
 }

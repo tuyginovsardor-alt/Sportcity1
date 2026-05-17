@@ -52,8 +52,8 @@
   "priceRange": "$$",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Yunusobod tumani",
-    "addressLocality": "Toshkent",
+    "streetAddress": "Andijon shahar, Yangi bozor",
+    "addressLocality": "Andijon",
     "addressCountry": "UZ"
   },
   "openingHoursSpecification": {
@@ -638,7 +638,10 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
       </div>
       <div class="tb-logo-text-wrap">
         <span class="tb-logo-name">SPORT CITY</span>
-        <span class="tb-logo-sub">Premium Store</span>
+        <div style="display:flex;align-items:center;gap:4px;margin-top:1px">
+           <span class="tb-logo-sub" style="margin-top:0">Premium Store</span>
+           <span style="font-size:8px; background:var(--bg2); color:var(--gold); padding:2px 4px; border-radius:4px; font-weight:800; border:1px solid rgba(255,193,7,0.2)">ANDIJON</span>
+        </div>
       </div>
     </div>
   </div>
@@ -768,7 +771,7 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
         <p style="font-size:13px; color:var(--gray); line-height:1.6">
           <strong>SPORTCITY.UZ</strong> — O'zbekistondagi eng yirik sport anjomlari va kiyimlari internet do'koni. 
           Biz sportcity ishqibozlari uchun eng sifatli futbol, fitnes va boks anjomlarini yetkazib beramiz. 
-          Sport City Toshkent bo'ylab tezkor yetkazib berish xizmatini taqdim etadi.
+          Sport City Andijon bo'ylab tezkor yetkazib berish xizmatini taqdim etadi.
         </p>
       </div>
       <div>
@@ -785,7 +788,7 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
       </div>
     </div>
     <div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--border);text-align:center;font-size:11px;color:rgba(255,255,255,0.2)">
-      &copy; 2025 SPORTCITY. Barcha huquqlar himoyalangan. O'zbekiston, Toshkent.
+      &copy; 2025 SPORTCITY. Barcha huquqlar himoyalangan. O'zbekiston, Andijon.
     </div>
   </footer>
   <div style="height:16px"></div>
@@ -882,6 +885,9 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
     </div>
     <div class="catalog-list" id="catalogList"></div>
     <div class="catalog-footer">
+      <button class="catalog-footer-btn" onclick="closeCatalog();openProfile()" style="background:var(--blue);border:none;margin-bottom:8px;color:white;font-weight:900">
+        👤 SHAXSIY KABINET
+      </button>
       <button class="catalog-footer-btn" onclick="closeCatalog();resetFilter();scrollToProds()">
         🛍 Barcha mahsulotlar
       </button>
@@ -1041,335 +1047,203 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
 <!-- TOAST -->
 <div class="toast-wrap" id="toastWrap"></div>
 
-<!-- ═══════════ NEW ADMIN PANEL ═══════════ -->
-<div class="admin-overlay" id="adminOverlay">
-  <div class="admin-topbar">
-    <div class="admin-logo" style="display:flex;align-items:center;gap:10px;flex:1">
-      <div class="logo-html-main" style="width:32px;height:32px;border-radius:8px">
-        <span class="logo-letter" style="font-size:18px">S</span>
-        <span class="logo-letter" style="font-size:18px">C</span>
+<!-- ═══════════ MODERN ADMIN PANEL ═══════════ -->
+<div class="admin-overlay" id="adminOverlay" style="background:#0a0d14; display:none; flex-direction:column">
+  <div class="admin-topbar" style="background:rgba(10,13,20,0.8); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.05); padding:12px 24px; display:flex; align-items:center; justify-content:space-between">
+    <div style="display:flex; align-items:center; gap:12px">
+      <div style="width:34px; height:34px; background:var(--blue); border-radius:10px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(26,108,255,0.3)">
+        <span style="font-family:'Bebas Neue'; font-size:18px">SC</span>
       </div>
-      <span style="font-weight:900;letter-spacing:1px;font-size:14px">SPORTCITY <span id="adminPageIndicator" style="color:var(--gold);margin-left:5px">(1-BOSH SAHIFA)</span></span>
+      <div>
+        <div style="font-size:13px; font-weight:900; letter-spacing:1px">ADMIN CONTROL <span id="adminPageIndicator" style="color:var(--gold); margin-left:8px; font-size:10px; opacity:0.8">DASHBOARD</span></div>
+        <div style="font-size:9px; color:var(--gray); letter-spacing:0.5px">SPORTCITY MANAGEMENT SYSTEM v2.5</div>
+      </div>
     </div>
-    <div style="display:flex;gap:10px;align-items:center">
-      <button onclick="toggleAdminPanelPage()" class="a-btn" style="background:var(--blue);padding:6px 14px;font-size:10px;font-weight:900;letter-spacing:1px">ALMASHTIRISH</button>
-      <button class="admin-close-btn" onclick="closeAdmin()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div style="display:flex; gap:12px; align-items:center">
+      <button onclick="toggleAdminPanelPage()" class="a-btn" style="background:rgba(255,255,255,0.05); border:1px solid var(--border); padding:8px 16px; font-size:10px; box-shadow:none">POZITSIYA ALMASHTIRISH</button>
+      <button class="admin-close-btn" onclick="closeAdmin()" style="width:38px; height:38px; background:rgba(255,59,59,0.1); border:1px solid rgba(255,59,59,0.2); color:var(--red)">
+        <svg viewBox="0 0 24 24" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
   </div>
 
-  <div class="admin-body-flex" style="display:flex;height:calc(100% - 60px);overflow:hidden">
-    <!-- Admin Page 1: Dashboard & Ops -->
-    <div id="adminPage1" class="admin-page-wrap active" style="display:flex;width:100%;height:100%">
-      <div class="admin-sidebar" style="width:240px;border-right:1px solid var(--border);background:var(--card);padding:20px 10px;overflow-y:auto">
-        <div class="admin-tab active" data-tab="dashboard" onclick="switchAdminTab('dashboard')">📊 DASHBOARD</div>
-        <div class="admin-tab" data-tab="orders" onclick="switchAdminTab('orders')">🛍 BUYURTMALAR</div>
-        <div class="admin-tab" data-tab="chat" onclick="switchAdminTab('chat')">💬 SUPPORT CHAT</div>
-        <div class="admin-tab" data-tab="users" onclick="switchAdminTab('users')">👥 FOYDALANUVCHILAR</div>
-        <div class="admin-tab" data-tab="admins" onclick="switchAdminTab('admins')">🛡 ADMINLAR</div>
+  <div style="display:flex; flex:1; overflow:hidden">
+    <!-- SIDEBAR -->
+    <aside style="width:240px; background:#0f141e; border-right:1px solid rgba(255,255,255,0.05); padding:20px 12px; display:flex; flex-direction:column; gap:6px">
+      <div id="adminNav1">
+        <button class="admin-tab active" data-tab="dashboard" onclick="switchAdminTab('dashboard')" style="width:100%; text-align:left; padding:12px 16px; border-radius:10px; margin-bottom:4px; display:flex; align-items:center; gap:12px">📊 <span style="font-size:11px; letter-spacing:1px">DASHBOARD</span></button>
+        <button class="admin-tab" data-tab="orders" onclick="switchAdminTab('orders')" style="width:100%; text-align:left; padding:12px 16px; border-radius:10px; margin-bottom:4px; display:flex; align-items:center; gap:12px">🛍 <span style="font-size:11px; letter-spacing:1px">BUYURTMALAR</span></button>
+        <button class="admin-tab" data-tab="chat" onclick="switchAdminTab('chat')" style="width:100%; text-align:left; padding:12px 16px; border-radius:10px; margin-bottom:4px; display:flex; align-items:center; gap:12px">💬 <span style="font-size:11px; letter-spacing:1px">SUPPORT</span></button>
+        <button class="admin-tab" data-tab="users" onclick="switchAdminTab('users')" style="width:100%; text-align:left; padding:12px 16px; border-radius:10px; margin-bottom:4px; display:flex; align-items:center; gap:12px">👥 <span style="font-size:11px; letter-spacing:1px">MIJOZLAR</span></button>
       </div>
-      <div class="admin-main" style="flex:1;padding:24px;overflow-y:auto;background:var(--bg)">
+      <div id="adminNav2" style="display:none">
+        <button class="admin-tab" data-tab="products" onclick="switchAdminTab('products')" style="width:100%; text-align:left; padding:12px 16px; border-radius:10px; margin-bottom:4px; display:flex; align-items:center; gap:12px">📦 <span style="font-size:11px; letter-spacing:1px">MAHSULOTLAR</span></button>
+        <button class="admin-tab" data-tab="categories" onclick="switchAdminTab('categories')" style="width:100%; text-align:left; padding:12px 16px; border-radius:10px; margin-bottom:4px; display:flex; align-items:center; gap:12px">🗂 <span style="font-size:11px; letter-spacing:1px">KATEGORIYALAR</span></button>
+        <button class="admin-tab" data-tab="posts" onclick="switchAdminTab('posts')" style="width:100%; text-align:left; padding:12px 16px; border-radius:10px; margin-bottom:4px; display:flex; align-items:center; gap:12px">📰 <span style="font-size:11px; letter-spacing:1px">NEWS / BLOG</span></button>
+        <button class="admin-tab" data-tab="hero" onclick="switchAdminTab('hero')" style="width:100%; text-align:left; padding:12px 16px; border-radius:10px; margin-bottom:4px; display:flex; align-items:center; gap:12px">🖼 <span style="font-size:11px; letter-spacing:1px">BANNERS</span></button>
+        <button class="admin-tab" data-tab="settings" onclick="switchAdminTab('settings')" style="width:100%; text-align:left; padding:12px 16px; border-radius:10px; margin-bottom:4px; display:flex; align-items:center; gap:12px">⚙️ <span style="font-size:11px; letter-spacing:1px">SITE SOZLAMALARI</span></button>
+      </div>
+      <div style="flex:1"></div>
+      <button onclick="closeAdmin()" style="width:100%; padding:14px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; color:var(--gray); font-size:10px; font-weight:700; letter-spacing:1px">PANELDAN CHIQISH</button>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main style="flex:1; overflow-y:auto; padding:32px; background:#0c0f16">
+      <div id="adminPageContent">
+        
+        <!-- Dashboard Section -->
         <section class="admin-section active" id="tab-dashboard">
-          <div class="a-stat-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:30px">
-            <div class="a-stat" style="background:var(--card);padding:20px;border-radius:15px;border:1px solid var(--border)">
-              <div class="a-stat-val blue" id="statProducts" style="font-size:28px;font-weight:900">0</div>
-              <div class="a-stat-label" style="font-size:11px;color:var(--gray);text-transform:uppercase;margin-top:5px">Mahsulotlar</div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:20px; margin-bottom:32px">
+            <div style="background:var(--card); padding:24px; border-radius:20px; border:1px solid var(--border)">
+              <div style="font-size:11px; font-weight:800; color:var(--gray); letter-spacing:1.5px; opacity:0.6">JAMI MAHSULOTLAR</div>
+              <div style="font-family:'Bebas Neue'; font-size:48px; color:var(--blue); line-height:1.2" id="statProducts">0</div>
+              <div style="font-size:12px; color:var(--green); margin-top:8px">● Barcha kategoriyalar bo'yicha</div>
             </div>
-            <div class="a-stat" style="background:var(--card);padding:20px;border-radius:15px;border:1px solid var(--border)">
-              <div class="a-stat-val gold" id="statOrders" style="font-size:28px;font-weight:900">0</div>
-              <div class="a-stat-label" style="font-size:11px;color:var(--gray);text-transform:uppercase;margin-top:5px">Zakazlar</div>
+            <div style="background:var(--card); padding:24px; border-radius:20px; border:1px solid var(--border)">
+              <div style="font-size:11px; font-weight:800; color:var(--gray); letter-spacing:1.5px; opacity:0.6">YANGI BUYURTMALAR</div>
+              <div style="font-family:'Bebas Neue'; font-size:48px; color:var(--gold); line-height:1.2" id="statOrders">0</div>
+              <div style="font-size:12px; color:var(--gray); margin-top:8px">● Bugun tushgan buyurtmalar</div>
             </div>
-            <div class="a-stat" style="background:var(--card);padding:20px;border-radius:15px;border:1px solid var(--border)">
-              <div class="a-stat-val green" id="statRevenue" style="font-size:28px;font-weight:900">0</div>
-              <div class="a-stat-label" style="font-size:11px;color:var(--gray);text-transform:uppercase;margin-top:5px">Daromad</div>
+            <div style="background:var(--card); padding:24px; border-radius:20px; border:1px solid var(--border)">
+              <div style="font-size:11px; font-weight:800; color:var(--gray); letter-spacing:1.5px; opacity:0.6">OBSHIY REVENUE</div>
+              <div style="font-family:'Bebas Neue'; font-size:48px; color:var(--green); line-height:1.2" id="statRevenue">0</div>
+              <div style="font-size:12px; color:var(--gray); margin-top:8px">● Taxminiy hisob-kitob</div>
             </div>
           </div>
-          <div class="a-sec-title">So'ngi Aktivlik</div>
-          <div id="dashRecentOrders"><div style="color:var(--gray);font-size:13px;padding:16px 0">Yuklanmoqda...</div></div>
+          
+          <div style="background:var(--card); border-radius:24px; border:1px solid var(--border); overflow:hidden">
+            <div style="padding:20px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center">
+              <h3 style="font-family:'Bebas Neue'; font-size:22px; letter-spacing:1.5px">SO'NGI AKTIVLIK</h3>
+              <button class="a-btn-sm" onclick="switchAdminTab('orders')">Hammasini ko'rish</button>
+            </div>
+            <div id="dashRecentOrders" style="padding:10px"></div>
+          </div>
         </section>
+
+        <!-- Orders Section -->
         <section class="admin-section" id="tab-orders">
-          <div id="adminOrdersList" class="admin-list"></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+            <h2 style="font-family:'Bebas Neue'; font-size:32px; letter-spacing:2px">🛒 BUYURTMALAR</h2>
+            <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; display:flex">
+              <button class="a-btn-sm" style="background:none; border:none">Bugun</button>
+              <button class="a-btn-sm" style="background:none; border:none; opacity:0.5">Hafta</button>
+              <button class="a-btn-sm" style="background:none; border:none; opacity:0.5">G'alati xaridlar</button>
+            </div>
+          </div>
+          <div id="adminOrdersList"></div>
         </section>
-        <section class="admin-section" id="tab-chat">
-          <div class="admin-chat-layout" style="display:flex;height:500px;background:var(--card);border-radius:15px;overflow:hidden;border:1px solid var(--border)">
-            <div class="admin-chat-sidebar" id="chatUserList" style="width:250px;border-right:1px solid var(--border);overflow-y:auto"></div>
-            <div class="admin-chat-view" style="flex:1;display:flex;flex-direction:column">
-              <div id="adminChatPlaceholder" style="flex:1;display:flex;items-center:center;justify-content:center;color:var(--gray)">Chatni tanlang</div>
-              <div id="adminChatMessages" class="admin-chat-msgs-scroll" style="flex:1;padding:20px;overflow-y:auto"></div>
-              <div id="adminChatInputRow" class="admin-chat-input-area" style="display:none;padding:15px;border-top:1px solid var(--border)">
-                <input type="text" id="adminChatMessageInp" placeholder="Xabar..." style="width:100%;background:var(--bg);border:1px solid var(--border);padding:10px;border-radius:8px;color:white">
-                <button onclick="sendAdminChat()" style="background:var(--blue);color:white;padding:10px 20px;border-radius:8px;margin-left:10px">➤</button>
+
+        <!-- Products Section -->
+        <section class="admin-section" id="tab-products">
+           <div style="background:var(--bg2); padding:28px; border-radius:24px; border:1.5px dashed rgba(26,108,255,0.3); margin-bottom:32px">
+            <h3 style="font-family:'Bebas Neue'; font-size:24px; letter-spacing:2px; margin-bottom:20px; color:var(--blue)">📦 YANGI MAHSULOT QO'SHISH</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px">
+              <div class="a-form-group">
+                <label class="a-label">Brend</label>
+                <input class="a-input" id="ap-brand" placeholder="Nike, Adidas...">
+              </div>
+              <div class="a-form-group">
+                <label class="a-label">Nomi</label>
+                <input class="a-input" id="ap-name" placeholder="Krossovka Air Max">
+              </div>
+              <div class="a-form-group">
+                <label class="a-label">Kategoriya</label>
+                <select class="a-select" id="ap-cat"></select>
+              </div>
+              <div class="a-form-group">
+                <label class="a-label">Narxi (so'm)</label>
+                <input class="a-input" id="ap-price" type="number" placeholder="950000">
+              </div>
+              <div class="a-form-group">
+                <label class="a-label">Eski narx</label>
+                <input class="a-input" id="ap-oldprice" type="number" placeholder="1200000">
+              </div>
+              <div class="a-form-group">
+                <label class="a-label">Rasm yuklash / URL</label>
+                <div style="display:flex; gap:8px">
+                  <input type="file" id="ap-file" style="display:none" onchange="uploadFile('ap-file','ap-img')">
+                  <button class="a-btn" onclick="document.getElementById('ap-file').click()" style="background:var(--card); border:1px solid var(--border); color:white; width:auto; padding:0 14px">📁</button>
+                  <input class="a-input" id="ap-img" placeholder="https://...">
+                </div>
               </div>
             </div>
+            <button class="a-btn" onclick="addProduct()" style="width:100%; margin-top:16px; padding:16px; font-size:14px">MAHSULOTNI BAZAGA QO'SHISH</button>
           </div>
+          <div id="adminProdList"></div>
         </section>
-        <section class="admin-section" id="tab-users">
-          <div class="a-form-group" style="background:var(--card);padding:20px;border-radius:15px;margin-bottom:20px">
-            <label class="a-label">Coin qo'shish</label>
-            <div style="display:flex;gap:10px">
-              <input class="a-input" id="coinPhone" placeholder="Email">
-              <input class="a-input" id="coinAmount" type="number" placeholder="Soni" style="width:80px">
-              <button class="a-btn" onclick="addCoinsToUser()" style="background:var(--gold);color:black">BERISH</button>
-            </div>
-          </div>
-          <div id="adminUsersList" class="a-users-list"></div>
-        </section>
-        <section class="admin-section" id="tab-admins">
-          <div style="background:var(--card);padding:20px;border-radius:15px;margin-bottom:20px">
-            <label class="a-label">Yangi Admin Tayinlash</label>
-            <div style="display:flex;gap:10px">
-              <input class="a-input" id="promotePhone" placeholder="Email kiriting">
-              <button class="a-btn" onclick="promoteToAdmin()">TAYINLASH</button>
-            </div>
-          </div>
-          <div id="adminManagerList" class="a-users-list"></div>
-        </section>
-      </div>
-    </div>
 
-    <!-- Admin Page 2: Storage & Content -->
-    <div id="adminPage2" class="admin-page-wrap" style="display:none;width:100%;height:100%">
-      <div class="admin-sidebar" style="width:240px;border-right:1px solid var(--border);background:var(--card);padding:20px 10px;overflow-y:auto">
-        <div class="admin-tab active" data-tab="products" onclick="switchAdminTab('products')">📦 MAHSULOTLAR</div>
-        <div class="admin-tab" data-tab="categories" onclick="switchAdminTab('categories')">🗂 KATEGORIYALAR</div>
-        <div class="admin-tab" data-tab="posts" onclick="switchAdminTab('posts')">📰 YANGILIKLAR</div>
-        <div class="admin-tab" data-tab="hero" onclick="switchAdminTab('hero')">🖼 BANNERLAR</div>
-        <div class="admin-tab" data-tab="settings" onclick="switchAdminTab('settings')">⚙️ SOZLAMALAR</div>
-      </div>
-      <div class="admin-main" style="flex:1;padding:24px;overflow-y:auto;background:var(--bg)">
-        <section class="admin-section active" id="tab-products">
-          <div class="ap-form" style="background:var(--card);padding:20px;border-radius:15px;margin-bottom:25px">
-            <h3>Yangi Mahsulot</h3>
-            <div class="a-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
-              <input class="a-input" id="ap-brand" placeholder="Brend">
-              <input class="a-input" id="ap-name" placeholder="Nomi">
-              <input class="a-input" id="ap-price" type="number" placeholder="Narxi">
-              <input class="a-input" id="ap-oldprice" type="number" placeholder="Eski narxi">
-              <input class="a-input" id="ap-img" placeholder="Rasm URL">
-              <select class="a-select" id="ap-cat"></select>
-            </div>
-            <button class="a-btn" onclick="addProduct()" style="width:100%;margin-top:15px">SAQLASH</button>
-          </div>
-          <div id="adminProdList" class="a-prod-list"></div>
-        </section>
+        <!-- Categories Section -->
         <section class="admin-section" id="tab-categories">
-          <div class="ap-form" style="background:var(--card);padding:20px;border-radius:15px;margin-bottom:20px">
-            <input class="a-input" id="cat-name" placeholder="Kategoriya Nomi">
-            <input class="a-input" id="cat-img" placeholder="URL" style="margin-top:10px">
-            <button class="a-btn" onclick="addCategory()" style="width:100%;margin-top:10px">QO'SHISH</button>
-          </div>
-          <div id="catAdminList" class="cat-admin-list"></div>
-        </section>
-        <section class="admin-section" id="tab-posts">
-           <div class="ap-form" style="background:var(--card);padding:20px;border-radius:15px;margin-bottom:20px">
-            <input class="a-input" id="post-title" placeholder="Yangilik Sarlavhasi">
-            <textarea class="a-input" id="post-text" placeholder="Matn..." style="height:120px;margin-top:10px"></textarea>
-            <button class="a-btn" onclick="addPost()" style="width:100%;margin-top:10px">CHIQARISH</button>
-          </div>
-          <div id="adminPostsList" class="a-prod-list"></div>
-        </section>
-        <section class="admin-section" id="tab-hero">
-           <div class="hero-edit-card" style="margin-bottom:20px">
-              <img id="adminHeroPreview0" src="" style="width:200px;height:100px;object-fit:cover;border-radius:10px">
-              <div style="display:flex;gap:10px;margin-top:10px">
-                <input class="a-input" id="heroUrlInput0" placeholder="Hero URL 1">
-                <button onclick="updateHeroImage(0)" class="a-btn">SAQLASH</button>
+          <div style="background:var(--card); padding:24px; border-radius:24px; border:1px solid var(--border); margin-bottom:32px">
+            <h3 style="font-family:'Bebas Neue'; font-size:24px; letter-spacing:2px; margin-bottom:16px">🗂 KATEGORIYA QO'SHISH</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px">
+              <input class="a-input" id="cat-name" placeholder="Kategoriya nomi">
+              <div style="display:flex; gap:8px">
+                <input type="file" id="cat-file" style="display:none" onchange="uploadFile('cat-file','cat-img')">
+                <button class="a-btn" onclick="document.getElementById('cat-file').click()" style="background:var(--bg); border:1px solid var(--border); width:auto">📁</button>
+                <input class="a-input" id="cat-img" placeholder="Rasm URL">
               </div>
-           </div>
-           <div class="hero-edit-card">
-              <img id="adminHeroPreview1" src="" style="width:200px;height:100px;object-fit:cover;border-radius:10px">
-              <div style="display:flex;gap:10px;margin-top:10px">
-                <input class="a-input" id="heroUrlInput1" placeholder="Hero URL 2">
-                <button onclick="updateHeroImage(1)" class="a-btn">SAQLASH</button>
-              </div>
-           </div>
+            </div>
+            <button class="a-btn" onclick="addCategory()" style="width:100%">KATEGORIYANI QO'SHISH</button>
+          </div>
+          <div id="catAdminList"></div>
         </section>
+
+        <!-- Users Section -->
+        <section class="admin-section" id="tab-users">
+          <div style="background:var(--card); padding:24px; border-radius:24px; border:1px solid var(--border); margin-bottom:32px; display:flex; justify-content:space-between; align-items:center">
+             <div>
+               <h3 style="font-family:'Bebas Neue'; font-size:24px; letter-spacing:2px">👥 FOYDALANUVCHILARNI BOSHQRISH</h3>
+               <p style="font-size:12px; color:var(--gray)">Mijozlarga bonuslar va coinlar berish</p>
+             </div>
+             <div style="display:flex; gap:10px">
+                <input class="a-input" id="coinPhone" placeholder="Email kiriting" style="width:180px">
+                <input class="a-input" id="coinAmount" type="number" placeholder="Coins" style="width:80px">
+                <button class="a-btn" onclick="addCoinsToUser()" style="background:var(--gold); color:#000">BERISH</button>
+             </div>
+          </div>
+          <div id="adminUsersList"></div>
+        </section>
+
+        <!-- Settings Section -->
         <section class="admin-section" id="tab-settings">
-          <div class="ap-form" style="background:var(--card);padding:20px;border-radius:15px">
-            <label class="a-label">Sayt Logotipi</label>
-            <input class="a-input" id="logoUrlInput" placeholder="Logo URL">
-            <button class="a-btn" onclick="updateSiteLogo()" style="width:100%;margin-top:10px">LOGO YANGILASH</button>
+          <div style="background:rgba(255,193,7,0.1); border:1px solid rgba(255,193,7,0.2); padding:16px; border-radius:16px; margin-bottom:24px; display:none" id="supabaseWarning">
+            <div style="display:flex; align-items:center; gap:8px">
+              <span style="font-size:18px">⚠️</span>
+              <div>
+                <div style="font-size:12px; font-weight:800; color:var(--gold); margin-bottom:2px">SUPABASE INTEGRATSIYASI</div>
+                <div style="font-size:10px; color:rgba(255,255,255,0.6)">Fayl yuklash (upload) ishlashi uchun .env faylga VITE_SUPABASE_URL va VITE_SUPABASE_ANON_KEY yozing.</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1.5fr; gap:32px">
+            <div style="background:var(--card); padding:24px; border-radius:24px; border:1px solid var(--border)">
+              <h3 style="font-family:'Bebas Neue'; font-size:22px; letter-spacing:1px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:10px">LOGO VA BRANDING</h3>
+              <div style="width:120px; height:120px; background:var(--bg); border-radius:24px; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; border:2px dashed var(--border)">
+                <img id="adminLogoPreview" src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png" style="width:80px; height:auto">
+              </div>
+              <div class="a-form-group">
+                <label class="a-label">Logo URL</label>
+                <input class="a-input" id="logoUrlInput" placeholder="https://...">
+              </div>
+              <button class="a-btn" onclick="updateSiteLogo()" style="width:100%; margin-top:10px">LOGONI SAQLASH</button>
+            </div>
+            
+            <div style="background:var(--card); padding:24px; border-radius:24px; border:1px solid var(--border)">
+              <h3 style="font-family:'Bebas Neue'; font-size:22px; letter-spacing:1px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:10px">IJTIMOIY TARMOQLAR</h3>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+                <div class="a-form-group"><label class="a-label">Telegram</label><input class="a-input" id="set-tg"></div>
+                <div class="a-form-group"><label class="a-label">Instagram</label><input class="a-input" id="set-inst"></div>
+                <div class="a-form-group"><label class="a-label">YouTube</label><input class="a-input" id="set-yt"></div>
+                <div class="a-form-group"><label class="a-label">TikTok</label><input class="a-input" id="set-tt"></div>
+              </div>
+              <button class="a-btn" onclick="saveSocialSettings()" style="width:100%; margin-top:20px">IJTIMOIY LINKLARNI SAQLASH</button>
+            </div>
           </div>
         </section>
-      </div>
-    </div>
-  </div>
-</div>
 
-
-    <!-- ORDERS SECTION -->
-    <div class="admin-section" id="tab-orders">
-      <div class="a-sec-title">Barcha Zakazlar</div>
-      <div id="adminOrdersList"><div style="color:var(--gray);font-size:13px;padding:16px 0">Hozircha zakaz yo'q</div></div>
-    </div>
-
-    <!-- COINS SECTION -->
-    <div class="admin-section" id="tab-coins">
-      <div class="a-sec-title">Coin Tizimi</div>
-      <div style="background:var(--card);border:1px solid rgba(255,193,7,0.25);border-radius:14px;padding:16px;margin-bottom:20px">
-        <div style="font-size:11px;color:var(--gold);font-weight:800;margin-bottom:8px">🪙 COIN QOIDALARI</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8">
-          • Har 1 ta zakaz = <strong style="color:var(--gold)">10 coin</strong><br>
-          • 100 coin = <strong style="color:var(--gold)">10,000 so'm</strong> chegirma<br>
-          • Coinlar dokon xaridlarida ishlatiladi
-        </div>
       </div>
-      <div class="a-form-group">
-        <label class="a-label">Foydalanuvchiga coin qo'shish</label>
-        <input class="a-input" id="coinPhone" placeholder="998901234567">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">Coin miqdori</label>
-        <input class="a-input" id="coinAmount" type="number" placeholder="10">
-      </div>
-      <button class="a-btn" onclick="addCoinsToUser()" style="width:100%;margin-bottom:20px">🪙 Coin Qo'shish</button>
-      <div class="a-sec-title">Foydalanuvchilar</div>
-      <div class="a-users-list" id="adminUsersList"><div style="color:var(--gray);font-size:13px;padding:16px 0">Hozircha foydalanuvchi yo'q</div></div>
-    </div>
-
-    <!-- CATEGORIES SECTION -->
-    <div class="admin-section" id="tab-categories">
-      <div class="a-sec-title">Yangi Kategoriya Qo'shish</div>
-      <div class="a-form-group">
-        <label class="a-label">Kategoriya nomi</label>
-        <input class="a-input" id="cat-name" placeholder="Futbol, Basketbol...">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">Tavsif (ixtiyoriy)</label>
-        <input class="a-input" id="cat-desc" placeholder="Kategoriya haqida...">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">Rasm yuklash / URL</label>
-        <div style="display:flex;gap:10px">
-          <input type="file" id="cat-file" style="display:none" onchange="uploadFile('cat-file','cat-img')">
-          <button class="a-btn" onclick="document.getElementById('cat-file').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto">📁</button>
-          <input class="a-input" id="cat-img" placeholder="https://images.unsplash.com/...">
-        </div>
-      </div>
-      <button class="a-btn" onclick="addCategory()" style="width:100%;margin-bottom:24px">✚ Kategoriya Qo'shish</button>
-      <div class="a-sec-title">Mavjud Kategoriyalar</div>
-      <div class="cat-admin-list" id="catAdminList"></div>
-    </div>
-
-    <!-- POSTS SECTION -->
-    <div class="admin-section" id="tab-posts">
-      <div class="a-sec-title">Yangi Yangilik Qo'shish</div>
-      <div class="a-form-group">
-        <label class="a-label">Sarlavha</label>
-        <input class="a-input" id="post-title" placeholder="Yangi mahsulotlar keldi!">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">Qisqa tavsif (SEO uchun)</label>
-        <input class="a-input" id="post-excerpt" placeholder="Ushbu haftada bizda ajoyib yangiliklar...">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">Rasm yuklash / URL</label>
-        <div style="display:flex;gap:10px">
-          <input type="file" id="post-file" style="display:none" onchange="uploadFile('post-file','post-img')">
-          <button class="a-btn" onclick="document.getElementById('post-file').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto">📁</button>
-          <input class="a-input" id="post-img" placeholder="https:// images.unsplash.com/...">
-        </div>
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">To'liq matn</label>
-        <textarea class="a-input" id="post-text" rows="6" style="height:auto" placeholder="Yangilik tafsilotlari..."></textarea>
-      </div>
-      <button class="a-btn" onclick="addPost()" style="width:100%;margin-bottom:24px">✚ Yangilik Qo'shish</button>
-      <div class="a-sec-title">Mavjud Yangiliklar</div>
-      <div class="a-prod-list" id="adminPostsList"></div>
-    </div>
-
-    <!-- SUPPORT CHAT SECTION -->
-    <div class="admin-section" id="tab-chat">
-      <div class="admin-chat-layout">
-        <!-- Sidebar -->
-        <div class="admin-chat-sidebar">
-          <div class="admin-chat-header">📂 CHATLAR</div>
-          <div id="chatUserList"></div>
-        </div>
-
-        <!-- Chat View -->
-        <div class="admin-chat-view">
-          <div id="adminChatPlaceholder" class="admin-chat-placeholder">
-            <svg style="width:60px;height:60px;margin-bottom:15px;stroke:currentColor" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-            <p style="font-size:15px;font-weight:700">Chatni tanlang</p>
-            <p style="font-size:12px">Mijozlar bilan aloqani boshlash uchun ro'yxatdan birini tanlang</p>
-          </div>
-          <div id="adminChatMessages" class="admin-chat-msgs-scroll"></div>
-          <div class="admin-chat-input-area" id="adminChatInputRow" style="display:none">
-            <input type="text" id="adminChatMessageInp" class="admin-chat-inp" placeholder="Xabaringizni yozing..." onkeydown="if(event.key==='Enter') sendAdminChat()">
-            <button class="admin-chat-send" onclick="sendAdminChat()">
-              <svg style="width:20px;height:20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CONTACTS SECTION -->
-    <div class="admin-section" id="tab-contacts">
-      <div class="a-sec-title">Sayt Kontaktlari</div>
-      <div class="a-form-group">
-        <label class="a-label">Telefon raqam</label>
-        <input class="a-input" id="site-phone" placeholder="+998 90 123 45 67">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">Manzil</label>
-        <input class="a-input" id="site-address" placeholder="Toshkent sh., ...">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">Telegram link</label>
-        <input class="a-input" id="site-tg" placeholder="https://t.me/...">
-      </div>
-      <button class="a-btn" onclick="updateSiteInfo()" style="width:100%">💾 Saqlash</button>
-    </div>
-
-    <!-- ADMINS SECTION -->
-    <div class="admin-section" id="tab-admins">
-      <div class="a-sec-title">Adminlarni Boshqarish</div>
-      <div style="background:rgba(26,108,255,0.05);padding:16px;border-radius:12px;border:1px dashed var(--blue);margin-bottom:20px">
-        <label class="a-label">Yangi Admin Tayinlash (Email yoki Tel)</label>
-        <div style="display:flex;gap:10px">
-          <input class="a-input" id="promotePhone" placeholder="example@gmail.com">
-          <button class="a-btn" onclick="promoteToAdmin()">Tayinlash</button>
-        </div>
-        <p style="font-size:10px;color:var(--gray);margin-top:8px">Foydalanuvchi avval ro'yxatdan o'tgan bo'lishi shart.</p>
-      </div>
-      <div class="a-sec-title" style="font-size:16px">Amaldagi Adminlar</div>
-      <div class="a-users-list" id="adminManagerList"></div>
-    </div>
-
-    <!-- SETTINGS SECTION -->
-    <div class="admin-section" id="tab-settings">
-      <div class="a-sec-title">Sayt Logotipi</div>
-      <div style="margin-bottom:20px">
-        <div class="hero-upload-preview" style="height:100px; width:100px; margin:0 auto 16px"><img id="adminLogoPreview" src="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png"></div>
-        <div class="img-url-input">
-          <input type="file" id="logoFile" style="display:none" onchange="uploadLogo(this)">
-          <button class="a-btn" onclick="document.getElementById('logoFile').click()" style="background:var(--card);border:1px solid var(--border);color:white;width:auto;margin-right:8px">📁</button>
-          <input class="a-input" id="logoUrlInput" placeholder="Logo URL..." value="https://i.ibb.co/WWHV7f3c/file-00000000c22c7246a2d68c5895f447e8.png">
-          <button class="a-btn" onclick="updateSiteLogo()">Saqlash</button>
-        </div>
-      </div>
-
-      <div class="a-sec-title">Ijtimoiy Tarmoqlar</div>
-      <div class="a-form-group">
-        <label class="a-label">Telegram Link</label>
-        <input class="a-input" id="set-tg" placeholder="https://t.me/sportcity">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">Instagram Link</label>
-        <input class="a-input" id="set-inst" placeholder="https://instagram.com/sportcity">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">YouTube Link</label>
-        <input class="a-input" id="set-yt" placeholder="https://youtube.com/@sportcity">
-      </div>
-      <div class="a-form-group">
-        <label class="a-label">TikTok Link</label>
-        <input class="a-input" id="set-tt" placeholder="https://tiktok.com/@sportcity">
-      </div>
-      <button class="a-btn" onclick="saveSocialSettings()" style="width:100%">💾 Sozlamalarni Saqlash</button>
-    </div>
+    </main>
   </div>
 </div>
 
