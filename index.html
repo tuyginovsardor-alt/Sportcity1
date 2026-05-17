@@ -453,28 +453,23 @@ button { cursor: pointer; border: none; font-family: 'Barlow', sans-serif; }
   .prod-grid { grid-template-columns: repeat(5, 1fr); }
 }
 
-/* ─── DESKTOP: cart centered ─── */
-@media (min-width: 768px) {
-  .cart-sheet { max-width: 480px; left: 50%; transform: translateX(-50%) translateY(100%); padding-bottom: 0; }
-  .cart-sheet.open { transform: translateX(-50%) translateY(0); }
-  .cart-foot { padding-bottom: 20px; }
-}
-
-
-/* ─── LAPTOP CART MEDIA FIX: checkout button visible, design untouched ─── */
+/* DESKTOP: savat ong tomondan chiqadi */
 @media (min-width: 768px) {
   .cart-sheet {
-    max-height: calc(100vh - 24px);
-    width: min(480px, calc(100vw - 32px));
+    top: 0; bottom: 0;
+    left: auto; right: 0;
+    width: 420px; max-width: 42vw;
+    border-radius: 24px 0 0 24px;
+    border-top: none;
+    border-left: 1px solid var(--border);
+    transform: translateX(110%);
+    max-height: 100vh;
+    padding-bottom: 0;
   }
-  .cart-items2 {
-    flex: 0 1 auto;
-  }
-  .cart-foot {
-    min-height: 0;
-    flex: 1 1 auto;
-    overflow-y: auto;
-  }
+  .cart-sheet.open { transform: translateX(0); }
+  .sheet-handle { display: none; }
+  .cart-items2 { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+  .cart-foot { flex-shrink: 0; padding-bottom: 24px; }
 }
 
 @media (min-width: 768px) and (max-height: 820px) {
@@ -1264,7 +1259,8 @@ function checkAdminLogin() {
 <script type="module">
 // ─── SUPABASE CONFIG ───
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
+const SUPABASE_URL = 'https://vxxjayocwazuyrycjsvw.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4eGpheW9jd2F6dXlyeWNqc3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwMjg2MDgsImV4cCI6MjA5NDYwNDYwOH0.kKhyLEeGcfiX3FELHUm3PFMTJ_Q9GTGvASI43gBJSG8';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 // Supabase tayyor bo'lgunga qadar LocalStorage ishlatamiz
